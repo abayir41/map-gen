@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d907d5decd4b8db2a95356b6bca43c, type: 3}
   m_Name: Map
   m_EditorClassIdentifier: 
-  x: 48
-  y: 13
-  z: 30
+  x: 16
+  y: 17
+  z: 14
   randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
-  perlinScale: 0.09
+  perlinScale: 1.02
   perlinOffsetScale: 13.82
-  threshold: 75.9
-  iterationAmount: 2
+  threshold: 82
+  iterationAmount: 1

@@ -363,6 +363,37 @@ Transform:
   m_Father: {fileID: 1742567423}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1470130475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1470130476}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1470130476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470130475}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1742567422
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,10 +474,15 @@ MonoBehaviour:
   mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
   gridParent: {fileID: 293857008}
   ground: {fileID: 8967608169036613168, guid: ca2275aacca1e1247bd2530145d4a7fb, type: 3}
+  wall: {fileID: 8967608169036613168, guid: 1d720565cd3941840893b5107958b328, type: 3}
+  placables:
+  - {fileID: 8967608169036613168, guid: 118ad97f09f0cb34ba89c8edded20e7f, type: 3}
+  - {fileID: 8967608169036613168, guid: 35010348581c3ce44b9a6f6926d450a4, type: 3}
+  - {fileID: 8967608169036613168, guid: 6fc281de155fc1e49acc7e853a164e5e, type: 3}
   drawGizmo: 1
-  showNeutral: 1
-  showFilled: 1
-  showCanBeFilled: 1
-  showLocked: 1
+  showFilled: 0
+  showLocked: 0
+  showCanBeFilled: 0
+  showCanBeFilledGround: 1
   gizmoRadius: 0.25
   offsetScaler: 1

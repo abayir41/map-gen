@@ -8,16 +8,17 @@ namespace MapGen.Random
     public class CustomRandomSettings : RandomSettings
     {
         [SerializeField] 
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private int seed;
-
-        public Action PropertyChanged;
         
         public override int GetSeed() => seed;
+
+        private int _cachedSeed;
         
-        public void OnPropertyChanged()
+        public bool IsThereAnyChange()
         {
-            PropertyChanged?.Invoke();
+            var result = _cachedSeed != seed;
+            _cachedSeed = seed;
+            return result;
         }
     }
 }

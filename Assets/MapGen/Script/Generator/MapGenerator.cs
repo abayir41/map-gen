@@ -30,34 +30,28 @@ namespace MapGen.Generator
         [SerializeField] private bool showCanBeFilledGround = true;
         [SerializeField] private float gizmoRadius = 0.25f;
         [SerializeField] private float offsetScaler = 1f;
-        
-        
-        
+
         private int X => mapSettings.X;
         private int Y => mapSettings.Y;
         private int Z => mapSettings.Z;
         
         
         private GridElement[,,] _grids;
-        private CustomRandomSettings _cachedRandomSettings;
         private readonly List<Placable> _placedItems = new();
-
-
-        private void Awake()
-        {
-            mapSettings.PropertyChanged += PropertyChanged;
-        }
-
-        private void PropertyChanged()
-        {
-            SetupGeneration();
-            Generate();
-        }
 
         private void Start()
         {
             SetupGeneration();
             Generate();
+        }
+
+        private void Update()
+        {
+            if (mapSettings.IsThereAnyChange())
+            {
+                SetupGeneration();
+                Generate();
+            }
         }
 
         private void Generate()
@@ -238,8 +232,12 @@ namespace MapGen.Generator
 
         private Vector3Int RotateObstacleVector(int rotation, Vector3Int vector3Int)
         {
-            var rotated = Quaternion.AngleAxis(rotation, Vector3.up) * vector3Int;
-            return Vector3Int.FloorToInt(rotated);
+            for (var i = 0; i < rotation / 90; i++)
+            {
+                vector3Int = new Vector3Int(vector3Int.z, vector3Int.y, -vector3Int.x);
+            }
+
+            return vector3Int;
         }
 
         private bool IsPosOutsideOfGrids(Vector3Int pos)
@@ -263,14 +261,7 @@ namespace MapGen.Generator
             for (var y = 0; y < _grids.GetLength(1); y++)
             for (var z = 0; z < _grids.GetLength(2); z++)
                 _grids[x, y, z] = new GridElement(x, y, z);
-            
-            
-            if (mapSettings.RandomSettings is CustomRandomSettings customRandomSettings && customRandomSettings != _cachedRandomSettings)
-            {
-                _cachedRandomSettings = customRandomSettings;
-                _cachedRandomSettings.PropertyChanged += PropertyChanged;
-            }
-            
+
             UnityEngine.Random.InitState(mapSettings.RandomSettings.GetSeed());
             
         }

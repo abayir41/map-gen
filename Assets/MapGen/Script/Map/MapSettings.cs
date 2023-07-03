@@ -9,58 +9,76 @@ namespace MapGen.Map
     [CreateAssetMenu(fileName = "Random Settings", menuName = "MapGen/Map/Settings", order = 0)]
     public class MapSettings : ScriptableObject
     {
-        
         [SerializeField]
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private int x;
         
         [SerializeField]
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private int y;
         
         [SerializeField] 
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private int z;
         
         [Header("Random Settings")]
         [SerializeField] 
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private RandomSettings randomSettings;
         
         [SerializeField]
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private float perlinScale;
         
         [SerializeField]
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private float perlinOffsetScale;
 
         [Range(0,100)][SerializeField]
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private float threshold;
 
         [SerializeField]
-        [OnChangedCall(nameof(OnPropertyChanged))]
         private int iterationAmount;
         
-        public Action PropertyChanged;
-
         public float PerlinScale => perlinScale;
         public float PerlinOffsetScale => perlinOffsetScale;
         public float Threshold => threshold;
         public int IterationAmount => iterationAmount;
         
-        public int X => x;
-        public int Y => y;
-        public int Z => z;
+        public int X => Mathf.Clamp(x, 3, int.MaxValue);
+        public int Y => Mathf.Clamp(y, 4, int.MaxValue);
+        public int Z => Mathf.Clamp(z, 3, int.MaxValue);
         public RandomSettings RandomSettings => randomSettings;
+        
+        private int _cachedX;
+        private int _cachedY;
+        private int _cachedZ;
+        private float _cachedPerlinScale;
+        private float _cachedPerlinOffsetScale;
+        private float _cachedThreshold;
+        private int _cachedIterationAmount;
 
-        public void OnPropertyChanged()
+        public bool IsThereAnyChange()
         {
-            y = Mathf.Clamp(y, 4, int.MaxValue);
-            z = Mathf.Clamp(z, 3, int.MaxValue);
-            x = Mathf.Clamp(x, 3, int.MaxValue);
-            PropertyChanged?.Invoke();
+            var result = false;
+
+            if (randomSettings is CustomRandomSettings customRandomSettings)
+                result = customRandomSettings.IsThereAnyChange();
+            
+            if (_cachedX != x ||
+                _cachedY != y ||
+                _cachedZ != z ||
+                Math.Abs(_cachedPerlinScale - perlinScale) > 0.0001f ||
+                Math.Abs(_cachedPerlinOffsetScale - perlinOffsetScale) > 0.0001f ||
+                Math.Abs(_cachedThreshold - threshold) > 0.0001f ||
+                _cachedIterationAmount != iterationAmount)
+            {
+                result = true;
+            }
+
+            _cachedX = x;
+            _cachedY = y;
+            _cachedZ = z;
+            _cachedPerlinScale = perlinScale;
+            _cachedPerlinOffsetScale = perlinOffsetScale;
+            _cachedThreshold = threshold;
+            _cachedIterationAmount = iterationAmount;
+
+            return result;
         }
     }
 }
