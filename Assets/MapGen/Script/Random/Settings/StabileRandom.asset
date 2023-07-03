@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5f0077339c489a984e6a870a082f63, type: 3}
   m_Name: StabileRandom
   m_EditorClassIdentifier: 
-  seed: 41
+  seed: 63

@@ -15,12 +15,17 @@ namespace MapGen.GridSystem
         public GridElement(int x, int y, int z)
         {
             Position = new Vector3Int(x, y, z);
-            GridState = GridState.Neutral;
+            GridState = GridState.CanBeFilled;
         }
 
         public void MakeGridCanBeFilled()
         {
             GridState = GridState.CanBeFilled;
+        }
+        
+        public void MakeGridCanBeFilledGround()
+        {
+            GridState = GridState.CanBeFilledGround;
         }
 
         public void FillGrid()

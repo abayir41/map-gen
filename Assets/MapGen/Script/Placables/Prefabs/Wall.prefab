@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2015129484314678255}
   - component: {fileID: 8967608169036613168}
   m_Layer: 0
-  m_Name: Ground
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,8 +133,7 @@ MonoBehaviour:
   lockGrids: []
   shouldPlacedOnGroundGrids:
   - {x: 0, y: 0, z: 0}
-  newGroundGrids:
-  - {x: 0, y: 1, z: 0}
+  newGroundGrids: []
   drawGizmo: 1
   gizmoRadius: 0.25
   offsetScaler: 1

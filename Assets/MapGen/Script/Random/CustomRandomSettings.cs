@@ -15,7 +15,7 @@ namespace MapGen.Random
         
         public override int GetSeed() => seed;
         
-        private void OnPropertyChanged()
+        public void OnPropertyChanged()
         {
             PropertyChanged?.Invoke();
         }
