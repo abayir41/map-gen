@@ -118,15 +118,15 @@ namespace MapGen.Generator
                 foreach (var placable in placables)
                 {
                     var noise = NoiseGenerator.Generate(X, Z, mapSettings.PerlinScale,
-                        Vector2.one * mapSettings.PerlinOffsetScale * UnityEngine.Random.value);
+                         mapSettings.PerlinOffsetScale * UnityEngine.Random.value);
                 
                     placableDataList.Add(new PlacableData(placable, i * 90, noise));
                 }
             }
             
 
-            for (var x = 0; x < X; x++)
-            for (var z = 0; z < Z; z++)
+            foreach (var x in Enumerable.Range(0, X).OrderBy(i => UnityEngine.Random.value))
+            foreach (var z in Enumerable.Range(0, Z).OrderBy(i => UnityEngine.Random.value))
             {
                 var rankedPlacable = placableDataList
                     .Where(pair => pair.Noise[x, z] * 100 > mapSettings.Threshold)

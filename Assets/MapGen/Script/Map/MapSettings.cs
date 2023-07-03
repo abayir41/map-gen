@@ -26,7 +26,7 @@ namespace MapGen.Map
         private float perlinScale;
         
         [SerializeField]
-        private float perlinOffsetScale;
+        private Vector2 perlinOffsetScale;
 
         [Range(0,100)][SerializeField]
         private float threshold;
@@ -35,20 +35,20 @@ namespace MapGen.Map
         private int iterationAmount;
         
         public float PerlinScale => perlinScale;
-        public float PerlinOffsetScale => perlinOffsetScale;
+        public Vector2 PerlinOffsetScale => perlinOffsetScale;
         public float Threshold => threshold;
         public int IterationAmount => iterationAmount;
         
-        public int X => Mathf.Clamp(x, 3, int.MaxValue);
-        public int Y => Mathf.Clamp(y, 4, int.MaxValue);
-        public int Z => Mathf.Clamp(z, 3, int.MaxValue);
+        public int X => Mathf.Clamp(x, 3, 200);
+        public int Y => Mathf.Clamp(y, 4, 50);
+        public int Z => Mathf.Clamp(z, 3, 200);
         public RandomSettings RandomSettings => randomSettings;
         
         private int _cachedX;
         private int _cachedY;
         private int _cachedZ;
         private float _cachedPerlinScale;
-        private float _cachedPerlinOffsetScale;
+        private Vector2 _cachedPerlinOffsetScale;
         private float _cachedThreshold;
         private int _cachedIterationAmount;
 
@@ -63,7 +63,7 @@ namespace MapGen.Map
                 _cachedY != y ||
                 _cachedZ != z ||
                 Math.Abs(_cachedPerlinScale - perlinScale) > 0.0001f ||
-                Math.Abs(_cachedPerlinOffsetScale - perlinOffsetScale) > 0.0001f ||
+                PerlinOffsetScale != _cachedPerlinOffsetScale ||
                 Math.Abs(_cachedThreshold - threshold) > 0.0001f ||
                 _cachedIterationAmount != iterationAmount)
             {

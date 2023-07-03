@@ -15,10 +15,10 @@ namespace MapGen.Placables
         [SerializeField] private bool useVisualsAsRequiredGrids;
         [SerializeField] private bool useVisualAsShouldPlacedOnGroundGrids;
         [SerializeField] private Transform visualsParent;
-        [SerializeField] private bool useCubeLockStyle;
-        [SerializeField] private int cubeLockOffsetX;
-        [SerializeField] private int cubeLockOffsetY;
-        [SerializeField] private int cubeLockOffsetZ;
+        [SerializeField] private bool useCubeRequiredGridStyle;
+        [SerializeField] private Vector2Int cubeLockOffsetX;
+        [SerializeField] private Vector2Int cubeLockOffsetY;
+        [SerializeField] private Vector2Int cubeLockOffsetZ;
 
         public List<Vector3Int> RequiredGrids => requiredGrids;
         public List<Vector3Int> ShouldPlacedOnGroundGrids => shouldPlacedOnGroundGrids;
@@ -33,6 +33,11 @@ namespace MapGen.Placables
         [SerializeField] private bool drawLockGrids;
         [SerializeField] private bool drawShouldPlaceGroundGrids;
         [SerializeField] private bool drawNewGroundGrids;
+
+        private void Awake()
+        {
+            drawGizmo = false;
+        }
 
         private void OnValidate()
         {
@@ -51,23 +56,15 @@ namespace MapGen.Placables
                         shouldPlacedOnGroundGrids.Add(Vector3Int.FloorToInt(child.localPosition));
             }
 
-            if (useCubeLockStyle)
+            if (useCubeRequiredGridStyle)
             {
-                lockGrids = new List<Vector3Int>();
-                
-                var minX = requiredGrids.Min(i => i.x);
-                var minY = requiredGrids.Min(i => i.y);
-                var minZ = requiredGrids.Min(i => i.z);
+                requiredGrids = new List<Vector3Int>();
 
-                var maxX = requiredGrids.Max(i => i.x);
-                var maxY = requiredGrids.Max(i => i.y);
-                var maxZ = requiredGrids.Max(i => i.z);
-
-                for(var x = minX - cubeLockOffsetX + 1; x < maxX + cubeLockOffsetX; x++)
-                for(var y = minY - cubeLockOffsetY + 1; y < maxY + cubeLockOffsetY; y++)
-                for (var z = minZ - cubeLockOffsetZ + 1; z < maxZ + cubeLockOffsetZ; z++)
+                for(var x = cubeLockOffsetX.x + 1; x < cubeLockOffsetX.y; x++)
+                for(var y = cubeLockOffsetY.x + 1; y < cubeLockOffsetY.y; y++)
+                for (var z = cubeLockOffsetZ.x + 1; z < cubeLockOffsetZ.y; z++)
                 {
-                    lockGrids.Add(new Vector3Int(x, y, z));
+                    requiredGrids.Add(new Vector3Int(x, y, z));
                 }
             }
         }

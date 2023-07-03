@@ -479,6 +479,8 @@ MonoBehaviour:
   - {fileID: 8967608169036613168, guid: 118ad97f09f0cb34ba89c8edded20e7f, type: 3}
   - {fileID: 8967608169036613168, guid: 35010348581c3ce44b9a6f6926d450a4, type: 3}
   - {fileID: 8967608169036613168, guid: 6fc281de155fc1e49acc7e853a164e5e, type: 3}
+  - {fileID: 8967608169036613168, guid: f9018976af874ad4e992d1a97cb6ecbf, type: 3}
+  - {fileID: 8967608169036613168, guid: 54a7e349144ed7044a1f3b9be3c6d919, type: 3}
   drawGizmo: 1
   showFilled: 0
   showLocked: 0

@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -227,7 +227,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -310,7 +310,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -378,87 +378,87 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredGrids:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
-  - {x: 0, y: 0, z: 2}
-  - {x: 0, y: 0, z: 3}
-  - {x: 0, y: 1, z: 3}
-  - {x: 0, y: 1, z: 2}
-  - {x: 0, y: 1, z: 1}
-  - {x: 0, y: 1, z: 0}
-  lockGrids:
-  - {x: -1, y: -1, z: -1}
-  - {x: -1, y: -1, z: 0}
-  - {x: -1, y: -1, z: 1}
-  - {x: -1, y: -1, z: 2}
-  - {x: -1, y: -1, z: 3}
-  - {x: -1, y: -1, z: 4}
+  - {x: -1, y: 0, z: -2}
   - {x: -1, y: 0, z: -1}
   - {x: -1, y: 0, z: 0}
   - {x: -1, y: 0, z: 1}
   - {x: -1, y: 0, z: 2}
   - {x: -1, y: 0, z: 3}
   - {x: -1, y: 0, z: 4}
+  - {x: -1, y: 0, z: 5}
+  - {x: -1, y: 1, z: -2}
   - {x: -1, y: 1, z: -1}
   - {x: -1, y: 1, z: 0}
   - {x: -1, y: 1, z: 1}
   - {x: -1, y: 1, z: 2}
   - {x: -1, y: 1, z: 3}
   - {x: -1, y: 1, z: 4}
+  - {x: -1, y: 1, z: 5}
+  - {x: -1, y: 2, z: -2}
   - {x: -1, y: 2, z: -1}
   - {x: -1, y: 2, z: 0}
   - {x: -1, y: 2, z: 1}
   - {x: -1, y: 2, z: 2}
   - {x: -1, y: 2, z: 3}
   - {x: -1, y: 2, z: 4}
-  - {x: 0, y: -1, z: -1}
-  - {x: 0, y: -1, z: 0}
-  - {x: 0, y: -1, z: 1}
-  - {x: 0, y: -1, z: 2}
-  - {x: 0, y: -1, z: 3}
-  - {x: 0, y: -1, z: 4}
+  - {x: -1, y: 2, z: 5}
+  - {x: 0, y: 0, z: -2}
   - {x: 0, y: 0, z: -1}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
   - {x: 0, y: 0, z: 2}
   - {x: 0, y: 0, z: 3}
   - {x: 0, y: 0, z: 4}
+  - {x: 0, y: 0, z: 5}
+  - {x: 0, y: 1, z: -2}
   - {x: 0, y: 1, z: -1}
   - {x: 0, y: 1, z: 0}
   - {x: 0, y: 1, z: 1}
   - {x: 0, y: 1, z: 2}
   - {x: 0, y: 1, z: 3}
   - {x: 0, y: 1, z: 4}
+  - {x: 0, y: 1, z: 5}
+  - {x: 0, y: 2, z: -2}
   - {x: 0, y: 2, z: -1}
   - {x: 0, y: 2, z: 0}
   - {x: 0, y: 2, z: 1}
   - {x: 0, y: 2, z: 2}
   - {x: 0, y: 2, z: 3}
   - {x: 0, y: 2, z: 4}
-  - {x: 1, y: -1, z: -1}
-  - {x: 1, y: -1, z: 0}
-  - {x: 1, y: -1, z: 1}
-  - {x: 1, y: -1, z: 2}
-  - {x: 1, y: -1, z: 3}
-  - {x: 1, y: -1, z: 4}
+  - {x: 0, y: 2, z: 5}
+  - {x: 1, y: 0, z: -2}
   - {x: 1, y: 0, z: -1}
   - {x: 1, y: 0, z: 0}
   - {x: 1, y: 0, z: 1}
   - {x: 1, y: 0, z: 2}
   - {x: 1, y: 0, z: 3}
   - {x: 1, y: 0, z: 4}
+  - {x: 1, y: 0, z: 5}
+  - {x: 1, y: 1, z: -2}
   - {x: 1, y: 1, z: -1}
   - {x: 1, y: 1, z: 0}
   - {x: 1, y: 1, z: 1}
   - {x: 1, y: 1, z: 2}
   - {x: 1, y: 1, z: 3}
   - {x: 1, y: 1, z: 4}
+  - {x: 1, y: 1, z: 5}
+  - {x: 1, y: 2, z: -2}
   - {x: 1, y: 2, z: -1}
   - {x: 1, y: 2, z: 0}
   - {x: 1, y: 2, z: 1}
   - {x: 1, y: 2, z: 2}
   - {x: 1, y: 2, z: 3}
   - {x: 1, y: 2, z: 4}
+  - {x: 1, y: 2, z: 5}
+  lockGrids:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: 3}
+  - {x: 0, y: 1, z: 0}
+  - {x: 0, y: 1, z: 1}
+  - {x: 0, y: 1, z: 2}
+  - {x: 0, y: 1, z: 3}
   shouldPlacedOnGroundGrids:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -468,14 +468,14 @@ MonoBehaviour:
   useVisualsAsRequiredGrids: 1
   useVisualAsShouldPlacedOnGroundGrids: 1
   visualsParent: {fileID: 2382535679950999690}
-  useCubeLockStyle: 1
-  cubeLockOffsetX: 2
-  cubeLockOffsetY: 2
-  cubeLockOffsetZ: 2
+  useCubeRequiredGridStyle: 1
+  cubeLockOffsetX: {x: -2, y: 2}
+  cubeLockOffsetY: {x: -1, y: 3}
+  cubeLockOffsetZ: {x: -3, y: 6}
   drawGizmo: 1
   gizmoRadius: 0.25
   offsetScaler: 1
-  drawRequireGrids: 0
+  drawRequireGrids: 1
   drawLockGrids: 0
   drawShouldPlaceGroundGrids: 0
   drawNewGroundGrids: 0
@@ -579,7 +579,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -662,7 +662,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -745,7 +745,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -828,7 +828,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
+  - {fileID: 2100000, guid: 67dea15cd1068cb4893df5335c0a5dc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
