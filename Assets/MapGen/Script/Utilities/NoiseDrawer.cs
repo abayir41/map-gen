@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MapGen.Map;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,18 +6,27 @@ namespace MapGen.Utilities
 {
     public class NoiseDrawer : MonoBehaviour
     {
-        public static NoiseDrawer Instance { get; private set; }
-
         [SerializeField] private float scaleAmount;
         [SerializeField] private RawImage noiseTextureImage;
         [SerializeField] private RectTransform textureRect;
+        [SerializeField] private MapSettings mapSettings;
+        [SerializeField] private Noise.Noise noise;
+        [SerializeField] private bool useCustomWidth;
+        [SerializeField] private Vector2Int size;
 
-        private void Awake()
+        private void Update()
         {
-            Instance = this;
+            if (useCustomWidth)
+            {
+                SetNoiseTexture(noise.Generate(size.x, size.y), size.x, size.y);
+            }
+            else
+            {
+                SetNoiseTexture(noise.Generate(mapSettings.X, mapSettings.Z), mapSettings.X, mapSettings.Z);
+            }
         }
 
-        public void SetNoiseTexture(float[,] noise, int width, int height)
+        private void SetNoiseTexture(float[,] noisee, int width, int height)
         {
             textureRect.sizeDelta = Vector2.one * scaleAmount * new Vector2(width, height);
             Color[] pixels = new Color[width * height];
@@ -25,7 +34,7 @@ namespace MapGen.Utilities
             {
                 for (int x = 0; x < width; x++)
                 {
-                    pixels[x + width * y] = Color.Lerp(Color.black, Color.white, noise[x, y]);
+                    pixels[x + width * y] = Color.Lerp(Color.black, Color.white, noisee[x, y]);
                 }
             }
             Texture2D texture = new Texture2D(width, height);
