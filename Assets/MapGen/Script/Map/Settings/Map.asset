@@ -15,9 +15,9 @@ MonoBehaviour:
   objectPlacementFoldout: 0
   groundNoiseFoldout: 0
   randomSettingsFoldout: 1
-  x: 65
+  x: 50
   y: 50
-  z: 63
+  z: 50
   maxHeight: 2
   ground: {fileID: 8967608169036613168, guid: ca2275aacca1e1247bd2530145d4a7fb, type: 3}
   wall: {fileID: 8967608169036613168, guid: 1d720565cd3941840893b5107958b328, type: 3}
