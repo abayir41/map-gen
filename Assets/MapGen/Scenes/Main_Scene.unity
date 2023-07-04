@@ -292,9 +292,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3a4dd5892e44bdeb53cd6082c853a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleAmount: 1
+  scaleAmount: 3
   noiseTextureImage: {fileID: 1283986691}
   textureRect: {fileID: 1283986690}
+  mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
+  noise: {fileID: 11400000, guid: 61848c3fdc575b44f8dd0f64e87716df, type: 2}
+  useCustomWidth: 1
+  size: {x: 100, y: 100}
 --- !u!1 &627509826
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,67 +451,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
---- !u!1001 &939830206
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_Name
-      value: testing_grounds
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: bb00b66a7367e834c8a7f366c5e9d16d, type: 3}
 --- !u!1 &1283986689
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,8 +733,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23241130cec4cb399dc524903be1e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapSettingsFoldout: 1
   mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
   gridParent: {fileID: 293857008}
+  editorAutoGenMap: 0
   drawGizmo: 0
   showFilled: 0
   showLocked: 0

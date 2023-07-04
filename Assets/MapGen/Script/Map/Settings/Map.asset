@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d907d5decd4b8db2a95356b6bca43c, type: 3}
   m_Name: Map
   m_EditorClassIdentifier: 
-  x: 87
-  y: 17
-  z: 64
-  maxHeight: 3
+  objectPlacementFoldout: 0
+  groundNoiseFoldout: 0
+  randomSettingsFoldout: 1
+  x: 65
+  y: 50
+  z: 63
+  maxHeight: 2
   ground: {fileID: 8967608169036613168, guid: ca2275aacca1e1247bd2530145d4a7fb, type: 3}
   wall: {fileID: 8967608169036613168, guid: 1d720565cd3941840893b5107958b328, type: 3}
   placables:
@@ -29,8 +32,9 @@ MonoBehaviour:
   - {fileID: 8967608169036613168, guid: 6454b44ad5a95ca46ae8227982d11123, type: 3}
   - {fileID: 8967608169036613168, guid: cc7b6d9b7a8b0c448bcabd25c3947e05, type: 3}
   randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
-  noise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
-  threshold: 73
+  objectPlacementNoise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
+  objectPlacementThreshold: 58.4
   iterationAmount: 1
-  noiseScale: 0.04
-  noiseOffset: {x: 12.89, y: 0.57}
+  groundPlacementNoise: {fileID: 11400000, guid: 95097713d73e93448a32834f314a274f, type: 2}
+  groundHeightFactor: 20
+  groundMoveDownFactor: 10
