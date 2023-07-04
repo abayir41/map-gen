@@ -10,11 +10,17 @@ namespace MapGen.Map
 {
     public class MapGenerator : MonoBehaviour
     {
-        [SerializeField] private MapSettings mapSettings;
+        ////////////
+        /// Editor
+        ///////////
+        [SerializeField] [HideInInspector] public bool mapSettingsFoldout;
 
-        [SerializeField] private Transform gridParent;
         
-
+        [SerializeField] private MapSettings mapSettings;
+        [SerializeField] private Transform gridParent;
+        [SerializeField] private bool editorAutoGenMap;
+        
+        
         [Header("Gizmo Settings")]
         [SerializeField] private bool drawGizmo = true;
         [SerializeField] private bool showFilled = true;
@@ -24,11 +30,11 @@ namespace MapGen.Map
         [SerializeField] private float gizmoRadius = 0.25f;
         [SerializeField] private float offsetScaler = 1f;
 
+
+        public MapSettings MapSettings => mapSettings;
         private int X => mapSettings.X;
         private int Y => mapSettings.Y;
         private int Z => mapSettings.Z;
-        
-        private NoiseDrawer NoiseDrawer => NoiseDrawer.Instance;
         
         
         private GridElement[,,] _grids;
@@ -36,17 +42,24 @@ namespace MapGen.Map
 
         private void Start()
         {
-            SetupGeneration();
-            Generate();
+            GenerateMap();
+        }
+        
+
+        public void GenerateMapAuto()
+        {
+            if(!Application.isPlaying) return;
+            if(!editorAutoGenMap) return;
+            
+            GenerateMap();
         }
 
-        private void Update()
+        public void GenerateMap()
         {
-            if (mapSettings.IsAnyThingChanged())
-            {
-                SetupGeneration();
-                Generate();
-            }
+            if(!Application.isPlaying) return;
+
+            SetupGeneration();
+            Generate();
         }
 
         private void Generate()
@@ -64,6 +77,8 @@ namespace MapGen.Map
 
         private void CreateGround()
         {
+            var groundNoise = mapSettings.GroundPlacementNoise.Generate(X, Z);
+
             for (var x = 0; x < _grids.GetLength(0); x++)
             for (var z = 0; z < _grids.GetLength(2); z++)
             {
@@ -71,6 +86,25 @@ namespace MapGen.Map
                 grid.MakeGridCanBeFilledGround();
                 SpawnObject(grid, mapSettings.Ground);
             }
+            
+            for (var x = 0; x < _grids.GetLength(0); x++)
+            for (var z = 0; z < _grids.GetLength(2); z++)
+            {
+                var height = groundNoise[x, z] * mapSettings.GroundHeightFactor - mapSettings.GroundMoveDownFactor;
+                
+                for (var y = 1; y <  height; y++)
+                {
+                    if(groundNoise[x,z] * 100 < height) break;
+                    var grid = _grids[x, y, z];
+                    grid.MakeGridCanBeFilledGround();
+                    SpawnObject(grid, mapSettings.Ground);
+                }
+            }
+        }
+
+        private void MakeTunnels()
+        {
+            
         }
 
         private void CreateWall()
@@ -113,15 +147,14 @@ namespace MapGen.Map
                     rotatedPlacables.Add(new PlacableData(placable, i * 90));    
                 }
 
-            var noise = mapSettings.GetNoise();
-            NoiseDrawer.SetNoiseTexture(noise, X, Z);
+            var noise = mapSettings.ObjectPlacementNoise.Generate(X, Z);
             
-            foreach (var x in Enumerable.Range(0, X).OrderBy(i => UnityEngine.Random.value))
-            foreach (var z in Enumerable.Range(0, Z).OrderBy(i => UnityEngine.Random.value))
+            foreach (var x in Enumerable.Range(0, X).OrderBy(_ => UnityEngine.Random.value))
+            foreach (var z in Enumerable.Range(0, Z).OrderBy(_ => UnityEngine.Random.value))
             {
-                if(noise[x,z] * 100 < mapSettings.Threshold) continue;
+                if(noise[x,z] * 100 < mapSettings.ObjectPlacementThreshold) continue;
 
-                var shuffledPlacables = rotatedPlacables.OrderBy(data => UnityEngine.Random.value);
+                var shuffledPlacables = rotatedPlacables.OrderBy(_ => UnityEngine.Random.value);
                 
                 var grid = _grids[x, layer, z];
                 
