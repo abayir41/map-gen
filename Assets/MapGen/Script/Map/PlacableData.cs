@@ -6,13 +6,11 @@ namespace MapGen.Map
     {
         public Placable Placable { get; }
         public int Rotation { get; }
-        public float[,] Noise { get; }
         
-        public PlacableData(Placable placable, int rotation, float[,] noise)
+        public PlacableData(Placable placable, int rotation)
         {
             Placable = placable;
             Rotation = rotation;
-            Noise = noise;
         }
     }
 }

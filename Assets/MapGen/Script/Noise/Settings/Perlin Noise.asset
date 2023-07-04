@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee5f0077339c489a984e6a870a082f63, type: 3}
-  m_Name: StabileRandom
+  m_Script: {fileID: 11500000, guid: 8797e43663d24f5da74c1c609f0c0544, type: 3}
+  m_Name: Perlin Noise
   m_EditorClassIdentifier: 
-  seed: 15
+  noiseScale: 0
+  noiseOffset: {x: 0, y: 0}

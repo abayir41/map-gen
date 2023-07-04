@@ -14,8 +14,9 @@ namespace MapGen.Placables
         [SerializeField] private List<Vector3Int> newGroundGrids;
         [SerializeField] private bool useVisualsAsRequiredGrids;
         [SerializeField] private bool useVisualAsShouldPlacedOnGroundGrids;
-        [SerializeField] private Transform visualsParent;
+        [SerializeField] private bool useVisualsAsNewGroundGrids;
         [SerializeField] private bool useCubeRequiredGridStyle;
+        [SerializeField] private Transform visualsParent;
         [SerializeField] private Vector2Int cubeLockOffsetX;
         [SerializeField] private Vector2Int cubeLockOffsetY;
         [SerializeField] private Vector2Int cubeLockOffsetZ;
@@ -54,6 +55,13 @@ namespace MapGen.Placables
                 foreach(Transform child in visualsParent)
                     if(child.localPosition.y == 0)
                         shouldPlacedOnGroundGrids.Add(Vector3Int.FloorToInt(child.localPosition));
+            }
+
+            if (useVisualsAsNewGroundGrids)
+            {
+                newGroundGrids = new List<Vector3Int>();
+                foreach(Transform child in visualsParent)
+                    newGroundGrids.Add(Vector3Int.FloorToInt(child.localPosition) + Vector3Int.up);
             }
 
             if (useCubeRequiredGridStyle)

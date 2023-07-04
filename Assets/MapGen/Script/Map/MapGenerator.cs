@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using MapGen.GridSystem;
-using MapGen.Map;
 using MapGen.Placables;
-using MapGen.Random;
-using MapGen.Utilities;
-using Unity.VisualScripting;
 using UnityEngine;
 
-namespace MapGen.Generator
+namespace MapGen.Map
 {
     public class MapGenerator : MonoBehaviour
     {
@@ -17,10 +13,6 @@ namespace MapGen.Generator
 
         [SerializeField] private Transform gridParent;
         
-        [Header("Prefabs")]
-        [SerializeField] private Placable ground;
-        [SerializeField] private Placable wall;
-        [SerializeField] private List<Placable> placables;
 
         [Header("Gizmo Settings")]
         [SerializeField] private bool drawGizmo = true;
@@ -47,7 +39,7 @@ namespace MapGen.Generator
 
         private void Update()
         {
-            if (mapSettings.IsThereAnyChange())
+            if (mapSettings.IsAnyThingChanged())
             {
                 SetupGeneration();
                 Generate();
@@ -60,12 +52,11 @@ namespace MapGen.Generator
             CreateGround();
             CreateWall();
             MakeBanAreaOfSurface();
-            
+
+            for (var height = 0; height < mapSettings.MaxHeight; height++)
             for (var i = 0; i < mapSettings.IterationAmount; i++)
-                SpawnObstacles(1);
+                    SpawnObstacles(height);
             
-            for (var i = 0; i < mapSettings.IterationAmount; i++)
-                SpawnObstacles(2);
         }
 
         private void CreateGround()
@@ -75,7 +66,7 @@ namespace MapGen.Generator
             {
                 var grid = _grids[x, 0, z];
                 grid.MakeGridCanBeFilledGround();
-                SpawnObject(grid, ground);
+                SpawnObject(grid, mapSettings.Ground);
             }
         }
 
@@ -89,7 +80,7 @@ namespace MapGen.Generator
                 
                 var grid = _grids[x, y, z];
                 grid.MakeGridCanBeFilledGround();
-                SpawnObject(grid, wall);
+                SpawnObject(grid, mapSettings.Wall);
             }
         }
 
@@ -111,31 +102,26 @@ namespace MapGen.Generator
 
         private void SpawnObstacles(int layer)
         {
-            List<PlacableData> placableDataList = new();
+            var rotatedPlacables = new List<PlacableData>();
 
-            for (int i = 0; i < 4; i++)
-            {
-                foreach (var placable in placables)
-                {
-                    var noise = NoiseGenerator.Generate(X, Z, mapSettings.PerlinScale,
-                         mapSettings.PerlinOffsetScale * UnityEngine.Random.value);
-                
-                    placableDataList.Add(new PlacableData(placable, i * 90, noise));
+            foreach (var placable in mapSettings.Placables)
+                for (var i = 0; i < 4; i++)
+                { 
+                    rotatedPlacables.Add(new PlacableData(placable, i * 90));    
                 }
-            }
-            
 
+            var noise = mapSettings.GetNoise();
+            
             foreach (var x in Enumerable.Range(0, X).OrderBy(i => UnityEngine.Random.value))
             foreach (var z in Enumerable.Range(0, Z).OrderBy(i => UnityEngine.Random.value))
             {
-                var rankedPlacable = placableDataList
-                    .Where(pair => pair.Noise[x, z] * 100 > mapSettings.Threshold)
-                    .OrderByDescending(pair => pair.Noise[x, z]).ToList();
+                if(noise[x,z] * 100 < mapSettings.Threshold) continue;
 
-
+                var shuffledPlacables = rotatedPlacables.OrderBy(data => UnityEngine.Random.value);
+                
                 var grid = _grids[x, layer, z];
                 
-                foreach (var data in rankedPlacable)
+                foreach (var data in shuffledPlacables)
                 {
                     if (!IsPlacableSuitable(grid, data.Placable, data.Rotation)) continue;
 

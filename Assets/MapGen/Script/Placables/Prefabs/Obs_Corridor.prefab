@@ -7194,15 +7194,7 @@ MonoBehaviour:
   - {x: 4, y: 4, z: 3}
   - {x: 4, y: 4, z: 4}
   - {x: 4, y: 4, z: 5}
-  lockGrids:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
-  - {x: 0, y: 0, z: 2}
-  - {x: 0, y: 0, z: 3}
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 1}
-  - {x: 0, y: 1, z: 2}
-  - {x: 0, y: 1, z: 3}
+  lockGrids: []
   shouldPlacedOnGroundGrids:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -7233,15 +7225,16 @@ MonoBehaviour:
   newGroundGrids: []
   useVisualsAsRequiredGrids: 1
   useVisualAsShouldPlacedOnGroundGrids: 1
-  visualsParent: {fileID: 2382535679950999690}
+  useVisualsAsNewGroundGrids: 0
   useCubeRequiredGridStyle: 1
+  visualsParent: {fileID: 2382535679950999690}
   cubeLockOffsetX: {x: -1, y: 5}
   cubeLockOffsetY: {x: -1, y: 5}
   cubeLockOffsetZ: {x: -12, y: 6}
   drawGizmo: 1
   gizmoRadius: 0.25
   offsetScaler: 1
-  drawRequireGrids: 1
+  drawRequireGrids: 0
   drawLockGrids: 0
   drawShouldPlaceGroundGrids: 0
   drawNewGroundGrids: 0
