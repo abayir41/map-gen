@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MapGen.GridSystem;
 using MapGen.Placables;
+using MapGen.Utilities;
 using UnityEngine;
 
 namespace MapGen.Map
@@ -26,6 +27,8 @@ namespace MapGen.Map
         private int X => mapSettings.X;
         private int Y => mapSettings.Y;
         private int Z => mapSettings.Z;
+        
+        private NoiseDrawer NoiseDrawer => NoiseDrawer.Instance;
         
         
         private GridElement[,,] _grids;
@@ -111,6 +114,7 @@ namespace MapGen.Map
                 }
 
             var noise = mapSettings.GetNoise();
+            NoiseDrawer.SetNoiseTexture(noise, X, Z);
             
             foreach (var x in Enumerable.Range(0, X).OrderBy(i => UnityEngine.Random.value))
             foreach (var z in Enumerable.Range(0, Z).OrderBy(i => UnityEngine.Random.value))
