@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72296cc2231841799a06ef02cc162394, type: 3}
+  m_Name: Fractal
+  m_EditorClassIdentifier: 
+  randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
+  noiseScale: 0.03
+  noiseOffset: {x: -16.25, y: 1.15}
+  fractalType: 2
+  octaves: 3
+  gain: 14
+  lacunarity: -9
+  weightedStrength: 0.05
+  pingPongStrength: 1.55
+  noiseType: 1

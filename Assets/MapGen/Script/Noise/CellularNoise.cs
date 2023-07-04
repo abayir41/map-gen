@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using MapGen.Random;
+using UnityEngine;
 
 namespace MapGen.Noise
 {
-    [CreateAssetMenu(fileName = "Perlin Noise", menuName = "MapGen/Noise/Perlin", order = 0)]
-    public class PerlinNoise : Noise
+    [CreateAssetMenu(fileName = "Cellular Noise", menuName = "MapGen/Noise/Cellular", order = 0)]
+    public class CellularNoise : Noise
     {
+        [SerializeField] 
+        private RandomSettings randomSettings;
+        
         [SerializeField]
         private float noiseScale;
         
@@ -13,6 +17,9 @@ namespace MapGen.Noise
         
         public override float[,] Generate(int width, int height)
         {
+            var fast = new FastNoiseLite(randomSettings.GetSeed());
+            fast.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
+            
             var noiseMap = new float[width, height];
             for (var x = 0; x < width; x++)
             {
@@ -21,11 +28,11 @@ namespace MapGen.Noise
                     var samplePosX = x * noiseScale + noiseOffset.x;
                     var samplePosY = y * noiseScale + noiseOffset.y;
 
-                    noiseMap[x, y] = Mathf.PerlinNoise(samplePosX, samplePosY);
+                    noiseMap[x, y] = fast.GetNoise(samplePosX, samplePosY);
                 }
             }
 
-            return noiseMap;        
+            return noiseMap;
         }
     }
 }
