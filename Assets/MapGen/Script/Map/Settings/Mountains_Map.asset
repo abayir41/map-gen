@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4d907d5decd4b8db2a95356b6bca43c, type: 3}
-  m_Name: Map
+  m_Name: Mountains_Map
   m_EditorClassIdentifier: 
   objectPlacementFoldout: 1
   groundNoiseFoldout: 1
@@ -37,10 +37,10 @@ MonoBehaviour:
   objectPlacementThreshold: 58.4
   iterationAmount: 1
   groundPlacementNoise: {fileID: 11400000, guid: 95097713d73e93448a32834f314a274f, type: 2}
-  groundHeightFactor: 34.2
+  groundHeightFactor: 49.4
   groundMoveDownFactor: 20.95
   tunnelYLevel: 1
   tunnelMinLength: 29.44
   tunnelAverageMinHeight: 4.59
-  betweenTunnelMinSpace: 101.4
+  betweenTunnelMinSpace: 177.2
   tunnelBrush: {fileID: 2908243018586684457, guid: cc79e7757c3cc8d42b90fb60e8a64611, type: 3}

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8797e43663d24f5da74c1c609f0c0544, type: 3}
   m_Name: Objects Noise
   m_EditorClassIdentifier: 
-  noiseScale: 0.07
-  noiseOffset: {x: 0, y: 0}
+  noiseScale: 0.1
+  noiseOffset: {x: -0.23, y: 0}
