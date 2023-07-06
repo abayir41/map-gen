@@ -88,7 +88,7 @@ namespace MapGen.Map
         {
             Debug.Log("Generation Started");
             CreateGround();
-            MakeTunnels(1);
+            MakeTunnels(_mapSettings.TunnelYLevel);
             CreateWall();
             MakeBanAreaOfSurface();
 

@@ -44,7 +44,8 @@ namespace MapGen.Map
         [SerializeField] private float groundHeightFactor;
         [SerializeField] private float groundMoveDownFactor;
 
-        [Header("Tunnel")]
+        [Header("Tunnel")] 
+        [SerializeField] private int tunnelYLevel;
         [SerializeField] private float tunnelMinLength;
         [SerializeField] private float tunnelAverageMinHeight;
         [SerializeField] private float betweenTunnelMinSpace;
@@ -70,6 +71,7 @@ namespace MapGen.Map
         public float GroundHeightFactor => groundHeightFactor;
         public float GroundMoveDownFactor => groundMoveDownFactor;
         
+        public int TunnelYLevel => tunnelYLevel;
         public float TunnelMinLength => tunnelMinLength;
         public float TunnelAverageMinHeight => tunnelAverageMinHeight;
         public float BetweenTunnelMinSpace => betweenTunnelMinSpace;
