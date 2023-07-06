@@ -733,7 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23241130cec4cb399dc524903be1e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapSettingsFoldout: 0
+  MapSettingsFoldout: 1
   _mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
   _gridParent: {fileID: 293857008}
   _editorAutoGenerateMap: 0
@@ -741,7 +741,7 @@ MonoBehaviour:
   _showFilled: 0
   _showLocked: 0
   _showCanBeFilled: 0
-  _showPlacableGround: 1
+  _showPlacableGround: 0
   _showPaths: 0
   _gizmoRadius: 0.25
   _offsetScaler: 1
