@@ -296,7 +296,7 @@ MonoBehaviour:
   noiseTextureImage: {fileID: 1283986691}
   textureRect: {fileID: 1283986690}
   mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
-  noise: {fileID: 11400000, guid: 61848c3fdc575b44f8dd0f64e87716df, type: 2}
+  noise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
   useCustomWidth: 1
   size: {x: 100, y: 100}
 --- !u!1 &627509826
@@ -737,11 +737,11 @@ MonoBehaviour:
   mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
   gridParent: {fileID: 293857008}
   editorAutoGenMap: 0
-  drawGizmo: 0
+  drawGizmo: 1
   showFilled: 0
   showLocked: 0
   showCanBeFilled: 0
   showCanBeFilledGround: 0
+  showPaths: 1
   gizmoRadius: 0.25
   offsetScaler: 1
-  asdasd: 1

@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a2410426954a69895125bd2b33c026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationDegreeStep: 25
   requiredGrids:
   - {x: -3, y: 0, z: -2}
   - {x: -3, y: 0, z: -1}
@@ -512,8 +513,9 @@ MonoBehaviour:
   newGroundGrids: []
   useVisualsAsRequiredGrids: 1
   useVisualAsShouldPlacedOnGroundGrids: 1
-  visualsParent: {fileID: 2382535679950999690}
+  useVisualsAsNewGroundGrids: 0
   useCubeRequiredGridStyle: 1
+  visualsParent: {fileID: 2382535679950999690}
   cubeLockOffsetX: {x: -4, y: 4}
   cubeLockOffsetY: {x: -1, y: 5}
   cubeLockOffsetZ: {x: -3, y: 4}

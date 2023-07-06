@@ -709,6 +709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a2410426954a69895125bd2b33c026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationDegreeStep: 25
   requiredGrids:
   - {x: -3, y: 0, z: -3}
   - {x: -3, y: 0, z: -2}
