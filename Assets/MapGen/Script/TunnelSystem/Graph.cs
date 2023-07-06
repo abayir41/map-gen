@@ -20,22 +20,7 @@ namespace MapGen.TunnelSystem
             for (var i = 0; i < v; i++) adj.Add(new List<int>());
         }
         
-        // Driver code
-        public void Main(string[] args)
-        {
-            AddEdge(0, 1);
-            AddEdge(0, 3);
-            AddEdge(1, 2);
-            AddEdge(3, 4);
-            AddEdge(3, 7);
-            AddEdge(4, 5);
-            AddEdge(4, 6);
-            AddEdge(4, 7);
-            AddEdge(5, 6);
-            AddEdge(6, 7);
-            int source = 0, dest = 7;
-            PrintShortestDistance( source, dest);
-        }
+        //
 
         // function to form edge between
         // two vertices source and dest
@@ -48,7 +33,7 @@ namespace MapGen.TunnelSystem
         // function to print the shortest
         // distance and path between source
         // vertex and destination vertex
-        public List<int> PrintShortestDistance(int s, int dest)
+        public List<int> FindShortestPath(int s, int dest)
         {
             // predecessor[i] array stores
             // predecessor of i and distance
@@ -72,12 +57,6 @@ namespace MapGen.TunnelSystem
                 path.Add(pred[crawl]);
                 crawl = pred[crawl];
             }
-
-            // Print distance
-            Console.WriteLine("Shortest path length is: " + dist[dest]);
-
-            // Print path
-            Console.WriteLine("Path is ::");
 
             for (var i = path.Count - 1; i >= 0; i--) Console.Write(path[i] + " ");
 

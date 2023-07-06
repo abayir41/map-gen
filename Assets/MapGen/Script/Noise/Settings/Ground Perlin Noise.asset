@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8797e43663d24f5da74c1c609f0c0544, type: 3}
   m_Name: Ground Perlin Noise
   m_EditorClassIdentifier: 
-  noiseScale: 0.06
-  noiseOffset: {x: 18.09, y: -0.13}
+  noiseScale: 0.05
+  noiseOffset: {x: 23.68, y: -0.13}

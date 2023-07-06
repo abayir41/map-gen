@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace MapGen.Placables
 {
     public class Placable : MonoBehaviour
     {
+        
+        [Header("Placable Properties")] 
+        
+        [Range(1,359)]
+        [SerializeField] 
+        private int rotationDegreeStep = 15;
+        public int RotationDegreeStep => Mathf.Clamp(rotationDegreeStep,1,360);
+        
         [Header("Grid Properties")]
         [SerializeField] private List<Vector3Int> requiredGrids;
         [SerializeField] private List<Vector3Int> lockGrids;
@@ -25,22 +31,23 @@ namespace MapGen.Placables
         public List<Vector3Int> ShouldPlacedOnGroundGrids => shouldPlacedOnGroundGrids;
         public List<Vector3Int> NewGroundGrids => newGroundGrids;
         public List<Vector3Int> LockGrids => lockGrids;
+        public Transform VisualsParent => visualsParent;
 
         [Header("Gizmo Settings")]
-        [SerializeField] private bool drawGizmo = true;
-        [SerializeField] private float gizmoRadius = 0.25f;
-        [SerializeField] private float offsetScaler = 1f;
+        [SerializeField] protected bool drawGizmo = true;
+        [SerializeField] protected float gizmoRadius = 0.25f;
+        [SerializeField] protected float offsetScaler = 1f;
         [SerializeField] private bool drawRequireGrids;
         [SerializeField] private bool drawLockGrids;
         [SerializeField] private bool drawShouldPlaceGroundGrids;
         [SerializeField] private bool drawNewGroundGrids;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             drawGizmo = false;
         }
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (useVisualsAsRequiredGrids)
             {
@@ -77,7 +84,7 @@ namespace MapGen.Placables
             }
         }
 
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             if(!drawGizmo) return;
 
@@ -85,28 +92,36 @@ namespace MapGen.Placables
                 foreach (var t in requiredGrids)
                 {
                     Gizmos.color = Color.blue;
-                    Gizmos.DrawSphere(transform.position + (Vector3) t * offsetScaler, gizmoRadius);
+                    var pos = transform.position + (Vector3)t * offsetScaler;
+                    Gizmos.DrawSphere(pos, gizmoRadius);
+                    Gizmos.DrawWireCube(pos, Vector3.one);
                 }
 
             if(lockGrids != null && drawLockGrids)
                 foreach (var t in lockGrids)
                 {
                     Gizmos.color = Color.red;
-                    Gizmos.DrawSphere(transform.position + (Vector3) t * offsetScaler, gizmoRadius);
+                    var pos = transform.position + (Vector3)t * offsetScaler;
+                    Gizmos.DrawSphere(pos, gizmoRadius);
+                    Gizmos.DrawWireCube(pos, Vector3.one);
                 }
             
             if(shouldPlacedOnGroundGrids != null && drawShouldPlaceGroundGrids)
                 foreach (var t in shouldPlacedOnGroundGrids)
                 {
                     Gizmos.color = Color.black;
-                    Gizmos.DrawSphere(transform.position + (Vector3) t * offsetScaler, gizmoRadius);
+                    var pos = transform.position + (Vector3)t * offsetScaler;
+                    Gizmos.DrawSphere(pos, gizmoRadius);
+                    Gizmos.DrawWireCube(pos, Vector3.one);
                 }
             
             if(newGroundGrids != null && drawNewGroundGrids)
                 foreach (var t in newGroundGrids)
                 {
                     Gizmos.color = Color.yellow;
-                    Gizmos.DrawSphere(transform.position + (Vector3) t * offsetScaler, gizmoRadius);
+                    var pos = transform.position + (Vector3)t * offsetScaler;
+                    Gizmos.DrawSphere(pos, gizmoRadius);
+                    Gizmos.DrawWireCube(pos, Vector3.one);
                 }
         }
     }
