@@ -21,7 +21,7 @@ namespace MapGen.Editor
                 _mapGenerator.GenerateMap();
             }
             
-            DrawSettingsEditor(_mapGenerator.MapSettings, ref _mapGenerator.mapSettingsFoldout, ref _mapEditor);
+            DrawSettingsEditor(_mapGenerator.MapSettings, ref _mapGenerator.MapSettingsFoldout, ref _mapEditor);
         }
 
         private void DrawSettingsEditor(Object settings, ref bool foldout, ref UnityEditor.Editor cachedEditor)

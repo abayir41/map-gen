@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace MapGen.Utilities
+namespace Plugins.Utilities
 {
     public static class BresenhamLineAlgorithm
     {

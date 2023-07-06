@@ -5,6 +5,5 @@
         Filled,
         CanBeFilled,
         Locked,
-        CanBeFilledGround
     }
 }

@@ -6,11 +6,8 @@ namespace MapGen.Placables
     public class Placable : MonoBehaviour
     {
         
-        [Header("Placable Properties")] 
-        
-        [Range(1,359)]
-        [SerializeField] 
-        private int rotationDegreeStep = 15;
+        [Header("Placable Properties")]
+        [Range(1,359)] [SerializeField] private int rotationDegreeStep = 15;
         public int RotationDegreeStep => Mathf.Clamp(rotationDegreeStep,1,360);
         
         [Header("Grid Properties")]

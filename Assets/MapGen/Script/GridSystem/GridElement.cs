@@ -5,35 +5,34 @@ namespace MapGen.GridSystem
 {
     public class GridElement
     {
-        public Vector3Int Position { get; private set; }
-        public int X => Position.x;
-        public int Y => Position.y;
-        public int Z => Position.z;
-
+        public Vector3Int Position { get; }
         public GridState GridState { get; private set; }
-        
-        public Placable PlacedItem { get; set; }
+        public GridLayer GridLayer { get; private set; }
+        public Placable PlacedItem { get; private set; }
 
         public GridElement(int x, int y, int z)
         {
             Position = new Vector3Int(x, y, z);
             GridState = GridState.CanBeFilled;
+            GridLayer = GridLayer.Empty;
         }
 
-        public void MakeGridCanBeFilled()
+        public void FreeTheGrid()
         {
             GridState = GridState.CanBeFilled;
         }
         
         public void MakeGridCanBeFilledGround()
         {
-            GridState = GridState.CanBeFilledGround;
+            GridState = GridState.CanBeFilled;
+            GridLayer = GridLayer.CanPlacableGround;
         }
 
-        public void FillGrid(Placable placable)
+        public void FillGrid(Placable placable, GridLayer gridLayer)
         {
             PlacedItem = placable;
             GridState = GridState.Filled;
+            GridLayer = gridLayer;
         }
 
         public void LockGrid()

@@ -5,11 +5,8 @@ namespace MapGen.Noise
     [CreateAssetMenu(fileName = "Perlin Noise", menuName = "MapGen/Noise/Perlin", order = 0)]
     public class PerlinNoise : Noise
     {
-        [SerializeField]
-        private float noiseScale;
-        
-        [SerializeField]
-        private Vector2 noiseOffset;
+        [SerializeField] private float noiseScale;
+        [SerializeField] private Vector2 noiseOffset;
         
         public override float[,] Generate(int width, int height)
         {

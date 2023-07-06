@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MapGen.TunnelSystem
+namespace Plugins.Utilities
 {
     // C# program to find shortest
     // path in an undirected graph
-    using System;
-    using System.Collections.Generic;
-
     public class PathFinder
     {
         private int v;

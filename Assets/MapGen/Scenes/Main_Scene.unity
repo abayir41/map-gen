@@ -733,15 +733,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23241130cec4cb399dc524903be1e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSettingsFoldout: 1
-  mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
-  gridParent: {fileID: 293857008}
-  editorAutoGenMap: 0
-  drawGizmo: 1
-  showFilled: 0
-  showLocked: 0
-  showCanBeFilled: 0
-  showCanBeFilledGround: 0
-  showPaths: 1
-  gizmoRadius: 0.25
-  offsetScaler: 1
+  MapSettingsFoldout: 0
+  _mapSettings: {fileID: 11400000, guid: fbce71aeb7be72645abd07663788c41e, type: 2}
+  _gridParent: {fileID: 293857008}
+  _editorAutoGenerateMap: 0
+  _drawGizmo: 1
+  _showFilled: 0
+  _showLocked: 0
+  _showCanBeFilled: 0
+  _showPlacableGround: 1
+  _showPaths: 0
+  _gizmoRadius: 0.25
+  _offsetScaler: 1

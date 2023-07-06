@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using MapGen.Placables;
 using MapGen.Random;
 using MapGen.TunnelSystem;
@@ -21,17 +19,10 @@ namespace MapGen.Map
 
         
         [Header("Map Settings")]
-        [SerializeField]
-        private int x;
-        
-        [SerializeField]
-        private int y;
-        
-        [SerializeField] 
-        private int z;
-
-        [SerializeField] 
-        private int maxHeight;
+        [SerializeField] private int x;
+        [SerializeField] private int y;
+        [SerializeField] private int z;
+        [SerializeField] private int _obstaclesMaxHeight;
         
         [Header("Map Obstacles")]
         [SerializeField] private Placable ground;
@@ -39,57 +30,46 @@ namespace MapGen.Map
         [SerializeField] private List<Placable> placables;
         
         [Header("Random Settings")]
-        [SerializeField] 
-        private RandomSettings randomSettings;
+        [SerializeField] private RandomSettings randomSettings;
 
         [Header("Object Placement Random")]
-        [SerializeField] 
-        private Noise.Noise objectPlacementNoise;
+        [SerializeField] private Noise.Noise objectPlacementNoise;
         
         [Range(0,100)]
-        [SerializeField]
-        private float objectPlacementThreshold;
-        
-        [SerializeField]
-        private int iterationAmount;
+        [SerializeField] private float objectPlacementThreshold;
+        [SerializeField] private int iterationAmount;
         
         [Header("Ground Random")]
-        [SerializeField] 
-        private Noise.Noise groundPlacementNoise;
-
-        [SerializeField] 
-        private float groundHeightFactor;
-        
-        [SerializeField] 
-        private float groundMoveDownFactor;
+        [SerializeField] private Noise.Noise groundPlacementNoise;
+        [SerializeField] private float groundHeightFactor;
+        [SerializeField] private float groundMoveDownFactor;
 
         [Header("Tunnel")]
-        [SerializeField] 
-        private float tunnelMinLength;
-
-        [SerializeField] 
-        private float tunnelAverageMinHeight;
-
-        [SerializeField] 
-        private float betweenTunnelMinSpace;
+        [SerializeField] private float tunnelMinLength;
+        [SerializeField] private float tunnelAverageMinHeight;
+        [SerializeField] private float betweenTunnelMinSpace;
+        [SerializeField] private TunnelBrush tunnelBrush;
         
-        [SerializeField] 
-        private TunnelBrush tunnelBrush;
+        
+        public int X => Mathf.Clamp(x, 3, 200);
+        public int Y => Mathf.Clamp(y, 4, 50);
+        public int Z => Mathf.Clamp(z, 3, 200);
+        public int ObstaclesMaxHeight => _obstaclesMaxHeight;
+
         
         public Placable Ground => ground;
         public Placable Wall => wall;
         public List<Placable> Placables => placables;
-        public int MaxHeight => maxHeight;
-        public float ObjectPlacementThreshold => objectPlacementThreshold;
-        public int IterationAmount => iterationAmount;
-        public int X => Mathf.Clamp(x, 3, 200);
-        public int Y => Mathf.Clamp(y, 4, 50);
-        public int Z => Mathf.Clamp(z, 3, 200);
+        
         public RandomSettings RandomSettings => randomSettings;
         public Noise.Noise ObjectPlacementNoise => objectPlacementNoise;
+        public float ObjectPlacementThreshold => objectPlacementThreshold;
+        public int IterationAmount => iterationAmount;
+       
         public Noise.Noise GroundPlacementNoise => groundPlacementNoise;
         public float GroundHeightFactor => groundHeightFactor;
         public float GroundMoveDownFactor => groundMoveDownFactor;
+        
         public float TunnelMinLength => tunnelMinLength;
         public float TunnelAverageMinHeight => tunnelAverageMinHeight;
         public float BetweenTunnelMinSpace => betweenTunnelMinSpace;

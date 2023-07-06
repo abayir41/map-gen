@@ -2,7 +2,7 @@
 
 namespace MapGen.Map
 {
-    public class PlacableData
+    public struct PlacableData
     {
         public Placable Placable { get; }
         public int Rotation { get; }
