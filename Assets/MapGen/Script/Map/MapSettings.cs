@@ -10,14 +10,6 @@ namespace MapGen.Map
     [CreateAssetMenu(fileName = "Map Settings", menuName = "MapGen/Map/Settings", order = 0)]
     public class MapSettings : ScriptableObject
     {
-        ////////////
-        /// Editor
-        ///////////
-        [SerializeField] [HideInInspector] public bool objectPlacementFoldout;
-        [SerializeField] [HideInInspector] public bool groundNoiseFoldout;
-        [SerializeField] [HideInInspector] public bool randomSettingsFoldout;
-
-        
         [Header("Map Settings")]
         [SerializeField] private int x;
         [SerializeField] private int y;

@@ -15,16 +15,8 @@ namespace MapGen.Map
 {
     public class MapGenerator : MonoBehaviour
     {
-        ////////////
-        /// Editor
-        ///////////
-        [SerializeField] [HideInInspector] public bool MapSettingsFoldout;
-
-
         [SerializeField] private MapSettings _mapSettings;
         [SerializeField] private Transform _gridParent;
-        [SerializeField] private bool _editorAutoGenerateMap;
-
 
         [Header("Gizmo Settings")] [SerializeField]
         private bool _drawGizmo = true;
@@ -43,19 +35,7 @@ namespace MapGen.Map
         private GridHelper _gridHelper;
         private GridElement[,,] _grids;
         private List<Placable> _placedItems = new();
-
-
-        /// <summary>
-        /// This function called from Editor, Look at: "MapGeneratorEditor.cs"
-        /// </summary>
-        [MethodTimer]
-        public void GenerateMapAuto()
-        {
-            if (!Application.isPlaying) return;
-            if (!_editorAutoGenerateMap) return;
-
-            GenerateMap();
-        }
+        
 
         /// <summary>
         /// This function called from Editor, Look at: "MapGeneratorEditor.cs"
@@ -71,21 +51,48 @@ namespace MapGen.Map
 
         private void SetupGeneration()
         {
-            foreach (var placedItem in _placedItems) Destroy(placedItem.gameObject);
-
-            _placedItems.Clear();
-            _cachedPaths.Clear();
-            
-            _grids = new GridElement[X, Y, Z];
-            _gridHelper = new GridHelper(_grids, _mapSettings);
-            for (var x = 0; x < _grids.GetLength(0); x++)
-            for (var y = 0; y < _grids.GetLength(1); y++)
-            for (var z = 0; z < _grids.GetLength(2); z++)
-                _grids[x, y, z] = new GridElement(x, y, z);
-
-            UnityEngine.Random.InitState(_mapSettings.RandomSettings.GetSeed());
+            DestroyPlacedPlacables();
+            ClearLists();
+            CreateGridSystem();
+            SetRandomSeed();
         }
 
+        private void DestroyPlacedPlacables()
+        {
+            foreach (var placedItem in _placedItems) Destroy(placedItem.gameObject);
+        }
+
+        private void ClearLists()
+        {
+            _placedItems.Clear();
+            _cachedPaths.Clear();
+        }
+
+        private void CreateGridSystem()
+        {
+            _grids = new GridElement[X, Y, Z];
+            _gridHelper = new GridHelper(_grids, _mapSettings);
+            var xDimension = _grids.GetLength(0);
+            var yDimension = _grids.GetLength(1);
+            var zDimension = _grids.GetLength(2);
+
+            for (var x = 0; x < xDimension; x++)
+            {
+                for (var y = 0; y < yDimension; y++)
+                {
+                    for (var z = 0; z < zDimension; z++)
+                    {
+                        _grids[x, y, z] = new GridElement(x, y, z);
+                    }
+                }
+            }
+        }
+
+        private void SetRandomSeed()
+        {
+            UnityEngine.Random.InitState(_mapSettings.RandomSettings.GetSeed());
+        }
+        
         private void Generate()
         {
             Debug.Log("Generation Started");
@@ -104,27 +111,41 @@ namespace MapGen.Map
         {
             var groundNoise = _mapSettings.GroundPlacementNoise.Generate(X, Z);
 
-            for (var x = 0; x < _grids.GetLength(0); x++)
-            for (var z = 0; z < _grids.GetLength(2); z++)
-            {
-                var grid = _grids[x, 0, z];
-                grid.MakeGridCanBeFilledGround();
-                SpawnObject(grid, _mapSettings.Ground, GridLayer.Ground, 0);
-            }
+            var xDimension = _grids.GetLength(0);
+            var zDimension = _grids.GetLength(2);
 
-            for (var x = 0; x < _grids.GetLength(0); x++)
-            for (var z = 0; z < _grids.GetLength(2); z++)
+            for (var x = 0; x < xDimension; x++)
             {
-                var height = groundNoise[x, z] * _mapSettings.GroundHeightFactor - _mapSettings.GroundMoveDownFactor;
-
-                for (var y = 1; y < height; y++)
+                for (var z = 0; z < zDimension; z++)
                 {
-                    if (groundNoise[x, z] * 100 < height) break;
-                    var grid = _grids[x, y, z];
+                    var grid = _grids[x, 0, z];
                     grid.MakeGridCanBeFilledGround();
                     SpawnObject(grid, _mapSettings.Ground, GridLayer.Ground, 0);
                 }
             }
+            
+
+            for (var x = 0; x < xDimension; x++)
+            {
+                for (var z = 0; z < zDimension; z++)
+                {
+                    var height = groundNoise[x, z] * _mapSettings.GroundHeightFactor -
+                                 _mapSettings.GroundMoveDownFactor;
+
+                    for (var y = 1; y < height; y++)
+                    {
+                        if (ZeroOneIntervalToPercent(groundNoise[x, z]) < height) break;
+                        var grid = _grids[x, y, z];
+                        grid.MakeGridCanBeFilledGround();
+                        SpawnObject(grid, _mapSettings.Ground, GridLayer.Ground, 0);
+                    }
+                }
+            }
+        }
+
+        private float ZeroOneIntervalToPercent(float zeroOneInterval)
+        {
+            return zeroOneInterval * 100;
         }
 
         [MethodTimer]
@@ -335,32 +356,45 @@ namespace MapGen.Map
         [MethodTimer]
         private void CreateWall()
         {
-            for (var x = 0; x < _grids.GetLength(0); x++)
-            for (var y = 1; y < _grids.GetLength(1); y++)
-            for (var z = 0; z < _grids.GetLength(2); z++)
-            {
-                if (x != 0 && x != _grids.GetLength(0) - 1 && z != 0 && z != _grids.GetLength(2) - 1) continue;
+            var xDimension = _grids.GetLength(0);
+            var yDimension = _grids.GetLength(1);
+            var zDimension = _grids.GetLength(2);
 
-                var grid = _grids[x, y, z];
-                grid.MakeGridCanBeFilledGround();
-                SpawnObject(grid, _mapSettings.Wall, GridLayer.Obstacle, 0);
+            for (var x = 0; x < xDimension; x++)
+            {
+                for (var y = 0; y < yDimension; y++)
+                {
+                    for (var z = 0; z < zDimension; z++)
+                    {
+                        if (x != 0 && x != _grids.GetLength(0) - 1 && z != 0 && z != _grids.GetLength(2) - 1) continue;
+
+                        var grid = _grids[x, y, z];
+                        grid.MakeGridCanBeFilledGround();
+                        SpawnObject(grid, _mapSettings.Wall, GridLayer.Obstacle, 0);
+                    }
+                }
             }
         }
 
         [MethodTimer]
         private void MakeBanAreaOfSurface()
         {
-            for (var x = 0; x < _grids.GetLength(0); x++)
-            for (var z = 0; z < _grids.GetLength(2); z++)
+            var xDimension = _grids.GetLength(0);
+            var zDimension = _grids.GetLength(2);
+
+            for (var x = 0; x < xDimension; x++)
             {
-                var gridTopTop = _grids[x, _grids.GetLength(1) - 1, z];
-                var gridTop = _grids[x, _grids.GetLength(1) - 2, z];
+                for (var z = 0; z < zDimension; z++)
+                {
+                    var gridTopTop = _grids[x, _grids.GetLength(1) - 1, z];
+                    var gridTop = _grids[x, _grids.GetLength(1) - 2, z];
 
-                if (gridTopTop.GridState != GridState.Filled)
-                    gridTopTop.LockGrid();
+                    if (gridTopTop.GridState != GridState.Filled)
+                        gridTopTop.LockGrid();
 
-                if (gridTop.GridState != GridState.Filled)
-                    gridTop.LockGrid();
+                    if (gridTop.GridState != GridState.Filled)
+                        gridTop.LockGrid();
+                }
             }
         }
         

@@ -11,6 +11,7 @@ namespace MapGen.Editor
         private UnityEditor.Editor _mapEditor;
         private UnityEditor.Editor _noiseSettings;
         private UnityEditor.Editor _randomSettings;
+        private bool _foldout;
 
         public override void OnInspectorGUI()
         {
@@ -21,10 +22,10 @@ namespace MapGen.Editor
                 _mapGenerator.GenerateMap();
             }
             
-            DrawSettingsEditor(_mapGenerator.MapSettings, ref _mapGenerator.MapSettingsFoldout, ref _mapEditor);
+            DrawSettingsEditor(_mapGenerator.MapSettings, _foldout, ref _mapEditor);
         }
 
-        private void DrawSettingsEditor(Object settings, ref bool foldout, ref UnityEditor.Editor cachedEditor)
+        private void DrawSettingsEditor(Object settings, bool foldout, ref UnityEditor.Editor cachedEditor)
         {
             if(settings == null) return;
             
@@ -32,15 +33,8 @@ namespace MapGen.Editor
 
             if (!foldout) return;
             
-            using var check = new EditorGUI.ChangeCheckScope();
-
             CreateCachedEditor(settings, null, ref cachedEditor);
             cachedEditor.OnInspectorGUI();
-
-            if (check.changed)
-            {
-                _mapGenerator.GenerateMapAuto();
-            }
         }
 
         private void OnEnable()
