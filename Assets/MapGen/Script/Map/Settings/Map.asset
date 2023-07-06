@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   objectPlacementFoldout: 0
-  groundNoiseFoldout: 0
+  groundNoiseFoldout: 1
   randomSettingsFoldout: 1
   x: 50
   y: 50
@@ -22,19 +22,24 @@ MonoBehaviour:
   ground: {fileID: 8967608169036613168, guid: ca2275aacca1e1247bd2530145d4a7fb, type: 3}
   wall: {fileID: 8967608169036613168, guid: 1d720565cd3941840893b5107958b328, type: 3}
   placables:
-  - {fileID: 8967608169036613168, guid: f9018976af874ad4e992d1a97cb6ecbf, type: 3}
-  - {fileID: 8967608169036613168, guid: 54a7e349144ed7044a1f3b9be3c6d919, type: 3}
-  - {fileID: 8967608169036613168, guid: 83d152608e31f244f8d1a33423bb2900, type: 3}
-  - {fileID: 8967608169036613168, guid: 35010348581c3ce44b9a6f6926d450a4, type: 3}
-  - {fileID: 8967608169036613168, guid: 4003bed80004fc94eb202578e2d42bcd, type: 3}
-  - {fileID: 8967608169036613168, guid: 6fc281de155fc1e49acc7e853a164e5e, type: 3}
-  - {fileID: 8967608169036613168, guid: 118ad97f09f0cb34ba89c8edded20e7f, type: 3}
-  - {fileID: 8967608169036613168, guid: 6454b44ad5a95ca46ae8227982d11123, type: 3}
-  - {fileID: 8967608169036613168, guid: cc7b6d9b7a8b0c448bcabd25c3947e05, type: 3}
+  - {fileID: 3858007598822130187, guid: 252b63502f98cc643990cc31b8c80923, type: 3}
+  - {fileID: 6857646536276948154, guid: c7d13d9283a315f46a8280abf2f70d08, type: 3}
+  - {fileID: 3083667407928680683, guid: 6849ecd125a65de448126561c961a3ac, type: 3}
+  - {fileID: 3083667407928680683, guid: eca5ee02bef1e334dbaf04a731806314, type: 3}
+  - {fileID: 4698296767136087353, guid: 72a2b6e7d83f42e4aac6d3504926a868, type: 3}
+  - {fileID: 4698296767136087353, guid: 25047d8934825c64dbe6bf80bdc0e807, type: 3}
+  - {fileID: 1065937464500786308, guid: fb30a3df7cadd044bbf21db83c10a50f, type: 3}
+  - {fileID: 4727080097559331581, guid: c9a4633f0fdc62f46b795bcae2ecf27d, type: 3}
+  - {fileID: 2683300341979957061, guid: 919c68a81bd5a93409da87f7635b7140, type: 3}
+  - {fileID: 8213404422655174283, guid: bb5e66dc965a6034e9a08a726473ea95, type: 3}
   randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
   objectPlacementNoise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
   objectPlacementThreshold: 58.4
   iterationAmount: 1
   groundPlacementNoise: {fileID: 11400000, guid: 95097713d73e93448a32834f314a274f, type: 2}
-  groundHeightFactor: 20
+  groundHeightFactor: 34.2
   groundMoveDownFactor: 10
+  tunnelMinLength: 29.44
+  tunnelAverageMinHeight: 8.8
+  betweenTunnelMinSpace: 567.8
+  tunnelBrush: {fileID: 2908243018586684457, guid: cc79e7757c3cc8d42b90fb60e8a64611, type: 3}

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MapGen.GridSystem;
 using MapGen.Placables;
 using MapGen.TunnelSystem;
 using MapGen.Utilities;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace MapGen.Map
 {
@@ -28,12 +30,10 @@ namespace MapGen.Map
         [SerializeField] private bool showLocked = true;
         [SerializeField] private bool showCanBeFilled = true;
         [SerializeField] private bool showCanBeFilledGround = true;
+        [SerializeField] private bool showPaths = true;
         [SerializeField] private float gizmoRadius = 0.25f;
         [SerializeField] private float offsetScaler = 1f;
-
-        [SerializeField] private float asdasd;
-        private Vector3Int _startAsd;
-        private Vector3Int _endAsd;
+        private List<List<GridElement>> _savedPaths = new(); 
 
 
         public MapSettings MapSettings => mapSettings;
@@ -55,7 +55,8 @@ namespace MapGen.Map
         {
             if(!Application.isPlaying) return;
             if(!editorAutoGenMap) return;
-            
+
+            SetupGeneration();
             GenerateMap();
         }
 
@@ -70,15 +71,46 @@ namespace MapGen.Map
         private void Generate()
         {
             Debug.Log("Generation Started");
-            CreateGround();
-            MakeTunnels(2);
-            CreateWall();
-            MakeBanAreaOfSurface();
 
+            Stopwatch stopwatch = new Stopwatch();
+            
+            stopwatch.Start();
+            CreateGround();
+            stopwatch.Stop();
+            
+            Debug.Log($"Creating Ground: {stopwatch.Elapsed}");
+            
+            stopwatch.Reset();
+            stopwatch.Start();
+            MakeTunnels(1);
+            stopwatch.Stop();
+            
+            Debug.Log($"Making Tunnels: {stopwatch.Elapsed}");
+
+            
+            stopwatch.Reset();
+            stopwatch.Start();
+            CreateWall();
+            stopwatch.Stop();
+            
+            Debug.Log($"Creating Wall: {stopwatch.Elapsed}");
+
+            
+            stopwatch.Reset();
+            stopwatch.Start();
+            MakeBanAreaOfSurface();
+            stopwatch.Stop();
+            
+            Debug.Log($"Creating Ban Area: {stopwatch.Elapsed}");
+
+            stopwatch.Reset();
+            stopwatch.Start();
             for (var height = 0; height < mapSettings.MaxHeight; height++)
             for (var i = 0; i < mapSettings.IterationAmount; i++)
                     SpawnObstacles(height);
-            
+            stopwatch.Stop();
+
+            Debug.Log($"Spawning obstacles: {stopwatch.Elapsed}");
         }
 
         private void CreateGround()
@@ -90,7 +122,7 @@ namespace MapGen.Map
             {
                 var grid = _grids[x, 0, z];
                 grid.MakeGridCanBeFilledGround();
-                SpawnObject(grid, mapSettings.Ground);
+                SpawnObject(grid, mapSettings.Ground, 0);
             }
             
             for (var x = 0; x < _grids.GetLength(0); x++)
@@ -103,12 +135,117 @@ namespace MapGen.Map
                     if(groundNoise[x,z] * 100 < height) break;
                     var grid = _grids[x, y, z];
                     grid.MakeGridCanBeFilledGround();
-                    SpawnObject(grid, mapSettings.Ground);
+                    SpawnObject(grid, mapSettings.Ground, 0);
                 }
             }
         }
 
         private void MakeTunnels(int layer)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Reset();
+            stopwatch.Start();
+            var nodes = CreateTunnelNodes(layer);
+            stopwatch.Stop();
+            
+            Debug.Log($"Creating Tunnel Nodes: {stopwatch.Elapsed}");
+            
+            stopwatch.Reset();
+            stopwatch.Start();
+            var pathFinder = CreateTunnelNodeGraph(nodes, layer);
+            stopwatch.Stop();
+            
+            Debug.Log($"Creating Tunnel Node Graph: {stopwatch.Elapsed}");
+
+            stopwatch.Reset();
+            stopwatch.Start();
+            var paths = FindAllEdgeToEdgePaths(nodes, pathFinder);
+            stopwatch.Stop();
+            
+            Debug.Log($"Finding Edges: {stopwatch.Elapsed}");
+
+            
+            if(paths.Count == 0) return;
+
+            
+            stopwatch.Reset();
+            stopwatch.Start();
+            var pathsAsGrids = paths.ConvertAll(input => input.ConvertAll(node => node.GridElement));
+            var lenghtFiltered = FilterByHeight(pathsAsGrids);
+            var fixedPaths = lenghtFiltered.ConvertAll(FixThePath);
+            var heightFiltered = FilterPathsByLenght(fixedPaths);
+            var ordered = heightFiltered.OrderByDescending(FindHeightAverageOfPath).ToList();
+            stopwatch.Stop();
+            
+            Debug.Log($"Filtering and converting paths: {stopwatch.Elapsed}");
+
+            
+            _savedPaths.Clear();
+
+          
+            foreach (var path in ordered)
+            {
+                var distanceValid = true;
+                 foreach (var savedPath in _savedPaths)
+                {
+                    foreach (var pathGrid in path)
+                    {
+                        foreach (var savedPathGrid in savedPath)
+                        {
+                            var distance = (savedPathGrid.Position - pathGrid.Position).sqrMagnitude;
+                            if (distance < mapSettings.BetweenTunnelMinSpace)
+                            {
+                                distanceValid = false;
+                            }
+                        }
+                    }
+                }
+
+                 if (distanceValid)
+                 {
+                     CreateTunnel(path);
+                 }
+            }
+        }
+
+        private void CreateTunnel(List<GridElement> path)
+        {
+            var start = path.First();
+            var end = path.Last();
+            var direction = end.Position - start.Position;
+            var direction2D = new Vector2Int(direction.x, direction.z);
+            var rotationDegree = Mathf.Atan2(direction2D.y, direction2D.x) / Mathf.PI * 180;
+            rotationDegree *= -1;
+            
+            foreach (var pathPoint in path)
+            {
+                foreach (var tunnelBrushDestroyPoint in mapSettings.TunnelBrush.DestroyPoints)
+                {
+                    var pos = pathPoint.Position + RotateObstacleVector(rotationDegree, tunnelBrushDestroyPoint);
+                    
+                    if(IsPosOutsideOfGrids(pos)) continue;
+                    
+                    var grid = _grids[pos.x, pos.y, pos.z];
+                    if(grid.PlacedItem is not TunnelBrush)
+                        DestroyGridTunnelVersion(grid);
+                    
+                }
+                
+                if (IsPlacableSuitable(pathPoint, mapSettings.TunnelBrush, rotationDegree))
+                {
+                    SpawnObject(pathPoint, mapSettings.TunnelBrush, rotationDegree);
+                }
+                
+
+            }
+            
+
+            
+            _savedPaths.Add(path);
+        }
+
+        private List<Node> CreateTunnelNodes(int layer)
         {
             var nodes = new List<Node>();
 
@@ -119,19 +256,22 @@ namespace MapGen.Map
 
                 if (grid.GridState == GridState.Filled && IsEdgeGroundYDimensionCheck(grid))
                 {
-                    Debug.Log("asd");
                     nodes.Add(new Node(nodes.Count, NodeState.EdgeGround, grid));
                     continue;
                 }
 
                 if (grid.GridState == GridState.Filled)
                 {
-                    Debug.Log("asdasd");
                     nodes.Add(new Node(nodes.Count, NodeState.Ground, grid));
                     continue;
                 }
             }
-            
+
+            return nodes;
+        }
+
+        private PathFinder CreateTunnelNodeGraph(List<Node> nodes, int layer)
+        {
             var pathFinder = new PathFinder(nodes.Count);
 
             for (var x = 0; x < X - 1; x++)
@@ -159,31 +299,95 @@ namespace MapGen.Map
                 }
             }
 
+            return pathFinder;
+        }
+
+        private List<List<Node>> FindAllEdgeToEdgePaths(List<Node> nodes, PathFinder pathFinder)
+        {
             var edgeNodes = nodes.Where(node => node.NodeState == NodeState.EdgeGround).ToList();
-            var paths = new List<List<int>>();
+            var paths = new List<List<Node>>();
             for (var i = 0; i < edgeNodes.Count - 1; i++)
             {
-                for (var a = 0; a < edgeNodes.Count; a++)
+                var edgeNodeA = edgeNodes[i];
+                
+                for (var a = i + 1; a < edgeNodes.Count; a++)
                 {
-                    var path = pathFinder.PrintShortestDistance(edgeNodes[i].ID, edgeNodes[a].ID);
-                    if(path != null)
-                        paths.Add(path);
+                    var edgeNodeB = edgeNodes[a];
+                    if ((edgeNodeA.GridElement.Position - edgeNodeB.GridElement.Position).sqrMagnitude <
+                        mapSettings.TunnelMinLength) continue;
+
+                    var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
+                    
+                    if (path == null) continue;
+                    
+                    var pathAsNodes = path.ConvertAll(input => nodes.First(node => node.ID == input));
+                    paths.Add(pathAsNodes);
                 }
             }
 
-            var ordered = paths.OrderByDescending(ints => ints.Count).ToList();
-            foreach (var path in ordered)
-            {
-                var start = nodes.First(node => node.ID == path[0]);
-                var end = nodes.First(node => node.ID == path[^1]);
-
-                _startAsd = start.GridElement.Position;
-                _endAsd = end.GridElement.Position;
-                
-                Debug.Log("Path Lenght: "+ path.Count + " Start Node Pos: " + start.GridElement.Position + " End Node Pos: " + end.GridElement.Position);
-                break;
-            }
+            return paths;
         }
+
+        private List<GridElement> FixThePath(List<GridElement> path)
+        {
+            var start = path.First().Position;
+            var end = path.Last().Position;
+            var yLayer = start.y;
+            
+            var newPath = BresenhamLineAlgorithm.DrawLine(new Vector2Int(start.x, start.z), new Vector2Int(end.x, end.z));
+            var result = newPath.ConvertAll(input => _grids[input.x, yLayer, input.y]);
+            return result;
+        }
+
+        private List<List<GridElement>> FilterPathsByLenght(List<List<GridElement>> paths)
+        {
+            return paths.Where(path =>
+                FindLengthOfPath(path) > mapSettings.TunnelMinLength).ToList();
+        }
+        
+        private List<List<GridElement>> FilterByHeight(List<List<GridElement>> paths)
+        {
+            var result = new List<List<GridElement>>();
+            
+            foreach (var path in paths)
+            {
+                var average = FindHeightAverageOfPath(path);
+                
+                if(average > mapSettings.TunnelAverageMinHeight)
+                    result.Add(path);
+            }
+
+            return result;
+        }
+
+        private float FindHeightAverageOfPath(List<GridElement> path)
+        {
+            var sum = 0;
+            foreach (var gridElement in path)
+            {
+                var grid = gridElement;
+                while (grid.GridState == GridState.Filled)
+                {
+                    sum++;
+                    
+                    var pos = grid.Position;
+                    pos += Vector3Int.up;
+                        
+                    if(IsPosOutsideOfGrids(pos))
+                        break;
+                        
+                    grid = _grids[pos.x, pos.y, pos.z];
+                }
+            }
+
+            var average = (float) sum / path.Count;
+            return average;
+        }
+
+        private int FindLengthOfPath(List<GridElement> path)
+        {
+            return (path.First().Position - path.Last().Position).sqrMagnitude;
+        }  
 
         private void CreateWall()
         {
@@ -195,7 +399,7 @@ namespace MapGen.Map
                 
                 var grid = _grids[x, y, z];
                 grid.MakeGridCanBeFilledGround();
-                SpawnObject(grid, mapSettings.Wall);
+                SpawnObject(grid, mapSettings.Wall, 0);
             }
         }
 
@@ -220,9 +424,9 @@ namespace MapGen.Map
             var rotatedPlacables = new List<PlacableData>();
 
             foreach (var placable in mapSettings.Placables)
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < 360; i += placable.RotationDegreeStep)
                 { 
-                    rotatedPlacables.Add(new PlacableData(placable, i * 90));    
+                    rotatedPlacables.Add(new PlacableData(placable, i));    
                 }
 
             var noise = mapSettings.ObjectPlacementNoise.Generate(X, Z);
@@ -232,7 +436,7 @@ namespace MapGen.Map
             {
                 if(noise[x,z] * 100 < mapSettings.ObjectPlacementThreshold) continue;
 
-                var shuffledPlacables = rotatedPlacables.OrderBy(_ => UnityEngine.Random.value);
+                var shuffledPlacables = rotatedPlacables.GetRandomAmountAndShuffled();
                 
                 var grid = _grids[x, layer, z];
                 
@@ -247,7 +451,7 @@ namespace MapGen.Map
             
         }
 
-        private void SpawnObject(GridElement pos, Placable placable, int rotation = 0)
+        private void SpawnObject(GridElement pos, Placable placable, float rotation)
         {
             foreach (var placableRequiredGrid in placable.RequiredGrids)
             {
@@ -269,11 +473,27 @@ namespace MapGen.Map
                     throw new Exception("Placing not suitable grid");
             }
             
+            var placableObj = Instantiate(placable, gridParent);
+            placableObj.transform.position = pos.GetWorldPosition();
+
+            placableObj.VisualsParent.eulerAngles = Vector3.up * rotation;
+            
+            /*
+            foreach (Transform visual in placableObj.VisualsParent)
+            {
+                var quaternion = Quaternion.AngleAxis(rotation, Vector3.up);
+                visual.localEulerAngles = Vector3.up * rotation;
+                visual.localPosition = quaternion * visual.localPosition;
+            }
+            */
+            
+            _placedItems.Add(placableObj);
+            
             foreach (var placableRequiredGrid in placable.RequiredGrids)
             {
                 var checkedGridPos = pos.Position + RotateObstacleVector(rotation, placableRequiredGrid);
                 var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
-                grid.FillGrid();
+                grid.FillGrid(placableObj);
             }
 
             foreach (var placableLockGrid in placable.LockGrids)
@@ -299,14 +519,46 @@ namespace MapGen.Map
                 if(grid.GridState is not (GridState.Locked or GridState.Filled))
                     grid.MakeGridCanBeFilledGround();
             }
-            
-            var placableObj = Instantiate(placable, gridParent);
-            placableObj.transform.position = pos.GetWorldPosition();
-            placableObj.transform.Rotate(Vector3.up, rotation);
-            _placedItems.Add(placableObj);
         }
 
-        private bool IsPlacableSuitable(GridElement pos, Placable placable, int rotation = 0)
+        private void DestroyGrid(GridElement grid)
+        {
+            var placable = grid.PlacedItem;
+            
+            if (grid.PlacedItem == null)
+            {
+                grid.MakeGridCanBeFilled();
+                return;
+            }
+            
+            foreach (var gridElement in _grids)
+            {
+                if (gridElement.PlacedItem == placable)
+                {
+                    grid.MakeGridCanBeFilled();
+                }
+            }
+
+            _placedItems.Remove(placable);
+            Destroy(placable.gameObject);
+        }
+        
+        private void DestroyGridTunnelVersion(GridElement grid)
+        {
+            var placable = grid.PlacedItem;
+            
+            if (grid.PlacedItem == null)
+            {
+                grid.MakeGridCanBeFilled();
+                return;
+            }
+            
+            grid.MakeGridCanBeFilled();
+            _placedItems.Remove(placable);
+            Destroy(placable.gameObject);
+        }
+
+        private bool IsPlacableSuitable(GridElement pos, Placable placable, float rotation)
         {
             foreach (var placableRequiredGrid in placable.RequiredGrids)
             {
@@ -331,14 +583,14 @@ namespace MapGen.Map
             return true;
         }
 
-        private Vector3Int RotateObstacleVector(int rotation, Vector3Int vector3Int)
+        private Vector3Int RotateObstacleVector(float angle, Vector3Int vector3Int)
         {
-            for (var i = 0; i < rotation / 90; i++)
-            {
-                vector3Int = new Vector3Int(vector3Int.z, vector3Int.y, -vector3Int.x);
-            }
+            var rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            var result = rotation * vector3Int;
+            var resultAsVector3Int = new Vector3Int(Mathf.RoundToInt(result.x), Mathf.RoundToInt(result.y),
+                Mathf.RoundToInt(result.z));
 
-            return vector3Int;
+            return resultAsVector3Int;
         }
 
         private bool IsPosOutsideOfGrids(Vector3Int pos)
@@ -375,7 +627,6 @@ namespace MapGen.Map
             return false;
         }
         
-
         private void SetupGeneration()
         {
             foreach (var placedItem in _placedItems)
@@ -400,12 +651,32 @@ namespace MapGen.Map
             if(_grids == null) return;
             if(!drawGizmo) return;
             
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere((Vector3) _startAsd * offsetScaler, asdasd);
-            
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere((Vector3) _endAsd * offsetScaler, asdasd);
-            
+            if(showPaths)
+                foreach (var gridElements in _savedPaths)
+                {
+                    for (var i = 0; i < gridElements.Count; i++)
+                    {
+                        var gridElement = gridElements[i];
+                        if (i == 0)
+                        {
+                            Gizmos.color = Color.green;
+                            Gizmos.DrawSphere((Vector3) gridElement.Position * offsetScaler, gizmoRadius);
+                            continue;
+                        }
+                    
+                        if (i == gridElements.Count - 1)
+                        {
+                            Gizmos.color = Color.red;
+                            Gizmos.DrawSphere((Vector3) gridElement.Position * offsetScaler, gizmoRadius);
+                            continue;
+                        }
+                    
+                        Gizmos.color = Color.yellow;
+                        Gizmos.DrawSphere((Vector3) gridElement.Position * offsetScaler, gizmoRadius);
+                        continue;
+                    }
+                }
+
             foreach (var grid in _grids)
             {
                 switch (grid.GridState)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MapGen.Placables;
+using UnityEngine;
 
 namespace MapGen.GridSystem
 {
@@ -10,7 +11,8 @@ namespace MapGen.GridSystem
         public int Z => Position.z;
 
         public GridState GridState { get; private set; }
-        public GridElement PlacedItemOwner { get; private set; }
+        
+        public Placable PlacedItem { get; set; }
 
         public GridElement(int x, int y, int z)
         {
@@ -28,8 +30,9 @@ namespace MapGen.GridSystem
             GridState = GridState.CanBeFilledGround;
         }
 
-        public void FillGrid()
+        public void FillGrid(Placable placable)
         {
+            PlacedItem = placable;
             GridState = GridState.Filled;
         }
 

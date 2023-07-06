@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MapGen.Placables;
 using MapGen.Random;
+using MapGen.TunnelSystem;
 using UnityEngine;
 
 namespace MapGen.Map
@@ -62,6 +63,19 @@ namespace MapGen.Map
         [SerializeField] 
         private float groundMoveDownFactor;
 
+        [Header("Tunnel")]
+        [SerializeField] 
+        private float tunnelMinLength;
+
+        [SerializeField] 
+        private float tunnelAverageMinHeight;
+
+        [SerializeField] 
+        private float betweenTunnelMinSpace;
+        
+        [SerializeField] 
+        private TunnelBrush tunnelBrush;
+        
         public Placable Ground => ground;
         public Placable Wall => wall;
         public List<Placable> Placables => placables;
@@ -76,5 +90,11 @@ namespace MapGen.Map
         public Noise.Noise GroundPlacementNoise => groundPlacementNoise;
         public float GroundHeightFactor => groundHeightFactor;
         public float GroundMoveDownFactor => groundMoveDownFactor;
+        public float TunnelMinLength => tunnelMinLength;
+        public float TunnelAverageMinHeight => tunnelAverageMinHeight;
+        public float BetweenTunnelMinSpace => betweenTunnelMinSpace;
+        public TunnelBrush TunnelBrush => tunnelBrush;
+        
+
     }
 }
