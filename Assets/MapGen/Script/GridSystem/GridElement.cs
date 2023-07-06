@@ -28,6 +28,11 @@ namespace MapGen.GridSystem
             GridLayer = GridLayer.CanPlacableGround;
         }
 
+        public void MakeGridEmpty()
+        {
+            GridLayer = GridLayer.Empty;
+        }
+
         public void FillGrid(Placable placable, GridLayer gridLayer)
         {
             PlacedItem = placable;

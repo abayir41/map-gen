@@ -167,7 +167,8 @@ namespace MapGen.Map
                     
                     var ground = grid.PlacedItem;
                     grid.FreeTheGrid();
-
+                    grid.MakeGridEmpty();
+                    
                     if (grid.PlacedItem == null) continue;
                     
                     _placedItems.Remove(ground);
