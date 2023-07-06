@@ -18,12 +18,12 @@ namespace MapGen.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            DrawSettingsEditor(_mapSettings.ObjectPlacementNoise, _objectPlacementFoldout, ref _objectPlacementNoiseSettings);
-            DrawSettingsEditor(_mapSettings.GroundPlacementNoise, _groundNoiseFoldout, ref _groundNoiseSettings);
-            DrawSettingsEditor(_mapSettings.RandomSettings, _randomSettingsFoldout, ref _randomSettings);
+            DrawSettingsEditor(_mapSettings.ObjectPlacementNoise, ref _objectPlacementFoldout, ref _objectPlacementNoiseSettings);
+            DrawSettingsEditor(_mapSettings.GroundPlacementNoise, ref _groundNoiseFoldout, ref _groundNoiseSettings);
+            DrawSettingsEditor(_mapSettings.RandomSettings, ref _randomSettingsFoldout, ref _randomSettings);
         }
 
-        private static void DrawSettingsEditor(Object settings, bool foldout, ref UnityEditor.Editor cachedEditor)
+        private static void DrawSettingsEditor(Object settings, ref bool foldout, ref UnityEditor.Editor cachedEditor)
         {
             if(settings == null) return;
             
