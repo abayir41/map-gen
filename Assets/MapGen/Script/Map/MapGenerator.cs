@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MapGen.GridSystem;
 using MapGen.Placables;
 using MapGen.TunnelSystem;
 using MapGen.Utilities;
 using Plugins.Utilities;
 using UnityEngine;
+using Weaver;
 using Debug = UnityEngine.Debug;
 
 namespace MapGen.Map
@@ -26,14 +29,11 @@ namespace MapGen.Map
         [Header("Gizmo Settings")] [SerializeField]
         private bool _drawGizmo = true;
 
-        [SerializeField] private bool _showFilled = true;
-        [SerializeField] private bool _showLocked = true;
-        [SerializeField] private bool _showCanBeFilled = true;
-        [SerializeField] private bool _showPlacableGround = true;
-        [SerializeField] private bool _showPaths = true;
+        [SerializeField] private MapGizmos _mapGizmos;
         [SerializeField] private float _gizmoRadius = 0.25f;
         [SerializeField] private float _offsetScaler = 1f;
         private List<List<GridElement>> _cachedPaths = new();
+        private List<List<Node>> _edgeGroups = new();
 
         public MapSettings MapSettings => _mapSettings;
         private int X => _mapSettings.X;
@@ -48,6 +48,7 @@ namespace MapGen.Map
         /// <summary>
         /// This function called from Editor, Look at: "MapGeneratorEditor.cs"
         /// </summary>
+        [MethodTimer]
         public void GenerateMapAuto()
         {
             if (!Application.isPlaying) return;
@@ -59,6 +60,7 @@ namespace MapGen.Map
         /// <summary>
         /// This function called from Editor, Look at: "MapGeneratorEditor.cs"
         /// </summary>
+        [MethodTimer]
         public void GenerateMap()
         {
             if (!Application.isPlaying) return;
@@ -97,6 +99,7 @@ namespace MapGen.Map
                 SpawnObstacles(height);
         }
 
+        [MethodTimer]
         private void CreateGround()
         {
             var groundNoise = _mapSettings.GroundPlacementNoise.Generate(X, Z);
@@ -124,11 +127,15 @@ namespace MapGen.Map
             }
         }
 
+        [MethodTimer]
         private void MakeTunnels(int layer)
         {
             var nodes = CreateTunnelNodes(layer);
             var pathFinder = CreateTunnelNodeGraph(nodes, layer);
-            var tunnelPaths = FindAllEdgeToEdgePaths(nodes, pathFinder);
+            var edges = nodes.Where(node => node.NodeState == NodeState.EdgeGround).ToList();
+            var edgeGroups = GroupEdgeNodes(edges);
+            _edgeGroups = edgeGroups;
+            var tunnelPaths = FindAllEdgeToEdgePathsFromGroups(edgeGroups, nodes, pathFinder);
 
             if (tunnelPaths.Count == 0) return;
 
@@ -144,6 +151,7 @@ namespace MapGen.Map
             }
         }
 
+        [MethodTimer]
         private void CreateTunnel(List<GridElement> path)
         {
             var start = path.First();
@@ -182,6 +190,7 @@ namespace MapGen.Map
             _cachedPaths.Add(path);
         }
 
+        [MethodTimer]
         private List<Node> CreateTunnelNodes(int layer)
         {
             var nodes = new List<Node>();
@@ -203,6 +212,7 @@ namespace MapGen.Map
             return nodes;
         }
 
+        [MethodTimer]
         private PathFinder CreateTunnelNodeGraph(List<Node> nodes, int layer)
         {
             var pathFinder = new PathFinder(nodes.Count);
@@ -235,29 +245,78 @@ namespace MapGen.Map
             return pathFinder;
         }
 
-        private List<List<Node>> FindAllEdgeToEdgePaths(List<Node> nodes, PathFinder pathFinder)
+        [MethodTimer]
+        private List<List<Node>> GroupEdgeNodes(List<Node> edgeNodes)
         {
-            var edgeNodes = nodes.Where(node => node.NodeState == NodeState.EdgeGround).ToList();
-            var paths = new List<List<Node>>();
-            for (var i = 0; i < edgeNodes.Count - 1; i++)
+            var result = new List<List<Node>>();
+            var remainingNodes = new List<Node>(edgeNodes);
+            
+            foreach (var node in edgeNodes)
             {
-                var edgeNodeA = edgeNodes[i];
-
-                for (var a = i + 1; a < edgeNodes.Count; a++)
+                var processNode = true;
+                foreach (var list in result)
                 {
-                    var edgeNodeB = edgeNodes[a];
-                    if ((edgeNodeA.GridElement.Position - edgeNodeB.GridElement.Position).sqrMagnitude <
-                        _mapSettings.TunnelMinLength) continue;
-
-                    var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
-
-                    if (path == null) continue;
-
-                    var pathAsNodes = path.ConvertAll(input => nodes.First(node => node.ID == input));
-                    paths.Add(pathAsNodes);
+                    if (list.Contains(node))
+                    {
+                        processNode = false;
+                        break;
+                    }
                 }
+
+                if (!processNode) continue;
+
+                var group = new List<Node> {node};
+                FindAllNeighborEdges(node, remainingNodes, group);
+                remainingNodes = remainingNodes.Except(group).ToList();
+                result.Add(group);
             }
 
+            return result;
+        }
+
+        private void FindAllNeighborEdges(Node start, List<Node> nodes, List<Node> result)
+        {
+            for (var xAxis = -1; xAxis <= 1; xAxis++)
+            {
+                for (var yAxis = -1; yAxis <= 1; yAxis++)
+                {
+                    var possibleNeighbor = nodes.FirstOrDefault(node =>
+                        node.GridElement.Position == start.GridElement.Position + new Vector3Int(xAxis, 0, yAxis));
+
+                    if (possibleNeighbor == null || result.Contains(possibleNeighbor)) continue;
+                        
+                    result.Add(possibleNeighbor);
+                    FindAllNeighborEdges(possibleNeighbor, nodes, result);
+                }
+            }
+        }
+
+        [MethodTimer]
+        private List<List<Node>> FindAllEdgeToEdgePathsFromGroups(List<List<Node>> edgeGroups, List<Node> allNodes, PathFinder pathFinder)
+        {
+            var paths = new List<List<Node>>();
+
+            Parallel.ForEach(edgeGroups, edgeGroup =>
+            {
+                Parallel.For(0, edgeGroup.Count - 1, i =>
+                {
+                    var edgeNodeA = edgeGroup[i];
+
+                    Parallel.For(i + 1, edgeGroup.Count, a =>
+                    {
+                        var edgeNodeB = edgeGroup[a];
+                        if ((edgeNodeA.GridElement.Position - edgeNodeB.GridElement.Position).sqrMagnitude <
+                            _mapSettings.TunnelMinLength) return;
+
+                        var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
+
+                        if (path == null) return;
+
+                        var pathAsNodes = path.ConvertAll(input => allNodes.First(node => node.ID == input));
+                        paths.Add(pathAsNodes);
+                    });
+                });
+            });
             return paths;
         }
 
@@ -273,7 +332,7 @@ namespace MapGen.Map
             return result;
         }
 
-
+        [MethodTimer]
         private void CreateWall()
         {
             for (var x = 0; x < _grids.GetLength(0); x++)
@@ -288,6 +347,7 @@ namespace MapGen.Map
             }
         }
 
+        [MethodTimer]
         private void MakeBanAreaOfSurface()
         {
             for (var x = 0; x < _grids.GetLength(0); x++)
@@ -303,7 +363,8 @@ namespace MapGen.Map
                     gridTop.LockGrid();
             }
         }
-
+        
+        [MethodTimer]
         private void SpawnObstacles(int layer)
         {
             var rotatedPlacables = new List<PlacableData>();
@@ -400,8 +461,10 @@ namespace MapGen.Map
             if (_grids == null) return;
             if (!_drawGizmo) return;
 
-            if (_showPaths)
+            if (_mapGizmos.HasFlag(MapGizmos.Paths))
+            {
                 foreach (var gridElements in _cachedPaths)
+                {
                     for (var i = 0; i < gridElements.Count; i++)
                     {
                         var gridElement = gridElements[i];
@@ -422,45 +485,47 @@ namespace MapGen.Map
                         Gizmos.color = Color.yellow;
                         Gizmos.DrawSphere((Vector3)gridElement.Position * _offsetScaler, _gizmoRadius);
                     }
-
+                }
+            }
+            
+            if (_mapGizmos.HasFlag(MapGizmos.Edges))
+            {
+                foreach (var edgeGroup in _edgeGroups)
+                {
+                    Gizmos.color = UnityEngine.Random.ColorHSV();
+                    foreach (var edge in edgeGroup)
+                    {
+                        Gizmos.DrawSphere((Vector3)edge.GridElement.Position * _offsetScaler, _gizmoRadius);
+                    }
+                }
+            }
+            
             foreach (var grid in _grids)
             {
-                var shouldSkip = true;
-                switch (grid.GridState)
+                foreach (MapGizmos flag in _mapGizmos.GetFlags())
                 {
-                    case GridState.Filled when _showFilled:
-                    case GridState.Locked when _showLocked:
-                    case GridState.CanBeFilled when _showCanBeFilled:
-                        shouldSkip = false;
-                        break;
+                    switch (flag)
+                    {
+                        case MapGizmos.None:
+                            break;
+                        case MapGizmos.Filled when grid.GridState == GridState.Filled:
+                            Gizmos.color = Color.blue;
+                            Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
+                            break;
+                        case MapGizmos.Locked when grid.GridState == GridState.Locked:
+                            Gizmos.color = Color.red;
+                            Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
+                            break;
+                        case MapGizmos.CanBeFilled when grid.GridState == GridState.CanBeFilled:
+                            Gizmos.color = Color.green;
+                            Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
+                            break;
+                        case MapGizmos.PlacableGround when grid.GridLayer == GridLayer.CanPlacableGround:
+                            Gizmos.color = Color.yellow;
+                            Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
+                            break;
+                    }
                 }
-
-                switch (grid.GridLayer)
-                {
-                    case GridLayer.CanPlacableGround when _showPlacableGround:
-                        shouldSkip = false;
-                        break;
-                }
-
-                if(shouldSkip) continue;
-                
-                var color = Color.black;
-                color = grid.GridState switch
-                {
-                    GridState.Filled => Color.blue,
-                    GridState.CanBeFilled => Color.green,
-                    GridState.Locked => Color.red,
-                    _ => color
-                };
-
-                color = grid.GridLayer switch
-                {
-                    GridLayer.CanPlacableGround => Color.yellow,
-                    _ => color
-                };
-
-                Gizmos.color = color;
-                Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
             }
         }
     }

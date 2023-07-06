@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MapGen.Utilities
@@ -11,6 +12,13 @@ namespace MapGen.Utilities
             var amount = UnityEngine.Random.Range(0, shuffled.Count);
             var result = shuffled.GetRange(0, amount);
             return result;
+        }
+        
+        public static IEnumerable<Enum> GetFlags(this Enum input)
+        {
+            foreach (Enum value in Enum.GetValues(input.GetType()))
+                if (input.HasFlag(value))
+                    yield return value;
         }
     }
 }
