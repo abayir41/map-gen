@@ -19,11 +19,20 @@ MonoBehaviour:
   - m_RelativePath: Library\ScriptAssemblies\Assembly-CSharp.dll
     m_IsActive: 1
     m_LastWriteTime: 0
+  - m_RelativePath: Library\ScriptAssemblies\Assembly-CSharp-firstpass.dll
+    m_IsActive: 1
+    m_LastWriteTime: 0
+  - m_RelativePath: Library\ScriptAssemblies\Assembly-CSharp-Editor.dll
+    m_IsActive: 1
+    m_LastWriteTime: 0
+  - m_RelativePath: Library\ScriptAssemblies\Assembly-CSharp-Editor-firstpass.dll
+    m_IsActive: 1
+    m_LastWriteTime: 0
   m_Components:
     m_SubObjects:
     - {fileID: 3139379051760529334}
     m_Owner: {fileID: 11400000}
-  m_IsEnabled: 0
+  m_IsEnabled: 1
 --- !u!114 &3139379051760529334
 MonoBehaviour:
   m_ObjectHideFlags: 0
