@@ -22,7 +22,7 @@ namespace MapGen.Utilities
             }
             else
             {
-                SetNoiseTexture(noise.Generate(mapSettings.X, mapSettings.Z), mapSettings.X, mapSettings.Z);
+                SetNoiseTexture(noise.Generate(mapSettings.MapSize.x, mapSettings.MapSize.z), mapSettings.MapSize.x, mapSettings.MapSize.z);
             }
         }
 

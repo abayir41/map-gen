@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MapGen.Placables;
 using MapGen.Random;
 using MapGen.TunnelSystem;
+using UnityEditor.Performance.ProfileAnalyzer;
 using UnityEngine;
 
 namespace MapGen.Map
@@ -10,11 +12,13 @@ namespace MapGen.Map
     [CreateAssetMenu(fileName = "Map Settings", menuName = "MapGen/Map/Settings", order = 0)]
     public class MapSettings : ScriptableObject
     {
+        private const int MAX_SIZE = 200;
+        private const int MIN_SIZE = 5;
+        
         [Header("Map Settings")]
-        [SerializeField] private int x;
-        [SerializeField] private int y;
-        [SerializeField] private int z;
+        [SerializeField] private Vector3Int _mapSize;
         [SerializeField] private int _obstaclesMaxHeight;
+        [SerializeField] private MapParts _mapParts;
         
         [Header("Map Obstacles")]
         [SerializeField] private Placable ground;
@@ -42,14 +46,12 @@ namespace MapGen.Map
         [SerializeField] private float tunnelAverageMinHeight;
         [SerializeField] private float betweenTunnelMinSpace;
         [SerializeField] private TunnelBrush tunnelBrush;
-        
-        
-        public int X => Mathf.Clamp(x, 3, 200);
-        public int Y => Mathf.Clamp(y, 4, 50);
-        public int Z => Mathf.Clamp(z, 3, 200);
-        public int ObstaclesMaxHeight => _obstaclesMaxHeight;
 
-        
+
+        public Vector3Int MapSize => _mapSize;
+        public int ObstaclesMaxHeight => _obstaclesMaxHeight;
+        public MapParts MapParts => _mapParts;
+
         public Placable Ground => ground;
         public Placable Wall => wall;
         public List<Placable> Placables => placables;
@@ -68,7 +70,40 @@ namespace MapGen.Map
         public float TunnelAverageMinHeight => tunnelAverageMinHeight;
         public float BetweenTunnelMinSpace => betweenTunnelMinSpace;
         public TunnelBrush TunnelBrush => tunnelBrush;
-        
 
+        private void OnValidate()
+        {
+            if (_mapSize.x > MAX_SIZE)
+            {
+                Debug.LogWarning($"X value exceed Max({MAX_SIZE}), setting to -> {MAX_SIZE}");
+            }
+            else if (_mapSize.x < MIN_SIZE)
+            {
+                Debug.LogWarning($"X value exceed Min({MIN_SIZE}), setting to -> {MIN_SIZE}");
+            }
+            
+            if (_mapSize.y > MAX_SIZE)
+            {
+                Debug.LogWarning($"Y value exceed Max({MAX_SIZE}), setting to -> {MAX_SIZE}");
+            }
+            else if (_mapSize.y < 5)
+            {
+                Debug.LogWarning($"Y value exceed Min({MIN_SIZE}), setting to -> {MIN_SIZE}");
+            }
+            
+            if (_mapSize.z > MAX_SIZE)
+            {
+                Debug.LogWarning($"Z value exceed Max({MAX_SIZE}), setting to -> {MAX_SIZE}");
+            }
+            else if (_mapSize.z < 5)
+            {
+                Debug.LogWarning($"Z value exceed Min({MIN_SIZE}), setting to -> {MIN_SIZE}");
+            }
+
+            var x = Mathf.Clamp(_mapSize.x, MIN_SIZE, MAX_SIZE);
+            var y = Mathf.Clamp(_mapSize.y, MIN_SIZE, MAX_SIZE);
+            var z = Mathf.Clamp(_mapSize.z, MIN_SIZE, MAX_SIZE);
+            _mapSize = new Vector3Int(x, y, z);
+        }
     }
 }

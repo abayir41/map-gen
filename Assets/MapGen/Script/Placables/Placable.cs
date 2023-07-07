@@ -1,29 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MapGen.Placables
 {
     public class Placable : MonoBehaviour
     {
-        
-        [Header("Placable Properties")]
-        [Range(1,359)] [SerializeField] private int rotationDegreeStep = 15;
-        public int RotationDegreeStep => Mathf.Clamp(rotationDegreeStep,1,360);
+
+        [Header("Placable Properties")] 
+        [SerializeField] private bool _rotatable;
+        [Range(1,359)] [SerializeField] private int _rotationDegreeStep = 15;
+        public int RotationDegreeStep => Mathf.Clamp(_rotationDegreeStep,1,360);
         
         [Header("Grid Properties")]
-        [SerializeField] private List<Vector3Int> requiredGrids;
-        [SerializeField] private List<Vector3Int> lockGrids;
-        [SerializeField] private List<Vector3Int> shouldPlacedOnGroundGrids;
-        [SerializeField] private List<Vector3Int> newGroundGrids;
-        [SerializeField] private bool useVisualsAsRequiredGrids;
-        [SerializeField] private bool useVisualAsShouldPlacedOnGroundGrids;
-        [SerializeField] private bool useVisualsAsNewGroundGrids;
-        [SerializeField] private bool useCubeRequiredGridStyle;
-        [SerializeField] private Transform visualsParent;
+        [SerializeField] protected List<Vector3Int> requiredGrids;
+        [SerializeField] protected List<Vector3Int> lockGrids;
+        [SerializeField] protected List<Vector3Int> shouldPlacedOnGroundGrids;
+        [SerializeField] protected List<Vector3Int> newGroundGrids;
+        [SerializeField] protected bool useVisualsAsRequiredGrids;
+        [SerializeField] protected bool useVisualAsShouldPlacedOnGroundGrids;
+        [SerializeField] protected bool useVisualsAsNewGroundGrids;
+        [SerializeField] protected bool useCubeRequiredGridStyle;
+        [SerializeField] protected Transform visualsParent;
         [SerializeField] private Vector2Int cubeLockOffsetX;
         [SerializeField] private Vector2Int cubeLockOffsetY;
         [SerializeField] private Vector2Int cubeLockOffsetZ;
 
+        public bool Rotatable => _rotatable;
         public List<Vector3Int> RequiredGrids => requiredGrids;
         public List<Vector3Int> ShouldPlacedOnGroundGrids => shouldPlacedOnGroundGrids;
         public List<Vector3Int> NewGroundGrids => newGroundGrids;
@@ -31,17 +34,13 @@ namespace MapGen.Placables
         public Transform VisualsParent => visualsParent;
 
         [Header("Gizmo Settings")]
-        [SerializeField] protected bool drawGizmo = true;
         [SerializeField] protected float gizmoRadius = 0.25f;
         [SerializeField] protected float offsetScaler = 1f;
-        [SerializeField] private bool drawRequireGrids;
-        [SerializeField] private bool drawLockGrids;
-        [SerializeField] private bool drawShouldPlaceGroundGrids;
-        [SerializeField] private bool drawNewGroundGrids;
+        [SerializeField] protected PlacableGizmos _placableGizmos;
 
-        protected virtual void Awake()
+        private void Awake()
         {
-            drawGizmo = false;
+            _placableGizmos = PlacableGizmos.None;
         }
 
         protected virtual void OnValidate()
@@ -83,9 +82,7 @@ namespace MapGen.Placables
 
         protected virtual void OnDrawGizmos()
         {
-            if(!drawGizmo) return;
-
-            if(requiredGrids != null && drawRequireGrids)
+            if(requiredGrids != null && _placableGizmos.HasFlag(PlacableGizmos.RequiredGrids))
                 foreach (var t in requiredGrids)
                 {
                     Gizmos.color = Color.blue;
@@ -94,7 +91,7 @@ namespace MapGen.Placables
                     Gizmos.DrawWireCube(pos, Vector3.one);
                 }
 
-            if(lockGrids != null && drawLockGrids)
+            if(lockGrids != null && _placableGizmos.HasFlag(PlacableGizmos.LockGrids))
                 foreach (var t in lockGrids)
                 {
                     Gizmos.color = Color.red;
@@ -103,7 +100,7 @@ namespace MapGen.Placables
                     Gizmos.DrawWireCube(pos, Vector3.one);
                 }
             
-            if(shouldPlacedOnGroundGrids != null && drawShouldPlaceGroundGrids)
+            if(shouldPlacedOnGroundGrids != null && _placableGizmos.HasFlag(PlacableGizmos.ShouldPlaceOnGround))
                 foreach (var t in shouldPlacedOnGroundGrids)
                 {
                     Gizmos.color = Color.black;
@@ -112,7 +109,7 @@ namespace MapGen.Placables
                     Gizmos.DrawWireCube(pos, Vector3.one);
                 }
             
-            if(newGroundGrids != null && drawNewGroundGrids)
+            if(newGroundGrids != null && _placableGizmos.HasFlag(PlacableGizmos.NewGround))
                 foreach (var t in newGroundGrids)
                 {
                     Gizmos.color = Color.yellow;

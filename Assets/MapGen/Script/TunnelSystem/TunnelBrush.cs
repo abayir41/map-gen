@@ -10,7 +10,6 @@ namespace MapGen.TunnelSystem
 
         public List<Vector3Int> DestroyPoints => destroyPoints;
 
-        [SerializeField] private bool drawDestroyPoints;
         [SerializeField] private bool useCubeDestroyPointGridStyle;
         [SerializeField] private Vector2Int cubeDestroyOffsetX;
         [SerializeField] private Vector2Int cubeDestroyOffsetY;
@@ -36,10 +35,8 @@ namespace MapGen.TunnelSystem
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
-
-            if(!drawGizmo) return;
-
-            if(destroyPoints != null && drawDestroyPoints)
+            
+            if(destroyPoints != null && _placableGizmos.HasFlag(PlacableGizmos.DestroyPoints))
                 foreach (var t in destroyPoints)
                 {
                     Gizmos.color = Color.yellow;

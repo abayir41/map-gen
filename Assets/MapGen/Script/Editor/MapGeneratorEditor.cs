@@ -11,7 +11,7 @@ namespace MapGen.Editor
         private UnityEditor.Editor _mapEditor;
         private UnityEditor.Editor _noiseSettings;
         private UnityEditor.Editor _randomSettings;
-        public bool _foldout = true;
+        private bool _foldout;
 
         public override void OnInspectorGUI()
         {

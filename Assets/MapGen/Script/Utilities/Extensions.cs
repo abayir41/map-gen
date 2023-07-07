@@ -14,9 +14,9 @@ namespace MapGen.Utilities
             return result;
         }
         
-        public static IEnumerable<Enum> GetFlags(this Enum input)
+        public static IEnumerable<T> GetFlags<T>(this T input) where T : Enum
         {
-            foreach (Enum value in Enum.GetValues(input.GetType()))
+            foreach (T value in Enum.GetValues(input.GetType()))
                 if (input.HasFlag(value))
                     yield return value;
         }

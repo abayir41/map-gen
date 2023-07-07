@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MapGen.GridSystem;
@@ -18,24 +17,22 @@ namespace MapGen.Map
         [SerializeField] private MapSettings _mapSettings;
         [SerializeField] private Transform _gridParent;
 
-        [Header("Gizmo Settings")] [SerializeField]
-        private bool _drawGizmo = true;
-
+        [Header("Gizmo Settings")]
         [SerializeField] private MapGizmos _mapGizmos;
         [SerializeField] private float _gizmoRadius = 0.25f;
         [SerializeField] private float _offsetScaler = 1f;
-        private List<List<GridElement>> _cachedPaths = new();
-        private List<List<Node>> _edgeGroups = new();
+        
 
         public MapSettings MapSettings => _mapSettings;
-        private int X => _mapSettings.X;
-        private int Y => _mapSettings.Y;
-        private int Z => _mapSettings.Z;
+        private int X => _mapSettings.MapSize.x;
+        private int Y => _mapSettings.MapSize.y;
+        private int Z => _mapSettings.MapSize.z;
 
         private GridHelper _gridHelper;
         private GridElement[,,] _grids;
         private List<Placable> _placedItems = new();
-        
+        private List<List<GridElement>> _cachedPaths = new();
+        private List<List<Node>> _edgeGroups = new();
 
         /// <summary>
         /// This function called from Editor, Look at: "MapGeneratorEditor.cs"
@@ -43,7 +40,11 @@ namespace MapGen.Map
         [MethodTimer]
         public void GenerateMap()
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("Method Should be called when game is playing, It can't be called from Editor");
+                return;
+            }
 
             SetupGeneration();
             Generate();
@@ -66,6 +67,7 @@ namespace MapGen.Map
         {
             _placedItems.Clear();
             _cachedPaths.Clear();
+            _edgeGroups.Clear();
         }
 
         private void CreateGridSystem()
@@ -96,21 +98,44 @@ namespace MapGen.Map
         private void Generate()
         {
             Debug.Log("Generation Started");
-            CreateGround();
-            MakeTunnels(_mapSettings.TunnelYLevel);
-            CreateWall();
+            if (_mapSettings.MapParts.HasFlag(MapParts.Ground))
+            {
+                CreateGround();
+            }
+
+            if (_mapSettings.MapParts.HasFlag(MapParts.Mountains))
+            {
+                CreateMountains();
+            }
+
+            if (_mapSettings.MapParts.HasFlag(MapParts.Tunnels))
+            {
+                MakeTunnels(_mapSettings.TunnelYLevel);
+            }
+
+            if (_mapSettings.MapParts.HasFlag(MapParts.Walls))
+            {
+                CreateWall();
+            }
+            
             MakeBanAreaOfSurface();
 
-            for (var height = 0; height < _mapSettings.ObstaclesMaxHeight; height++)
-            for (var i = 0; i < _mapSettings.IterationAmount; i++)
-                SpawnObstacles(height);
+            if (_mapSettings.MapParts.HasFlag(MapParts.Obstacles))
+            {
+                for (var height = 0; height < _mapSettings.ObstaclesMaxHeight; height++)
+                {
+                    for (var i = 0; i < _mapSettings.IterationAmount; i++)
+                    {
+                        SpawnObstacles(height);
+                    }
+                }
+            }
+            
         }
 
         [MethodTimer]
         private void CreateGround()
         {
-            var groundNoise = _mapSettings.GroundPlacementNoise.Generate(X, Z);
-
             var xDimension = _grids.GetLength(0);
             var zDimension = _grids.GetLength(2);
 
@@ -123,18 +148,26 @@ namespace MapGen.Map
                     SpawnObject(grid, _mapSettings.Ground, GridLayer.Ground, 0);
                 }
             }
-            
+        }
 
+        [MethodTimer]
+        private void CreateMountains()
+        {
+            var mountains = _mapSettings.GroundPlacementNoise.Generate(X, Z);
+
+            var xDimension = _grids.GetLength(0);
+            var zDimension = _grids.GetLength(2);
+            
             for (var x = 0; x < xDimension; x++)
             {
                 for (var z = 0; z < zDimension; z++)
                 {
-                    var height = groundNoise[x, z] * _mapSettings.GroundHeightFactor -
+                    var height = mountains[x, z] * _mapSettings.GroundHeightFactor -
                                  _mapSettings.GroundMoveDownFactor;
 
                     for (var y = 1; y < height; y++)
                     {
-                        if (ZeroOneIntervalToPercent(groundNoise[x, z]) < height) break;
+                        if (ZeroOneIntervalToPercent(mountains[x, z]) < height) break;
                         var grid = _grids[x, y, z];
                         grid.MakeGridCanBeFilledGround();
                         SpawnObject(grid, _mapSettings.Ground, GridLayer.Ground, 0);
@@ -493,7 +526,6 @@ namespace MapGen.Map
         private void OnDrawGizmos()
         {
             if (_grids == null) return;
-            if (!_drawGizmo) return;
 
             if (_mapGizmos.HasFlag(MapGizmos.Paths))
             {
