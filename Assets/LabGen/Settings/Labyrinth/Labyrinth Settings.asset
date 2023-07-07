@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f9da80bcb534eebb9afc9ceb05df11b, type: 3}
   m_Name: Labyrinth Settings
   m_EditorClassIdentifier: 
-  _mapSize: {x: 50, y: 50}
+  _mapSize: {x: 20, y: 20}
   _randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
-  _mazeGridPlacable: {fileID: 3110686144595121050, guid: 3e0b473a4a76dc141bdf80ee5fbe9bbe, type: 3}
+  _wallThickness: 2
+  _wayThickness: 5
+  _wallHeight: 3
+  _mazeCubicGridPlacable: {fileID: 3110686144595121050, guid: 3e0b473a4a76dc141bdf80ee5fbe9bbe, type: 3}
