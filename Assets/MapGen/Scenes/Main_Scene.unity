@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182633369}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.01889, y: -2.538115, z: 35.804893}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -813,7 +813,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mapSettings: {fileID: 11400000, guid: da5672087281f8d48a79907dab048ee9, type: 2}
   _gridParent: {fileID: 293857008}
-  _drawGizmo: 1
   _mapGizmos: 0
   _gizmoRadius: 0.25
   _offsetScaler: 1

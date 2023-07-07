@@ -160,7 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a2410426954a69895125bd2b33c026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationDegreeStep: 25
+  _rotatable: 0
+  _rotationDegreeStep: 15
   requiredGrids:
   - {x: 0, y: 0, z: 0}
   lockGrids: []
@@ -176,10 +177,6 @@ MonoBehaviour:
   cubeLockOffsetX: {x: 0, y: 0}
   cubeLockOffsetY: {x: 0, y: 0}
   cubeLockOffsetZ: {x: 0, y: 0}
-  drawGizmo: 1
   gizmoRadius: 0.25
   offsetScaler: 1
-  drawRequireGrids: 0
-  drawLockGrids: 0
-  drawShouldPlaceGroundGrids: 0
-  drawNewGroundGrids: 0
+  _placableGizmos: 5
