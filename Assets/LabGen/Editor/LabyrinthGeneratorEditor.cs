@@ -9,7 +9,7 @@ namespace LabGen.Editor
     {
         private LabyrinthGenerator _mapGenerator;
         private UnityEditor.Editor _labEditor;
-        public bool _foldout = true;
+        private bool _foldout;
 
         public override void OnInspectorGUI()
         {
