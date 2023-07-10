@@ -29,9 +29,9 @@ namespace MapGen.Map
         private int Z => _mapSettings.MapSize.z;
 
         private GridHelper _gridHelper;
-        private GridElement[,,] _grids;
+        private GridCell[,,] _grids;
         private List<Placable> _placedItems = new();
-        private List<List<GridElement>> _cachedPaths = new();
+        private List<List<GridCell>> _cachedPaths = new();
         private List<List<Node>> _edgeGroups = new();
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace MapGen.Map
 
         private void CreateGridSystem()
         {
-            _grids = new GridElement[X, Y, Z];
+            _grids = new GridCell[X, Y, Z];
             _gridHelper = new GridHelper(_grids, _mapSettings);
             var xDimension = _grids.GetLength(0);
             var yDimension = _grids.GetLength(1);
@@ -84,7 +84,7 @@ namespace MapGen.Map
                 {
                     for (var z = 0; z < zDimension; z++)
                     {
-                        _grids[x, y, z] = new GridElement(x, y, z);
+                        _grids[x, y, z] = new GridCell(x, y, z);
                     }
                 }
             }
@@ -144,8 +144,8 @@ namespace MapGen.Map
                 for (var z = 0; z < zDimension; z++)
                 {
                     var grid = _grids[x, 0, z];
-                    grid.MakeGridCanBeFilledGround();
-                    SpawnObject(grid, _mapSettings.Ground, GridLayer.Ground, 0);
+                    grid.MakeCellCanBeFilledGround();
+                    SpawnObject(grid, _mapSettings.Ground, CellLayer.Ground, 0);
                 }
             }
         }
@@ -169,8 +169,8 @@ namespace MapGen.Map
                     {
                         if (ZeroOneIntervalToPercent(mountains[x, z]) < height) break;
                         var grid = _grids[x, y, z];
-                        grid.MakeGridCanBeFilledGround();
-                        SpawnObject(grid, _mapSettings.Ground, GridLayer.Ground, 0);
+                        grid.MakeCellCanBeFilledGround();
+                        SpawnObject(grid, _mapSettings.Ground, CellLayer.Ground, 0);
                     }
                 }
             }
@@ -193,7 +193,7 @@ namespace MapGen.Map
 
             if (tunnelPaths.Count == 0) return;
 
-            var pathsAsGrids = tunnelPaths.ConvertAll(input => input.ConvertAll(node => node.GridElement));
+            var pathsAsGrids = tunnelPaths.ConvertAll(input => input.ConvertAll(node => node.GridCell));
             var lenghtFilteredTunnels = _gridHelper.FilterByHeight(pathsAsGrids);
             var fixedTunnelPaths = lenghtFilteredTunnels.ConvertAll(FixThePath);
             var heightFilteredTunnels = _gridHelper.FilterPathsByLenght(fixedTunnelPaths);
@@ -206,7 +206,7 @@ namespace MapGen.Map
         }
 
         [MethodTimer]
-        private void CreateTunnel(List<GridElement> path)
+        private void CreateTunnel(List<GridCell> path)
         {
             var start = path.First();
             var end = path.Last();
@@ -222,14 +222,14 @@ namespace MapGen.Map
                     var pos = pathPoint.Position +
                               _gridHelper.RotateObstacleVector(rotationDegree, tunnelBrushDestroyPoint);
 
-                    if (_gridHelper.IsPosOutsideOfGrids(pos)) continue;
+                    if (_gridHelper.IsPosOutsideOfGrid(pos)) continue;
 
                     var grid = _grids[pos.x, pos.y, pos.z];
                     if (grid.PlacedItem is TunnelBrush) continue;
                     
                     var ground = grid.PlacedItem;
-                    grid.FreeTheGrid();
-                    grid.MakeGridEmpty();
+                    grid.FreeTheCell();
+                    grid.MakeCellEmpty();
                     
                     if (grid.PlacedItem == null) continue;
                     
@@ -238,7 +238,7 @@ namespace MapGen.Map
                 }
 
                 if (_gridHelper.IsPlacableSuitable(pathPoint, _mapSettings.TunnelBrush, rotationDegree))
-                    SpawnObject(pathPoint, _mapSettings.TunnelBrush, GridLayer.Obstacle, rotationDegree);
+                    SpawnObject(pathPoint, _mapSettings.TunnelBrush, CellLayer.Obstacle, rotationDegree);
             }
             
             _cachedPaths.Add(path);
@@ -254,13 +254,13 @@ namespace MapGen.Map
             {
                 var grid = _grids[x, layer, z];
 
-                if (grid.GridState == GridState.Filled && _gridHelper.IsEdgeGroundYDimensionCheck(grid))
+                if (grid.CellState == CellState.Filled && _gridHelper.IsEdgeGroundYDimensionCheck(grid))
                 {
                     nodes.Add(new Node(nodes.Count, NodeState.EdgeGround, grid));
                     continue;
                 }
 
-                if (grid.GridState == GridState.Filled) nodes.Add(new Node(nodes.Count, NodeState.Ground, grid));
+                if (grid.CellState == CellState.Filled) nodes.Add(new Node(nodes.Count, NodeState.Ground, grid));
             }
 
             return nodes;
@@ -276,22 +276,22 @@ namespace MapGen.Map
             {
                 var grid = _grids[x, layer, z];
 
-                if (nodes.All(node => node.GridElement != grid))
+                if (nodes.All(node => node.GridCell != grid))
                     continue;
 
-                var nodeGrid = nodes.First(node => node.GridElement == grid);
+                var nodeGrid = nodes.First(node => node.GridCell == grid);
                 var right = _grids[x + 1, layer, z];
                 var bottom = _grids[x, layer, z + 1];
 
-                if (nodes.Any(node => node.GridElement == right))
+                if (nodes.Any(node => node.GridCell == right))
                 {
-                    var rightGrid = nodes.First(node => node.GridElement == right);
+                    var rightGrid = nodes.First(node => node.GridCell == right);
                     pathFinder.AddEdge(rightGrid.ID, nodeGrid.ID);
                 }
 
-                if (nodes.Any(node => node.GridElement == bottom))
+                if (nodes.Any(node => node.GridCell == bottom))
                 {
-                    var bottomGrid = nodes.First(node => node.GridElement == bottom);
+                    var bottomGrid = nodes.First(node => node.GridCell == bottom);
                     pathFinder.AddEdge(bottomGrid.ID, nodeGrid.ID);
                 }
             }
@@ -335,7 +335,7 @@ namespace MapGen.Map
                 for (var yAxis = -1; yAxis <= 1; yAxis++)
                 {
                     var possibleNeighbor = nodes.FirstOrDefault(node =>
-                        node.GridElement.Position == start.GridElement.Position + new Vector3Int(xAxis, 0, yAxis));
+                        node.GridCell.Position == start.GridCell.Position + new Vector3Int(xAxis, 0, yAxis));
 
                     if (possibleNeighbor == null || result.Contains(possibleNeighbor)) continue;
                         
@@ -359,7 +359,7 @@ namespace MapGen.Map
                     Parallel.For(i + 1, edgeGroup.Count, a =>
                     {
                         var edgeNodeB = edgeGroup[a];
-                        if ((edgeNodeA.GridElement.Position - edgeNodeB.GridElement.Position).sqrMagnitude <
+                        if ((edgeNodeA.GridCell.Position - edgeNodeB.GridCell.Position).sqrMagnitude <
                             _mapSettings.TunnelMinLength) return;
 
                         var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
@@ -374,7 +374,7 @@ namespace MapGen.Map
             return paths;
         }
 
-        private List<GridElement> FixThePath(List<GridElement> path)
+        private List<GridCell> FixThePath(List<GridCell> path)
         {
             var start = path.First().Position;
             var end = path.Last().Position;
@@ -402,8 +402,8 @@ namespace MapGen.Map
                         if (x != 0 && x != _grids.GetLength(0) - 1 && z != 0 && z != _grids.GetLength(2) - 1) continue;
 
                         var grid = _grids[x, y, z];
-                        grid.MakeGridCanBeFilledGround();
-                        SpawnObject(grid, _mapSettings.Wall, GridLayer.Obstacle, 0);
+                        grid.MakeCellCanBeFilledGround();
+                        SpawnObject(grid, _mapSettings.Wall, CellLayer.Obstacle, 0);
                     }
                 }
             }
@@ -422,11 +422,11 @@ namespace MapGen.Map
                     var gridTopTop = _grids[x, _grids.GetLength(1) - 1, z];
                     var gridTop = _grids[x, _grids.GetLength(1) - 2, z];
 
-                    if (gridTopTop.GridState != GridState.Filled)
-                        gridTopTop.LockGrid();
+                    if (gridTopTop.CellState != CellState.Filled)
+                        gridTopTop.LockCell();
 
-                    if (gridTop.GridState != GridState.Filled)
-                        gridTop.LockGrid();
+                    if (gridTop.CellState != CellState.Filled)
+                        gridTop.LockCell();
                 }
             }
         }
@@ -455,13 +455,13 @@ namespace MapGen.Map
                 {
                     if (!_gridHelper.IsPlacableSuitable(grid, data.Placable, data.Rotation)) continue;
 
-                    SpawnObject(grid, data.Placable, GridLayer.Obstacle, data.Rotation);
+                    SpawnObject(grid, data.Placable, CellLayer.Obstacle, data.Rotation);
                     break;
                 }
             }
         }
 
-        private void SpawnObject(GridElement pos, Placable placable, GridLayer gridLayer, float rotation)
+        private void SpawnObject(GridCell pos, Placable placable, CellLayer cellLayer, float rotation)
         {
             if (!_gridHelper.IsPlacableSuitable(pos, placable, rotation))
                 Debug.LogWarning("Trying to spawn an object that is not suitable");
@@ -477,47 +477,47 @@ namespace MapGen.Map
             {
                 var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, placableRequiredGrid);
                 var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
-                grid.FillGrid(placableObj, gridLayer);
+                grid.FillCell(placableObj, cellLayer);
             }
 
             foreach (var placableLockGrid in placable.LockGrids)
             {
                 var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, placableLockGrid);
-                if (_gridHelper.IsPosOutsideOfGrids(checkedGridPos))
+                if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
                     continue;
 
                 var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
 
-                if (grid.GridState != GridState.Filled)
-                    grid.LockGrid();
+                if (grid.CellState != CellState.Filled)
+                    grid.LockCell();
             }
 
             foreach (var placableNewGroundGrid in placable.NewGroundGrids)
             {
                 var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, placableNewGroundGrid);
-                if (_gridHelper.IsPosOutsideOfGrids(checkedGridPos))
+                if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
                     continue;
 
                 var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
 
-                if (grid.GridState is not (GridState.Locked or GridState.Filled))
-                    grid.MakeGridCanBeFilledGround();
+                if (grid.CellState is not (CellState.Locked or CellState.Filled))
+                    grid.MakeCellCanBeFilledGround();
             }
         }
 
-        private void DestroyGrid(GridElement grid)
+        private void DestroyGrid(GridCell grid)
         {
             var placable = grid.PlacedItem;
 
             if (grid.PlacedItem == null)
             {
-                grid.FreeTheGrid();
+                grid.FreeTheCell();
                 return;
             }
 
             foreach (var gridElement in _grids)
                 if (gridElement.PlacedItem == placable)
-                    grid.FreeTheGrid();
+                    grid.FreeTheCell();
 
             _placedItems.Remove(placable);
             Destroy(placable.gameObject);
@@ -561,7 +561,7 @@ namespace MapGen.Map
                     Gizmos.color = UnityEngine.Random.ColorHSV();
                     foreach (var edge in edgeGroup)
                     {
-                        Gizmos.DrawSphere((Vector3)edge.GridElement.Position * _offsetScaler, _gizmoRadius);
+                        Gizmos.DrawSphere((Vector3)edge.GridCell.Position * _offsetScaler, _gizmoRadius);
                     }
                 }
             }
@@ -574,19 +574,19 @@ namespace MapGen.Map
                     {
                         case MapGizmos.None:
                             break;
-                        case MapGizmos.Filled when grid.GridState == GridState.Filled:
+                        case MapGizmos.Filled when grid.CellState == CellState.Filled:
                             Gizmos.color = Color.blue;
                             Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
                             break;
-                        case MapGizmos.Locked when grid.GridState == GridState.Locked:
+                        case MapGizmos.Locked when grid.CellState == CellState.Locked:
                             Gizmos.color = Color.red;
                             Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
                             break;
-                        case MapGizmos.CanBeFilled when grid.GridState == GridState.CanBeFilled:
+                        case MapGizmos.CanBeFilled when grid.CellState == CellState.CanBeFilled:
                             Gizmos.color = Color.green;
                             Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
                             break;
-                        case MapGizmos.PlacableGround when grid.GridLayer == GridLayer.CanPlacableGround:
+                        case MapGizmos.PlacableGround when grid.CellLayer == CellLayer.CanPlacableGround:
                             Gizmos.color = Color.yellow;
                             Gizmos.DrawSphere((Vector3)grid.Position * _offsetScaler, _gizmoRadius);
                             break;

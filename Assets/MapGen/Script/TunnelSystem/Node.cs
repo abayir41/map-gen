@@ -6,13 +6,13 @@ namespace MapGen.TunnelSystem
     {
         public int ID { get; }
         public NodeState NodeState { get; }
-        public GridElement GridElement { get; }
+        public GridCell GridCell { get; }
         
-        public Node(int id, NodeState nodeState, GridElement gridElement)
+        public Node(int id, NodeState nodeState, GridCell gridCell)
         {
             ID = id;
             NodeState = nodeState;
-            GridElement = gridElement;
+            GridCell = gridCell;
         }
     }
 }

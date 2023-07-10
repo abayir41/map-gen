@@ -1,6 +1,6 @@
 ﻿namespace MapGen.GridSystem
 {
-    public enum GridLayer
+    public enum CellLayer
     {
         Ground,
         CanPlacableGround,

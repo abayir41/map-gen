@@ -1,6 +1,6 @@
 ﻿namespace MapGen.GridSystem
 {
-    public enum GridState
+    public enum CellState
     {
         Filled,
         CanBeFilled,
