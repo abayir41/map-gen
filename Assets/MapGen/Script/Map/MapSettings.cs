@@ -24,6 +24,7 @@ namespace MapGen.Map
         [SerializeField] private Placable ground;
         [SerializeField] private Placable wall;
         [SerializeField] private List<Placable> placables;
+        [SerializeField] private float _maxObstacleRotation;
         
         [Header("Random Settings")]
         [SerializeField] private RandomSettings randomSettings;
@@ -45,7 +46,7 @@ namespace MapGen.Map
         [SerializeField] private float tunnelMinLength;
         [SerializeField] private float tunnelAverageMinHeight;
         [SerializeField] private float betweenTunnelMinSpace;
-        [SerializeField] private TunnelBrush tunnelBrush;
+        [SerializeField] private TunnelBrush _tunnelBrush;
 
 
         public Vector3Int MapSize => _mapSize;
@@ -55,7 +56,8 @@ namespace MapGen.Map
         public Placable Ground => ground;
         public Placable Wall => wall;
         public List<Placable> Placables => placables;
-        
+        public float MaxObstacleRotation => _maxObstacleRotation;
+
         public RandomSettings RandomSettings => randomSettings;
         public Noise.Noise ObjectPlacementNoise => objectPlacementNoise;
         public float ObjectPlacementThreshold => objectPlacementThreshold;
@@ -69,7 +71,8 @@ namespace MapGen.Map
         public float TunnelMinLength => tunnelMinLength;
         public float TunnelAverageMinHeight => tunnelAverageMinHeight;
         public float BetweenTunnelMinSpace => betweenTunnelMinSpace;
-        public TunnelBrush TunnelBrush => tunnelBrush;
+        public TunnelBrush TunnelBrush => _tunnelBrush;
+        
 
         private void OnValidate()
         {

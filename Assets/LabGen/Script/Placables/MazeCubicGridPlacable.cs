@@ -12,39 +12,10 @@ namespace LabGen.Placables
         [SerializeField] private int _wallVisualScale = 1;
         private Dictionary<MazeCubicPositions, List<GameObject>> _posVisualsDict = new();
 
-        protected override void OnValidate()
-        {
-            if (useCubeRequiredGridStyle)
-            {
-                Debug.LogWarning($"You can't use '{nameof(useCubeRequiredGridStyle)}' in Placable that needs to be setup");
-                useCubeRequiredGridStyle = false;
-            }
-
-            if (useVisualsAsRequiredGrids)
-            {
-                Debug.LogWarning($"You can't use '{nameof(useVisualsAsRequiredGrids)}' in Placable that needs to be setup");
-                useVisualsAsRequiredGrids = false;
-            }
-            
-            if (useVisualsAsNewGroundGrids)
-            {
-                Debug.LogWarning($"You can't use '{nameof(useVisualsAsNewGroundGrids)}' in Placable that needs to be setup");
-                useVisualsAsNewGroundGrids = false;
-            }
-
-            if (useVisualAsShouldPlacedOnGroundGrids)
-            {
-                Debug.LogWarning($"You can't use '{nameof(useVisualAsShouldPlacedOnGroundGrids)}' in Placable that needs to be setup");
-                useVisualAsShouldPlacedOnGroundGrids = false;
-            }
-            
-            base.OnValidate();
-        }
-
         public void SetupMazePlacable(int wallThickness, int wayThickness, int wallHeight)
         {
             InstantiateWalls(wallThickness, wayThickness, wallHeight);
-            foreach (var (position, visuals) in _posVisualsDict)
+            foreach (var (_, visuals) in _posVisualsDict)
             {
                 foreach (var visual in visuals)
                 {
@@ -71,7 +42,7 @@ namespace LabGen.Placables
                         
                         if(position == MazeCubicPositions.Way) continue;
                         
-                        var instantiated = Instantiate(_wallVisual, visualsParent);
+                        var instantiated = Instantiate(_wallVisual, _visualsParent);
                         instantiated.transform.localPosition = new Vector3(x, h, y) * _wallVisualScale;
                         instantiated.gameObject.name = position + "" + h;
                         _posVisualsDict[position].Add(instantiated);

@@ -69,29 +69,38 @@ namespace MapGen.Map
         
         public bool IsPlacableSuitable(GridCell pos, Placable placable, float rotation)
         {
-            foreach (var placableRequiredGrid in placable.RequiredGrids)
+            var requiredGrids = placable.Grids.FindAll(grid => grid.GetCellType() == PlacableCellType.Required);
+            foreach (var requiredGrid in requiredGrids)
             {
-                var checkedGridPos = pos.Position + RotateObstacleVector(rotation, placableRequiredGrid);
-                if (IsPosOutsideOfGrid(checkedGridPos))
+                foreach (var placableRequiredGrid in requiredGrid.CellPositions)
                 {
-                    return false;
-                }
+                    var checkedGridPos = pos.Position + RotateObstacleVector(rotation, placableRequiredGrid);
+                    if (IsPosOutsideOfGrid(checkedGridPos))
+                    {
+                        return false;
+                    }
 
-                var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
-                if (grid.CellState is not CellState.CanBeFilled)
-                {
-                    return false;
+                    var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
+                    if (grid.CellState is not CellState.CanBeFilled)
+                    {
+                        return false;
+                    }
                 }
             }
-            
-            foreach (var placableShouldPlacedOnGroundGrid in placable.ShouldPlacedOnGroundGrids)
-            {
-                var checkedGridPos = pos.Position +  RotateObstacleVector(rotation, placableShouldPlacedOnGroundGrid);
 
-                var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
-                if (grid.CellLayer != CellLayer.CanPlacableGround)
+            var shouldPlaceOnGroundGrids = placable.Grids.FindAll(grid => grid.GetCellType() == PlacableCellType.ShouldPlaceOnGround);
+            foreach (var shouldPlaceOnGroundGrid in shouldPlaceOnGroundGrids)
+            {
+                foreach (var placableShouldPlacedOnGroundGrid in shouldPlaceOnGroundGrid.CellPositions)
                 {
-                    return false;
+                    var checkedGridPos =
+                        pos.Position + RotateObstacleVector(rotation, placableShouldPlacedOnGroundGrid);
+
+                    var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
+                    if (grid.CellLayer != CellLayer.CanPlacableGround)
+                    {
+                        return false;
+                    }
                 }
             }
 

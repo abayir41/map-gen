@@ -16,8 +16,11 @@ namespace MapGen.Map
     {
         [SerializeField] private MapSettings _mapSettings;
         [SerializeField] private Transform _gridParent;
+        [SerializeField] private Transform _physicalGridParent;
+        [SerializeField] private GridCellMono _cellPrefab;
 
-        [Header("Gizmo Settings")]
+        [Header("Gizmo Settings")] 
+        [SerializeField] private bool _drawGizmos;
         [SerializeField] private MapGizmos _mapGizmos;
         [SerializeField] private float _gizmoRadius = 0.25f;
         [SerializeField] private float _offsetScaler = 1f;
@@ -217,7 +220,7 @@ namespace MapGen.Map
 
             foreach (var pathPoint in path)
             {
-                foreach (var tunnelBrushDestroyPoint in _mapSettings.TunnelBrush.DestroyPoints)
+                foreach (var tunnelBrushDestroyPoint in _mapSettings.TunnelBrush.DestroyPoints.CellPositions)
                 {
                     var pos = pathPoint.Position +
                               _gridHelper.RotateObstacleVector(rotationDegree, tunnelBrushDestroyPoint);
@@ -399,7 +402,7 @@ namespace MapGen.Map
                 {
                     for (var z = 0; z < zDimension; z++)
                     {
-                        if (x != 0 && x != _grids.GetLength(0) - 1 && z != 0 && z != _grids.GetLength(2) - 1) continue;
+                        if (IsInsideOfGrid(x,z)) continue;
 
                         var grid = _grids[x, y, z];
                         grid.MakeCellCanBeFilledGround();
@@ -407,6 +410,11 @@ namespace MapGen.Map
                     }
                 }
             }
+        }
+
+        private bool IsInsideOfGrid(int x, int z)
+        {
+            return x != 0 && x != _grids.GetLength(0) - 1 && z != 0 && z != _grids.GetLength(2) - 1;
         }
 
         [MethodTimer]
@@ -437,8 +445,15 @@ namespace MapGen.Map
             var rotatedPlacables = new List<PlacableData>();
 
             foreach (var placable in _mapSettings.Placables)
-                for (var i = 0; i < 360; i += placable.RotationDegreeStep)
+            {
+                if(!placable.Rotatable) continue;
+                
+                for (var i = 0; i < _mapSettings.MaxObstacleRotation; i += placable.RotationDegreeStep)
+                {
                     rotatedPlacables.Add(new PlacableData(placable, i));
+                }
+            }
+                
 
             var noise = _mapSettings.ObjectPlacementNoise.Generate(X, Z);
 
@@ -464,7 +479,10 @@ namespace MapGen.Map
         private void SpawnObject(GridCell pos, Placable placable, CellLayer cellLayer, float rotation)
         {
             if (!_gridHelper.IsPlacableSuitable(pos, placable, rotation))
-                Debug.LogWarning("Trying to spawn an object that is not suitable");
+            {
+                Debug.LogWarning("Trying to spawn an object that is not suitable. Process Canceled");
+                return;
+            }
 
             var placableObj = Instantiate(placable, _gridParent);
             placableObj.transform.position = pos.GetWorldPosition();
@@ -472,36 +490,53 @@ namespace MapGen.Map
 
 
             _placedItems.Add(placableObj);
-
-            foreach (var placableRequiredGrid in placable.RequiredGrids)
+            
+            
+            var physicalVolumes = placable.Grids.FindAll(grid => grid.GetCellType() == PlacableCellType.PhysicalVolume);
+            foreach (var physicalVolume in physicalVolumes)
             {
-                var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, placableRequiredGrid);
-                var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
-                grid.FillCell(placableObj, cellLayer);
+                foreach (var physicalCellPos in physicalVolume.CellPositions)
+                {
+                    var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, physicalCellPos);
+                    var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
+                    grid.FillCell(placableObj, cellLayer);
+                    var physicalCell = Instantiate(_cellPrefab, _physicalGridParent);
+                    physicalCell.transform.position = checkedGridPos;
+                    physicalCell.GridPos = checkedGridPos;
+                }
             }
 
-            foreach (var placableLockGrid in placable.LockGrids)
+            var lockGrids = placable.Grids.FindAll(grid => grid.GetCellType() == PlacableCellType.Lock);
+            foreach (var lockGrid in lockGrids)
             {
-                var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, placableLockGrid);
-                if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
-                    continue;
+                foreach (var placableLockGrid in lockGrid.CellPositions)
+                {
+                    var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, placableLockGrid);
+                    if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
+                        continue;
 
-                var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
+                    var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
 
-                if (grid.CellState != CellState.Filled)
-                    grid.LockCell();
+                    if (grid.CellState != CellState.Filled)
+                        grid.LockCell();
+                }
             }
 
-            foreach (var placableNewGroundGrid in placable.NewGroundGrids)
+            var newGroundGrids = placable.Grids.FindAll(grid => grid.GetCellType() == PlacableCellType.NewGround);
+            foreach (var newGroundGrid in newGroundGrids)
             {
-                var checkedGridPos = pos.Position + _gridHelper.RotateObstacleVector(rotation, placableNewGroundGrid);
-                if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
-                    continue;
+                foreach (var placableNewGroundGrid in newGroundGrid.CellPositions)
+                {
+                    var checkedGridPos =
+                        pos.Position + _gridHelper.RotateObstacleVector(rotation, placableNewGroundGrid);
+                    if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
+                        continue;
 
-                var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
+                    var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
 
-                if (grid.CellState is not (CellState.Locked or CellState.Filled))
-                    grid.MakeCellCanBeFilledGround();
+                    if (grid.CellState is not (CellState.Locked or CellState.Filled))
+                        grid.MakeCellCanBeFilledGround();
+                } 
             }
         }
 
@@ -525,6 +560,7 @@ namespace MapGen.Map
 
         private void OnDrawGizmos()
         {
+            if(!_drawGizmos) return;
             if (_grids == null) return;
 
             if (_mapGizmos.HasFlag(MapGizmos.Paths))
