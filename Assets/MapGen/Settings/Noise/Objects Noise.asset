@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Objects Noise
   m_EditorClassIdentifier: 
   noiseScale: 0.1
-  noiseOffset: {x: -0.23, y: 0}
+  noiseOffset: {x: -6.92, y: 0}
