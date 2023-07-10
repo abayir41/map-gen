@@ -128,30 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a2410426954a69895125bd2b33c026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationDegreeStep: 17
-  requiredGrids:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: -1}
-  lockGrids: []
-  shouldPlacedOnGroundGrids:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: -1}
-  newGroundGrids: []
-  useVisualsAsRequiredGrids: 0
-  useVisualAsShouldPlacedOnGroundGrids: 0
-  useVisualsAsNewGroundGrids: 0
-  useCubeRequiredGridStyle: 0
-  visualsParent: {fileID: 5365829574235925431}
-  cubeLockOffsetX: {x: 0, y: 0}
-  cubeLockOffsetY: {x: 0, y: 0}
-  cubeLockOffsetZ: {x: 0, y: 0}
-  drawGizmo: 1
-  gizmoRadius: 0.25
-  offsetScaler: 1
-  drawRequireGrids: 0
-  drawLockGrids: 0
-  drawShouldPlaceGroundGrids: 1
-  drawNewGroundGrids: 0
+  _rotatable: 1
+  _rotationDegreeStep: 15
+  _grids: []
+  _visualsParent: {fileID: 5365829574235925431}
 --- !u!1 &1922437518283712954
 GameObject:
   m_ObjectHideFlags: 0
