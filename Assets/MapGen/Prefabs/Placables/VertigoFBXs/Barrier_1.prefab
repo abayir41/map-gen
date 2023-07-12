@@ -43,7 +43,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1226268819689262305}
-  - component: {fileID: 2703259893937781656}
+  - component: {fileID: 8917551065282928166}
+  - component: {fileID: 1305939036374623905}
   m_Layer: 0
   m_Name: Should Placed On Ground
   m_TagString: Untagged
@@ -66,7 +67,7 @@ Transform:
   m_Father: {fileID: 221138093520217155}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2703259893937781656
+--- !u!114 &8917551065282928166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,165 +76,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 2652883748152166961}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5eaa8bcd6d34ba0b88a6c53af6e8660, type: 3}
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _placableCellType: 3
+  _gridCreator: {fileID: 1305939036374623905}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 1, b: 0.1701734, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.9948554, a: 1}
   _gizmoRadius: 0.25
-  _useVisuals: 0
-  _visualsParent: {fileID: 314731374266870365}
-  _useCubicGridStyle: 0
-  _cubeLockOffsetX: {x: 0, y: 5}
-  _cubeLockOffsetY: {x: 0, y: 5}
-  _cubeLockOffsetZ: {x: 0, y: 5}
   _cellPositions:
-  - {x: 0, y: 0, z: 2}
   - {x: 0, y: 0, z: 1}
   - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 2}
   - {x: 0, y: 0, z: -1}
   - {x: 0, y: 0, z: -2}
---- !u!1 &4015430339702898074
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4559871851093391367}
-  - component: {fileID: 3666964104946685447}
-  m_Layer: 0
-  m_Name: Required Grid
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4559871851093391367
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4015430339702898074}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 221138093520217155}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3666964104946685447
+--- !u!114 &1305939036374623905
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4015430339702898074}
+  m_GameObject: {fileID: 2652883748152166961}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f70e1b9da5e41ef83a7fb1ede205ff3, type: 3}
+  m_Script: {fileID: 11500000, guid: 20934c6c073c4c65b9ead4ef9b4b23b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DrawGizmo: 1
-  _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 1, b: 0.7737851, a: 1}
-  _gizmoRadius: 0.25
-  _useVisuals: 0
-  _visualsParent: {fileID: 314731374266870365}
-  _useCubicGridStyle: 1
-  _cubeLockOffsetX: {x: -2, y: 2}
-  _cubeLockOffsetY: {x: 0, y: 5}
-  _cubeLockOffsetZ: {x: -4, y: 4}
-  _cellPositions:
-  - {x: -1, y: 1, z: -3}
-  - {x: -1, y: 1, z: -2}
-  - {x: -1, y: 1, z: -1}
-  - {x: -1, y: 1, z: 0}
-  - {x: -1, y: 1, z: 1}
-  - {x: -1, y: 1, z: 2}
-  - {x: -1, y: 1, z: 3}
-  - {x: -1, y: 2, z: -3}
-  - {x: -1, y: 2, z: -2}
-  - {x: -1, y: 2, z: -1}
-  - {x: -1, y: 2, z: 0}
-  - {x: -1, y: 2, z: 1}
-  - {x: -1, y: 2, z: 2}
-  - {x: -1, y: 2, z: 3}
-  - {x: -1, y: 3, z: -3}
-  - {x: -1, y: 3, z: -2}
-  - {x: -1, y: 3, z: -1}
-  - {x: -1, y: 3, z: 0}
-  - {x: -1, y: 3, z: 1}
-  - {x: -1, y: 3, z: 2}
-  - {x: -1, y: 3, z: 3}
-  - {x: -1, y: 4, z: -3}
-  - {x: -1, y: 4, z: -2}
-  - {x: -1, y: 4, z: -1}
-  - {x: -1, y: 4, z: 0}
-  - {x: -1, y: 4, z: 1}
-  - {x: -1, y: 4, z: 2}
-  - {x: -1, y: 4, z: 3}
-  - {x: 0, y: 1, z: -3}
-  - {x: 0, y: 1, z: -2}
-  - {x: 0, y: 1, z: -1}
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 1}
-  - {x: 0, y: 1, z: 2}
-  - {x: 0, y: 1, z: 3}
-  - {x: 0, y: 2, z: -3}
-  - {x: 0, y: 2, z: -2}
-  - {x: 0, y: 2, z: -1}
-  - {x: 0, y: 2, z: 0}
-  - {x: 0, y: 2, z: 1}
-  - {x: 0, y: 2, z: 2}
-  - {x: 0, y: 2, z: 3}
-  - {x: 0, y: 3, z: -3}
-  - {x: 0, y: 3, z: -2}
-  - {x: 0, y: 3, z: -1}
-  - {x: 0, y: 3, z: 0}
-  - {x: 0, y: 3, z: 1}
-  - {x: 0, y: 3, z: 2}
-  - {x: 0, y: 3, z: 3}
-  - {x: 0, y: 4, z: -3}
-  - {x: 0, y: 4, z: -2}
-  - {x: 0, y: 4, z: -1}
-  - {x: 0, y: 4, z: 0}
-  - {x: 0, y: 4, z: 1}
-  - {x: 0, y: 4, z: 2}
-  - {x: 0, y: 4, z: 3}
-  - {x: 1, y: 1, z: -3}
-  - {x: 1, y: 1, z: -2}
-  - {x: 1, y: 1, z: -1}
-  - {x: 1, y: 1, z: 0}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 2}
-  - {x: 1, y: 1, z: 3}
-  - {x: 1, y: 2, z: -3}
-  - {x: 1, y: 2, z: -2}
-  - {x: 1, y: 2, z: -1}
-  - {x: 1, y: 2, z: 0}
-  - {x: 1, y: 2, z: 1}
-  - {x: 1, y: 2, z: 2}
-  - {x: 1, y: 2, z: 3}
-  - {x: 1, y: 3, z: -3}
-  - {x: 1, y: 3, z: -2}
-  - {x: 1, y: 3, z: -1}
-  - {x: 1, y: 3, z: 0}
-  - {x: 1, y: 3, z: 1}
-  - {x: 1, y: 3, z: 2}
-  - {x: 1, y: 3, z: 3}
-  - {x: 1, y: 4, z: -3}
-  - {x: 1, y: 4, z: -2}
-  - {x: 1, y: 4, z: -1}
-  - {x: 1, y: 4, z: 0}
-  - {x: 1, y: 4, z: 1}
-  - {x: 1, y: 4, z: 2}
-  - {x: 1, y: 4, z: 3}
-  _placableCellType: 0
+  positions:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: -1}
+  - {x: 0, y: 0, z: -2}
 --- !u!1 &4335804852876256588
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +360,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6755003023960774694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9202015122654838212}
+  m_Layer: 0
+  m_Name: Physicals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9202015122654838212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755003023960774694}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3111683075429850366}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7315797559517849104
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,6 +422,7 @@ Transform:
   m_Children:
   - {fileID: 221138093520217155}
   - {fileID: 314731374266870365}
+  - {fileID: 9202015122654838212}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -533,72 +440,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotatable: 1
   _rotationDegreeStep: 15
+  _physicalCell: {fileID: 2222524241330915079, guid: 3cd591d7be60d3346b53cd600909f9ba, type: 3}
   _grids:
-  - {fileID: 2703259893937781656}
-  - {fileID: 3666964104946685447}
-  - {fileID: 8281124086217584087}
+  - {fileID: 8917551065282928166}
+  - {fileID: 1185760130256894608}
+  - {fileID: 7606370408902785596}
   _visualsParent: {fileID: 314731374266870365}
---- !u!1 &7448966373275662079
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7471743380862585917}
-  - component: {fileID: 8281124086217584087}
-  m_Layer: 0
-  m_Name: Physical Volume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7471743380862585917
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7448966373275662079}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 221138093520217155}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8281124086217584087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7448966373275662079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f70e1b9da5e41ef83a7fb1ede205ff3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DrawGizmo: 0
-  _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 0.96435976, b: 1, a: 1}
-  _gizmoRadius: 0.25
-  _useVisuals: 0
-  _visualsParent: {fileID: 314731374266870365}
-  _useCubicGridStyle: 0
-  _cubeLockOffsetX: {x: 0, y: 5}
-  _cubeLockOffsetY: {x: 0, y: 5}
-  _cubeLockOffsetZ: {x: 0, y: 5}
-  _cellPositions:
-  - {x: 0, y: 0, z: 2}
-  - {x: 0, y: 0, z: 1}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: -1}
-  - {x: 0, y: 0, z: -2}
-  _placableCellType: 2
+  _physicalParent: {fileID: 9202015122654838212}
 --- !u!1 &8038267270467245779
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,8 +476,195 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1226268819689262305}
-  - {fileID: 4559871851093391367}
-  - {fileID: 7471743380862585917}
+  - {fileID: 2655578425175947791}
+  - {fileID: 8292991651489549159}
   m_Father: {fileID: 3111683075429850366}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8136940752451241638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2655578425175947791}
+  - component: {fileID: 1185760130256894608}
+  - component: {fileID: 2951596744238425930}
+  m_Layer: 0
+  m_Name: Physical Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2655578425175947791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8136940752451241638}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 221138093520217155}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1185760130256894608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8136940752451241638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _placableCellType: 2
+  _gridCreator: {fileID: 2951596744238425930}
+  DrawGizmo: 1
+  _gizmoRandomColor: 1
+  _gizmoColor: {r: 1, g: 0, b: 0.47558403, a: 1}
+  _gizmoRadius: 0.25
+  _cellPositions:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: -1}
+  - {x: 0, y: 0, z: -2}
+--- !u!114 &2951596744238425930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8136940752451241638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20934c6c073c4c65b9ead4ef9b4b23b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positions:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: -1}
+  - {x: 0, y: 0, z: -2}
+--- !u!1 &8183609584264805846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8292991651489549159}
+  - component: {fileID: 7606370408902785596}
+  - component: {fileID: 7719109347893607610}
+  m_Layer: 0
+  m_Name: Required Grid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8292991651489549159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8183609584264805846}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 221138093520217155}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7606370408902785596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8183609584264805846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _placableCellType: 0
+  _gridCreator: {fileID: 7719109347893607610}
+  DrawGizmo: 0
+  _gizmoRandomColor: 1
+  _gizmoColor: {r: 0.8204503, g: 0, b: 1, a: 1}
+  _gizmoRadius: 0.25
+  _cellPositions:
+  - {x: -2, y: 0, z: -4}
+  - {x: -2, y: 0, z: -3}
+  - {x: -2, y: 0, z: -2}
+  - {x: -2, y: 0, z: -1}
+  - {x: -2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 1}
+  - {x: -2, y: 0, z: 2}
+  - {x: -2, y: 0, z: 3}
+  - {x: -2, y: 0, z: 4}
+  - {x: -1, y: 0, z: -4}
+  - {x: -1, y: 0, z: -3}
+  - {x: -1, y: 0, z: -2}
+  - {x: -1, y: 0, z: -1}
+  - {x: -1, y: 0, z: 0}
+  - {x: -1, y: 0, z: 1}
+  - {x: -1, y: 0, z: 2}
+  - {x: -1, y: 0, z: 3}
+  - {x: -1, y: 0, z: 4}
+  - {x: 0, y: 0, z: -4}
+  - {x: 0, y: 0, z: -3}
+  - {x: 0, y: 0, z: -2}
+  - {x: 0, y: 0, z: -1}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: 3}
+  - {x: 0, y: 0, z: 4}
+  - {x: 1, y: 0, z: -4}
+  - {x: 1, y: 0, z: -3}
+  - {x: 1, y: 0, z: -2}
+  - {x: 1, y: 0, z: -1}
+  - {x: 1, y: 0, z: 0}
+  - {x: 1, y: 0, z: 1}
+  - {x: 1, y: 0, z: 2}
+  - {x: 1, y: 0, z: 3}
+  - {x: 1, y: 0, z: 4}
+  - {x: 2, y: 0, z: -4}
+  - {x: 2, y: 0, z: -3}
+  - {x: 2, y: 0, z: -2}
+  - {x: 2, y: 0, z: -1}
+  - {x: 2, y: 0, z: 0}
+  - {x: 2, y: 0, z: 1}
+  - {x: 2, y: 0, z: 2}
+  - {x: 2, y: 0, z: 3}
+  - {x: 2, y: 0, z: 4}
+--- !u!114 &7719109347893607610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8183609584264805846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f11d361597084f0e9f9705788389d26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cubeLockOffsetX: {x: -3, y: 3}
+  _cubeLockOffsetY: {x: -1, y: 1}
+  _cubeLockOffsetZ: {x: -5, y: 5}

@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1752972219930436950}
-  - component: {fileID: 1495953892546807187}
+  - component: {fileID: 1716233700385049251}
+  - component: {fileID: 6972893473416609647}
   m_Layer: 0
   m_Name: Required Cells
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Father: {fileID: 3492352099792317041}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1495953892546807187
+--- !u!114 &1716233700385049251
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,22 +42,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 854342442633993067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f70e1b9da5e41ef83a7fb1ede205ff3, type: 3}
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _drawGizmo: 0
+  _placableCellType: 0
+  _gridCreator: {fileID: 6972893473416609647}
+  DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.5605774, g: 0, b: 1, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.81280136, a: 1}
   _gizmoRadius: 0.25
-  _useVisuals: 1
-  _visualsParent: {fileID: 6561526526123900675}
-  _useCubicGridStyle: 0
-  _cubeLockOffsetX: {x: 5, y: 0}
-  _cubeLockOffsetY: {x: 5, y: 0}
-  _cubeLockOffsetZ: {x: 5, y: 0}
   _cellPositions:
   - {x: 0, y: 0, z: 0}
-  _placableCellType: 0
+--- !u!114 &6972893473416609647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854342442633993067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20934c6c073c4c65b9ead4ef9b4b23b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positions:
+  - {x: 0, y: 0, z: 0}
 --- !u!1 &1142631155847312737
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +108,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8695275627439212571}
-  - component: {fileID: 4297336423920736041}
+  - component: {fileID: 7928350436930306704}
+  - component: {fileID: 6115324926194240371}
   m_Layer: 0
   m_Name: Should Placed On Ground
   m_TagString: Untagged
@@ -121,7 +132,7 @@ Transform:
   m_Father: {fileID: 3492352099792317041}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4297336423920736041
+--- !u!114 &7928350436930306704
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,21 +141,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1654821392493554788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5eaa8bcd6d34ba0b88a6c53af6e8660, type: 3}
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _drawGizmo: 0
+  _placableCellType: 3
+  _gridCreator: {fileID: 6115324926194240371}
+  DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.82481, a: 1}
+  _gizmoColor: {r: 0.39068508, g: 1, b: 0, a: 1}
   _gizmoRadius: 0.25
-  _useVisuals: 1
-  _visualsParent: {fileID: 6561526526123900675}
-  _useCubicGridStyle: 0
-  _cubeLockOffsetX: {x: 5, y: 0}
-  _cubeLockOffsetY: {x: 5, y: 0}
-  _cubeLockOffsetZ: {x: 5, y: 0}
   _cellPositions:
   - {x: 0, y: 0, z: 0}
+--- !u!114 &6115324926194240371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654821392493554788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8621fd699124bbba1cb39c6f7510dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualsParent: {fileID: 6561526526123900675}
 --- !u!1 &2381789165525740045
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +257,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7320535011987110067}
-  - component: {fileID: 2200020546766900504}
+  - component: {fileID: 1341002912686874266}
+  - component: {fileID: 4092131975241059815}
   m_Layer: 0
   m_Name: Physical Volume
   m_TagString: Untagged
@@ -260,7 +281,7 @@ Transform:
   m_Father: {fileID: 3492352099792317041}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2200020546766900504
+--- !u!114 &1341002912686874266
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -269,22 +290,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 2702173081188005283}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f70e1b9da5e41ef83a7fb1ede205ff3, type: 3}
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _drawGizmo: 0
+  _placableCellType: 2
+  _gridCreator: {fileID: 4092131975241059815}
+  DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.6004844, a: 1}
+  _gizmoColor: {r: 1, g: 0.24559382, b: 0, a: 1}
   _gizmoRadius: 0.25
-  _useVisuals: 1
-  _visualsParent: {fileID: 6561526526123900675}
-  _useCubicGridStyle: 0
-  _cubeLockOffsetX: {x: 5, y: 0}
-  _cubeLockOffsetY: {x: 5, y: 0}
-  _cubeLockOffsetZ: {x: 5, y: 0}
   _cellPositions:
   - {x: 0, y: 0, z: 0}
-  _placableCellType: 2
+--- !u!114 &4092131975241059815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702173081188005283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20934c6c073c4c65b9ead4ef9b4b23b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positions:
+  - {x: 0, y: 0, z: 0}
 --- !u!1 &2859336070719606158
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,6 +381,7 @@ Transform:
   m_Children:
   - {fileID: 3492352099792317041}
   - {fileID: 6561526526123900675}
+  - {fileID: 6449905671374600234}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -368,12 +399,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotatable: 0
   _rotationDegreeStep: 15
+  _physicalCell: {fileID: 2222524241330915079, guid: 3cd591d7be60d3346b53cd600909f9ba, type: 3}
   _grids:
-  - {fileID: 4297336423920736041}
-  - {fileID: 3549511238317691464}
-  - {fileID: 2200020546766900504}
-  - {fileID: 1495953892546807187}
+  - {fileID: 7928350436930306704}
+  - {fileID: 6986085402506317540}
+  - {fileID: 1341002912686874266}
+  - {fileID: 1716233700385049251}
   _visualsParent: {fileID: 6561526526123900675}
+  _physicalParent: {fileID: 6449905671374600234}
+--- !u!1 &5023119213762703789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6449905671374600234}
+  m_Layer: 0
+  m_Name: Physicals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6449905671374600234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5023119213762703789}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2015129484314678255}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7353278128271964912
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,7 +447,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 47474329603222468}
-  - component: {fileID: 3549511238317691464}
+  - component: {fileID: 6986085402506317540}
+  - component: {fileID: 6445913481610533286}
   m_Layer: 0
   m_Name: New Grounds
   m_TagString: Untagged
@@ -406,7 +471,7 @@ Transform:
   m_Father: {fileID: 3492352099792317041}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3549511238317691464
+--- !u!114 &6986085402506317540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -415,18 +480,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 7353278128271964912}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaefbcb0333146ebb1ebb55a9bdbe663, type: 3}
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _drawGizmo: 0
+  _placableCellType: 4
+  _gridCreator: {fileID: 6445913481610533286}
+  DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.9874071, b: 0, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.3191433, a: 1}
   _gizmoRadius: 0.25
-  _useVisuals: 1
-  _visualsParent: {fileID: 6561526526123900675}
-  _useCubicGridStyle: 0
-  _cubeLockOffsetX: {x: 5, y: 0}
-  _cubeLockOffsetY: {x: 5, y: 0}
-  _cubeLockOffsetZ: {x: 5, y: 0}
   _cellPositions:
   - {x: 0, y: 1, z: 0}
+--- !u!114 &6445913481610533286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7353278128271964912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 256b61e875a44c3e921017d312cb6c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualsParent: {fileID: 6561526526123900675}

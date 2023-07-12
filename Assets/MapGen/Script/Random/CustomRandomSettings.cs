@@ -8,14 +8,5 @@ namespace MapGen.Random
         [SerializeField] private int seed;
         
         public override int GetSeed() => seed;
-
-        private int _cachedSeed;
-        
-        public bool IsThereAnyChange()
-        {
-            var result = _cachedSeed != seed;
-            _cachedSeed = seed;
-            return result;
-        }
     }
 }

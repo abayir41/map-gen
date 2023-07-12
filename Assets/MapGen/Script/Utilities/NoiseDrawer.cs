@@ -1,4 +1,5 @@
 ﻿using MapGen.Map;
+using MapGen.Map.Brushes.NormalMap;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ namespace MapGen.Utilities
         [SerializeField] private float scaleAmount;
         [SerializeField] private RawImage noiseTextureImage;
         [SerializeField] private RectTransform textureRect;
-        [SerializeField] private MapSettings mapSettings;
+        [SerializeField] private MapBrushSettings _mapBrushSettings;
         [SerializeField] private Noise.Noise noise;
         [SerializeField] private bool useCustomWidth;
         [SerializeField] private Vector2Int size;
@@ -22,7 +23,7 @@ namespace MapGen.Utilities
             }
             else
             {
-                SetNoiseTexture(noise.Generate(mapSettings.MapSize.x, mapSettings.MapSize.z), mapSettings.MapSize.x, mapSettings.MapSize.z);
+                //SetNoiseTexture(noise.Generate(_mapBrush.MapSize.x, _mapBrush.MapSize.z), _mapBrush.MapSize.x, _mapBrush.MapSize.z);
             }
         }
 

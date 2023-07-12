@@ -1,96 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &397221948852109318
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8376038654285056704}
-  - component: {fileID: 4161062270398690967}
-  m_Layer: 0
-  m_Name: Reqired
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8376038654285056704
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397221948852109318}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5589982244121231333}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4161062270398690967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397221948852109318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f70e1b9da5e41ef83a7fb1ede205ff3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DrawGizmo: 0
-  _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 0.5378308, b: 1, a: 1}
-  _gizmoRadius: 0.25
-  _useVisuals: 0
-  _visualsParent: {fileID: 3289692646066411681}
-  _useCubicGridStyle: 1
-  _cubeLockOffsetX: {x: -1, y: 1}
-  _cubeLockOffsetY: {x: -1, y: 5}
-  _cubeLockOffsetZ: {x: -4, y: 4}
-  _cellPositions:
-  - {x: 0, y: 0, z: -3}
-  - {x: 0, y: 0, z: -2}
-  - {x: 0, y: 0, z: -1}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
-  - {x: 0, y: 0, z: 2}
-  - {x: 0, y: 0, z: 3}
-  - {x: 0, y: 1, z: -3}
-  - {x: 0, y: 1, z: -2}
-  - {x: 0, y: 1, z: -1}
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 1}
-  - {x: 0, y: 1, z: 2}
-  - {x: 0, y: 1, z: 3}
-  - {x: 0, y: 2, z: -3}
-  - {x: 0, y: 2, z: -2}
-  - {x: 0, y: 2, z: -1}
-  - {x: 0, y: 2, z: 0}
-  - {x: 0, y: 2, z: 1}
-  - {x: 0, y: 2, z: 2}
-  - {x: 0, y: 2, z: 3}
-  - {x: 0, y: 3, z: -3}
-  - {x: 0, y: 3, z: -2}
-  - {x: 0, y: 3, z: -1}
-  - {x: 0, y: 3, z: 0}
-  - {x: 0, y: 3, z: 1}
-  - {x: 0, y: 3, z: 2}
-  - {x: 0, y: 3, z: 3}
-  - {x: 0, y: 4, z: -3}
-  - {x: 0, y: 4, z: -2}
-  - {x: 0, y: 4, z: -1}
-  - {x: 0, y: 4, z: 0}
-  - {x: 0, y: 4, z: 1}
-  - {x: 0, y: 4, z: 2}
-  - {x: 0, y: 4, z: 3}
-  _placableCellType: 0
 --- !u!1 &709118883531874470
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,237 +249,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1212841468202055333
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2683498895158758709}
-  - component: {fileID: 3344357845146599391}
-  m_Layer: 0
-  m_Name: Destroy Points
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2683498895158758709
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212841468202055333}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5589982244121231333}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3344357845146599391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212841468202055333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f70e1b9da5e41ef83a7fb1ede205ff3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DrawGizmo: 0
-  _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.9089651, g: 0, b: 1, a: 1}
-  _gizmoRadius: 0.25
-  _useVisuals: 0
-  _visualsParent: {fileID: 3289692646066411681}
-  _useCubicGridStyle: 1
-  _cubeLockOffsetX: {x: -3, y: 3}
-  _cubeLockOffsetY: {x: -1, y: 5}
-  _cubeLockOffsetZ: {x: -4, y: 4}
-  _cellPositions:
-  - {x: -2, y: 0, z: -3}
-  - {x: -2, y: 0, z: -2}
-  - {x: -2, y: 0, z: -1}
-  - {x: -2, y: 0, z: 0}
-  - {x: -2, y: 0, z: 1}
-  - {x: -2, y: 0, z: 2}
-  - {x: -2, y: 0, z: 3}
-  - {x: -2, y: 1, z: -3}
-  - {x: -2, y: 1, z: -2}
-  - {x: -2, y: 1, z: -1}
-  - {x: -2, y: 1, z: 0}
-  - {x: -2, y: 1, z: 1}
-  - {x: -2, y: 1, z: 2}
-  - {x: -2, y: 1, z: 3}
-  - {x: -2, y: 2, z: -3}
-  - {x: -2, y: 2, z: -2}
-  - {x: -2, y: 2, z: -1}
-  - {x: -2, y: 2, z: 0}
-  - {x: -2, y: 2, z: 1}
-  - {x: -2, y: 2, z: 2}
-  - {x: -2, y: 2, z: 3}
-  - {x: -2, y: 3, z: -3}
-  - {x: -2, y: 3, z: -2}
-  - {x: -2, y: 3, z: -1}
-  - {x: -2, y: 3, z: 0}
-  - {x: -2, y: 3, z: 1}
-  - {x: -2, y: 3, z: 2}
-  - {x: -2, y: 3, z: 3}
-  - {x: -2, y: 4, z: -3}
-  - {x: -2, y: 4, z: -2}
-  - {x: -2, y: 4, z: -1}
-  - {x: -2, y: 4, z: 0}
-  - {x: -2, y: 4, z: 1}
-  - {x: -2, y: 4, z: 2}
-  - {x: -2, y: 4, z: 3}
-  - {x: -1, y: 0, z: -3}
-  - {x: -1, y: 0, z: -2}
-  - {x: -1, y: 0, z: -1}
-  - {x: -1, y: 0, z: 0}
-  - {x: -1, y: 0, z: 1}
-  - {x: -1, y: 0, z: 2}
-  - {x: -1, y: 0, z: 3}
-  - {x: -1, y: 1, z: -3}
-  - {x: -1, y: 1, z: -2}
-  - {x: -1, y: 1, z: -1}
-  - {x: -1, y: 1, z: 0}
-  - {x: -1, y: 1, z: 1}
-  - {x: -1, y: 1, z: 2}
-  - {x: -1, y: 1, z: 3}
-  - {x: -1, y: 2, z: -3}
-  - {x: -1, y: 2, z: -2}
-  - {x: -1, y: 2, z: -1}
-  - {x: -1, y: 2, z: 0}
-  - {x: -1, y: 2, z: 1}
-  - {x: -1, y: 2, z: 2}
-  - {x: -1, y: 2, z: 3}
-  - {x: -1, y: 3, z: -3}
-  - {x: -1, y: 3, z: -2}
-  - {x: -1, y: 3, z: -1}
-  - {x: -1, y: 3, z: 0}
-  - {x: -1, y: 3, z: 1}
-  - {x: -1, y: 3, z: 2}
-  - {x: -1, y: 3, z: 3}
-  - {x: -1, y: 4, z: -3}
-  - {x: -1, y: 4, z: -2}
-  - {x: -1, y: 4, z: -1}
-  - {x: -1, y: 4, z: 0}
-  - {x: -1, y: 4, z: 1}
-  - {x: -1, y: 4, z: 2}
-  - {x: -1, y: 4, z: 3}
-  - {x: 0, y: 0, z: -3}
-  - {x: 0, y: 0, z: -2}
-  - {x: 0, y: 0, z: -1}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
-  - {x: 0, y: 0, z: 2}
-  - {x: 0, y: 0, z: 3}
-  - {x: 0, y: 1, z: -3}
-  - {x: 0, y: 1, z: -2}
-  - {x: 0, y: 1, z: -1}
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 1}
-  - {x: 0, y: 1, z: 2}
-  - {x: 0, y: 1, z: 3}
-  - {x: 0, y: 2, z: -3}
-  - {x: 0, y: 2, z: -2}
-  - {x: 0, y: 2, z: -1}
-  - {x: 0, y: 2, z: 0}
-  - {x: 0, y: 2, z: 1}
-  - {x: 0, y: 2, z: 2}
-  - {x: 0, y: 2, z: 3}
-  - {x: 0, y: 3, z: -3}
-  - {x: 0, y: 3, z: -2}
-  - {x: 0, y: 3, z: -1}
-  - {x: 0, y: 3, z: 0}
-  - {x: 0, y: 3, z: 1}
-  - {x: 0, y: 3, z: 2}
-  - {x: 0, y: 3, z: 3}
-  - {x: 0, y: 4, z: -3}
-  - {x: 0, y: 4, z: -2}
-  - {x: 0, y: 4, z: -1}
-  - {x: 0, y: 4, z: 0}
-  - {x: 0, y: 4, z: 1}
-  - {x: 0, y: 4, z: 2}
-  - {x: 0, y: 4, z: 3}
-  - {x: 1, y: 0, z: -3}
-  - {x: 1, y: 0, z: -2}
-  - {x: 1, y: 0, z: -1}
-  - {x: 1, y: 0, z: 0}
-  - {x: 1, y: 0, z: 1}
-  - {x: 1, y: 0, z: 2}
-  - {x: 1, y: 0, z: 3}
-  - {x: 1, y: 1, z: -3}
-  - {x: 1, y: 1, z: -2}
-  - {x: 1, y: 1, z: -1}
-  - {x: 1, y: 1, z: 0}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 2}
-  - {x: 1, y: 1, z: 3}
-  - {x: 1, y: 2, z: -3}
-  - {x: 1, y: 2, z: -2}
-  - {x: 1, y: 2, z: -1}
-  - {x: 1, y: 2, z: 0}
-  - {x: 1, y: 2, z: 1}
-  - {x: 1, y: 2, z: 2}
-  - {x: 1, y: 2, z: 3}
-  - {x: 1, y: 3, z: -3}
-  - {x: 1, y: 3, z: -2}
-  - {x: 1, y: 3, z: -1}
-  - {x: 1, y: 3, z: 0}
-  - {x: 1, y: 3, z: 1}
-  - {x: 1, y: 3, z: 2}
-  - {x: 1, y: 3, z: 3}
-  - {x: 1, y: 4, z: -3}
-  - {x: 1, y: 4, z: -2}
-  - {x: 1, y: 4, z: -1}
-  - {x: 1, y: 4, z: 0}
-  - {x: 1, y: 4, z: 1}
-  - {x: 1, y: 4, z: 2}
-  - {x: 1, y: 4, z: 3}
-  - {x: 2, y: 0, z: -3}
-  - {x: 2, y: 0, z: -2}
-  - {x: 2, y: 0, z: -1}
-  - {x: 2, y: 0, z: 0}
-  - {x: 2, y: 0, z: 1}
-  - {x: 2, y: 0, z: 2}
-  - {x: 2, y: 0, z: 3}
-  - {x: 2, y: 1, z: -3}
-  - {x: 2, y: 1, z: -2}
-  - {x: 2, y: 1, z: -1}
-  - {x: 2, y: 1, z: 0}
-  - {x: 2, y: 1, z: 1}
-  - {x: 2, y: 1, z: 2}
-  - {x: 2, y: 1, z: 3}
-  - {x: 2, y: 2, z: -3}
-  - {x: 2, y: 2, z: -2}
-  - {x: 2, y: 2, z: -1}
-  - {x: 2, y: 2, z: 0}
-  - {x: 2, y: 2, z: 1}
-  - {x: 2, y: 2, z: 2}
-  - {x: 2, y: 2, z: 3}
-  - {x: 2, y: 3, z: -3}
-  - {x: 2, y: 3, z: -2}
-  - {x: 2, y: 3, z: -1}
-  - {x: 2, y: 3, z: 0}
-  - {x: 2, y: 3, z: 1}
-  - {x: 2, y: 3, z: 2}
-  - {x: 2, y: 3, z: 3}
-  - {x: 2, y: 4, z: -3}
-  - {x: 2, y: 4, z: -2}
-  - {x: 2, y: 4, z: -1}
-  - {x: 2, y: 4, z: 0}
-  - {x: 2, y: 4, z: 1}
-  - {x: 2, y: 4, z: 2}
-  - {x: 2, y: 4, z: 3}
-  _placableCellType: 5
 --- !u!1 &1788073698289347347
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,6 +332,117 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2104197954668144691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7267216953758955574}
+  m_Layer: 0
+  m_Name: Physicals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7267216953758955574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104197954668144691}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2015129484314678255}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2340058651103827483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2875547213862936366}
+  - component: {fileID: 5028272266756451088}
+  - component: {fileID: 2970873934989392572}
+  m_Layer: 0
+  m_Name: Physical Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2875547213862936366
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340058651103827483}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3112054258557048752}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5028272266756451088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340058651103827483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _placableCellType: 2
+  _gridCreator: {fileID: 2970873934989392572}
+  DrawGizmo: 0
+  _gizmoRandomColor: 1
+  _gizmoColor: {r: 0, g: 0.23784876, b: 1, a: 1}
+  _gizmoRadius: 0.25
+  _cellPositions:
+  - {x: 0, y: 0, z: 3}
+  - {x: 0, y: 0, z: -3}
+  - {x: 0, y: 1, z: 3}
+  - {x: 0, y: 1, z: -3}
+  - {x: 0, y: 2, z: 3}
+  - {x: 0, y: 2, z: -3}
+  - {x: 0, y: 4, z: 1}
+  - {x: 0, y: 4, z: -1}
+  - {x: 0, y: 4, z: 0}
+  - {x: 0, y: 3, z: 3}
+  - {x: 0, y: 3, z: -3}
+  - {x: 0, y: 4, z: 2}
+  - {x: 0, y: 4, z: -2}
+  - {x: 0, y: 4, z: 3}
+  - {x: 0, y: 4, z: -3}
+--- !u!114 &2970873934989392572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340058651103827483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d191aa3f21491a82d3745e66708ad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualsParent: {fileID: 3289692646066411681}
 --- !u!1 &2381789165525740045
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,7 +609,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &3068668434967419446
+--- !u!1 &3535239388832129956
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -828,52 +617,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2184631153172267878}
-  - component: {fileID: 5972166804266670362}
+  - component: {fileID: 7745452791994725785}
+  - component: {fileID: 4553120300037077320}
+  - component: {fileID: 1669521222652289077}
   m_Layer: 0
-  m_Name: Physical
+  m_Name: Required Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2184631153172267878
+--- !u!4 &7745452791994725785
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3068668434967419446}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 3535239388832129956}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5589982244121231333}
-  m_RootOrder: 1
+  m_Father: {fileID: 3112054258557048752}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5972166804266670362
+--- !u!114 &4553120300037077320
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3068668434967419446}
+  m_GameObject: {fileID: 3535239388832129956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f70e1b9da5e41ef83a7fb1ede205ff3, type: 3}
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _placableCellType: 0
+  _gridCreator: {fileID: 1669521222652289077}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.56964624, b: 0, a: 1}
+  _gizmoColor: {r: 0.3660109, g: 1, b: 0, a: 1}
   _gizmoRadius: 0.25
-  _useVisuals: 0
-  _visualsParent: {fileID: 3289692646066411681}
-  _useCubicGridStyle: 1
-  _cubeLockOffsetX: {x: -1, y: 1}
-  _cubeLockOffsetY: {x: -1, y: 5}
-  _cubeLockOffsetZ: {x: -4, y: 4}
   _cellPositions:
   - {x: 0, y: 0, z: -3}
   - {x: 0, y: 0, z: -2}
@@ -910,7 +696,21 @@ MonoBehaviour:
   - {x: 0, y: 4, z: 1}
   - {x: 0, y: 4, z: 2}
   - {x: 0, y: 4, z: 3}
-  _placableCellType: 2
+--- !u!114 &1669521222652289077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3535239388832129956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f11d361597084f0e9f9705788389d26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cubeLockOffsetX: {x: -1, y: 1}
+  _cubeLockOffsetY: {x: -1, y: 5}
+  _cubeLockOffsetZ: {x: -4, y: 4}
 --- !u!1 &3862561651162019275
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,7 +953,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3289692646066411681}
-  - {fileID: 5589982244121231333}
+  - {fileID: 3112054258557048752}
+  - {fileID: 7267216953758955574}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1171,12 +972,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotatable: 1
   _rotationDegreeStep: 15
+  _physicalCellMono: {fileID: 2222524241330915079, guid: 3cd591d7be60d3346b53cd600909f9ba, type: 3}
   _grids:
-  - {fileID: 4161062270398690967}
-  - {fileID: 5972166804266670362}
-  - {fileID: 3344357845146599391}
+  - {fileID: 3568068253921881811}
+  - {fileID: 5028272266756451088}
+  - {fileID: 4553120300037077320}
+  - {fileID: 3491916536549422092}
   _visualsParent: {fileID: 3289692646066411681}
-  _destroyPoints: {fileID: 3344357845146599391}
+  _physicalParent: {fileID: 7267216953758955574}
+  _destroyPoints: {fileID: 0}
 --- !u!1 &4510315642122782424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,6 +1230,315 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4858461722256733481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1153058286807175512}
+  - component: {fileID: 3491916536549422092}
+  - component: {fileID: 6460284358996524184}
+  m_Layer: 0
+  m_Name: Destroy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1153058286807175512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858461722256733481}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3112054258557048752}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3491916536549422092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858461722256733481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _placableCellType: 0
+  _gridCreator: {fileID: 6460284358996524184}
+  DrawGizmo: 1
+  _gizmoRandomColor: 1
+  _gizmoColor: {r: 0.19896722, g: 1, b: 0, a: 1}
+  _gizmoRadius: 0.25
+  _cellPositions:
+  - {x: -2, y: 0, z: -3}
+  - {x: -2, y: 0, z: -2}
+  - {x: -2, y: 0, z: -1}
+  - {x: -2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 1}
+  - {x: -2, y: 0, z: 2}
+  - {x: -2, y: 0, z: 3}
+  - {x: -2, y: 1, z: -3}
+  - {x: -2, y: 1, z: -2}
+  - {x: -2, y: 1, z: -1}
+  - {x: -2, y: 1, z: 0}
+  - {x: -2, y: 1, z: 1}
+  - {x: -2, y: 1, z: 2}
+  - {x: -2, y: 1, z: 3}
+  - {x: -2, y: 2, z: -3}
+  - {x: -2, y: 2, z: -2}
+  - {x: -2, y: 2, z: -1}
+  - {x: -2, y: 2, z: 0}
+  - {x: -2, y: 2, z: 1}
+  - {x: -2, y: 2, z: 2}
+  - {x: -2, y: 2, z: 3}
+  - {x: -2, y: 3, z: -3}
+  - {x: -2, y: 3, z: -2}
+  - {x: -2, y: 3, z: -1}
+  - {x: -2, y: 3, z: 0}
+  - {x: -2, y: 3, z: 1}
+  - {x: -2, y: 3, z: 2}
+  - {x: -2, y: 3, z: 3}
+  - {x: -2, y: 4, z: -3}
+  - {x: -2, y: 4, z: -2}
+  - {x: -2, y: 4, z: -1}
+  - {x: -2, y: 4, z: 0}
+  - {x: -2, y: 4, z: 1}
+  - {x: -2, y: 4, z: 2}
+  - {x: -2, y: 4, z: 3}
+  - {x: -1, y: 0, z: -3}
+  - {x: -1, y: 0, z: -2}
+  - {x: -1, y: 0, z: -1}
+  - {x: -1, y: 0, z: 0}
+  - {x: -1, y: 0, z: 1}
+  - {x: -1, y: 0, z: 2}
+  - {x: -1, y: 0, z: 3}
+  - {x: -1, y: 1, z: -3}
+  - {x: -1, y: 1, z: -2}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: 1, z: 0}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 2}
+  - {x: -1, y: 1, z: 3}
+  - {x: -1, y: 2, z: -3}
+  - {x: -1, y: 2, z: -2}
+  - {x: -1, y: 2, z: -1}
+  - {x: -1, y: 2, z: 0}
+  - {x: -1, y: 2, z: 1}
+  - {x: -1, y: 2, z: 2}
+  - {x: -1, y: 2, z: 3}
+  - {x: -1, y: 3, z: -3}
+  - {x: -1, y: 3, z: -2}
+  - {x: -1, y: 3, z: -1}
+  - {x: -1, y: 3, z: 0}
+  - {x: -1, y: 3, z: 1}
+  - {x: -1, y: 3, z: 2}
+  - {x: -1, y: 3, z: 3}
+  - {x: -1, y: 4, z: -3}
+  - {x: -1, y: 4, z: -2}
+  - {x: -1, y: 4, z: -1}
+  - {x: -1, y: 4, z: 0}
+  - {x: -1, y: 4, z: 1}
+  - {x: -1, y: 4, z: 2}
+  - {x: -1, y: 4, z: 3}
+  - {x: 0, y: 0, z: -3}
+  - {x: 0, y: 0, z: -2}
+  - {x: 0, y: 0, z: -1}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: 3}
+  - {x: 0, y: 1, z: -3}
+  - {x: 0, y: 1, z: -2}
+  - {x: 0, y: 1, z: -1}
+  - {x: 0, y: 1, z: 0}
+  - {x: 0, y: 1, z: 1}
+  - {x: 0, y: 1, z: 2}
+  - {x: 0, y: 1, z: 3}
+  - {x: 0, y: 2, z: -3}
+  - {x: 0, y: 2, z: -2}
+  - {x: 0, y: 2, z: -1}
+  - {x: 0, y: 2, z: 0}
+  - {x: 0, y: 2, z: 1}
+  - {x: 0, y: 2, z: 2}
+  - {x: 0, y: 2, z: 3}
+  - {x: 0, y: 3, z: -3}
+  - {x: 0, y: 3, z: -2}
+  - {x: 0, y: 3, z: -1}
+  - {x: 0, y: 3, z: 0}
+  - {x: 0, y: 3, z: 1}
+  - {x: 0, y: 3, z: 2}
+  - {x: 0, y: 3, z: 3}
+  - {x: 0, y: 4, z: -3}
+  - {x: 0, y: 4, z: -2}
+  - {x: 0, y: 4, z: -1}
+  - {x: 0, y: 4, z: 0}
+  - {x: 0, y: 4, z: 1}
+  - {x: 0, y: 4, z: 2}
+  - {x: 0, y: 4, z: 3}
+  - {x: 1, y: 0, z: -3}
+  - {x: 1, y: 0, z: -2}
+  - {x: 1, y: 0, z: -1}
+  - {x: 1, y: 0, z: 0}
+  - {x: 1, y: 0, z: 1}
+  - {x: 1, y: 0, z: 2}
+  - {x: 1, y: 0, z: 3}
+  - {x: 1, y: 1, z: -3}
+  - {x: 1, y: 1, z: -2}
+  - {x: 1, y: 1, z: -1}
+  - {x: 1, y: 1, z: 0}
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: 2}
+  - {x: 1, y: 1, z: 3}
+  - {x: 1, y: 2, z: -3}
+  - {x: 1, y: 2, z: -2}
+  - {x: 1, y: 2, z: -1}
+  - {x: 1, y: 2, z: 0}
+  - {x: 1, y: 2, z: 1}
+  - {x: 1, y: 2, z: 2}
+  - {x: 1, y: 2, z: 3}
+  - {x: 1, y: 3, z: -3}
+  - {x: 1, y: 3, z: -2}
+  - {x: 1, y: 3, z: -1}
+  - {x: 1, y: 3, z: 0}
+  - {x: 1, y: 3, z: 1}
+  - {x: 1, y: 3, z: 2}
+  - {x: 1, y: 3, z: 3}
+  - {x: 1, y: 4, z: -3}
+  - {x: 1, y: 4, z: -2}
+  - {x: 1, y: 4, z: -1}
+  - {x: 1, y: 4, z: 0}
+  - {x: 1, y: 4, z: 1}
+  - {x: 1, y: 4, z: 2}
+  - {x: 1, y: 4, z: 3}
+  - {x: 2, y: 0, z: -3}
+  - {x: 2, y: 0, z: -2}
+  - {x: 2, y: 0, z: -1}
+  - {x: 2, y: 0, z: 0}
+  - {x: 2, y: 0, z: 1}
+  - {x: 2, y: 0, z: 2}
+  - {x: 2, y: 0, z: 3}
+  - {x: 2, y: 1, z: -3}
+  - {x: 2, y: 1, z: -2}
+  - {x: 2, y: 1, z: -1}
+  - {x: 2, y: 1, z: 0}
+  - {x: 2, y: 1, z: 1}
+  - {x: 2, y: 1, z: 2}
+  - {x: 2, y: 1, z: 3}
+  - {x: 2, y: 2, z: -3}
+  - {x: 2, y: 2, z: -2}
+  - {x: 2, y: 2, z: -1}
+  - {x: 2, y: 2, z: 0}
+  - {x: 2, y: 2, z: 1}
+  - {x: 2, y: 2, z: 2}
+  - {x: 2, y: 2, z: 3}
+  - {x: 2, y: 3, z: -3}
+  - {x: 2, y: 3, z: -2}
+  - {x: 2, y: 3, z: -1}
+  - {x: 2, y: 3, z: 0}
+  - {x: 2, y: 3, z: 1}
+  - {x: 2, y: 3, z: 2}
+  - {x: 2, y: 3, z: 3}
+  - {x: 2, y: 4, z: -3}
+  - {x: 2, y: 4, z: -2}
+  - {x: 2, y: 4, z: -1}
+  - {x: 2, y: 4, z: 0}
+  - {x: 2, y: 4, z: 1}
+  - {x: 2, y: 4, z: 2}
+  - {x: 2, y: 4, z: 3}
+--- !u!114 &6460284358996524184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858461722256733481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f11d361597084f0e9f9705788389d26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cubeLockOffsetX: {x: -3, y: 3}
+  _cubeLockOffsetY: {x: -1, y: 5}
+  _cubeLockOffsetZ: {x: -4, y: 4}
+--- !u!1 &5493760545509055476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5684542699379324492}
+  - component: {fileID: 3568068253921881811}
+  - component: {fileID: 8864797905508607616}
+  m_Layer: 0
+  m_Name: Should Placed On Ground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5684542699379324492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493760545509055476}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3112054258557048752}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3568068253921881811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493760545509055476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11cf091bc8234866b223e7a3f0716ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _placableCellType: 3
+  _gridCreator: {fileID: 8864797905508607616}
+  DrawGizmo: 0
+  _gizmoRandomColor: 1
+  _gizmoColor: {r: 0, g: 0.56963825, b: 1, a: 1}
+  _gizmoRadius: 0.25
+  _cellPositions:
+  - {x: 0, y: 0, z: 3}
+  - {x: 0, y: 0, z: -3}
+--- !u!114 &8864797905508607616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493760545509055476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8621fd699124bbba1cb39c6f7510dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualsParent: {fileID: 3289692646066411681}
 --- !u!1 &6461929567151933291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1509,7 +1622,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6856020153638833632
+--- !u!1 &7730293238373763762
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1517,7 +1630,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5589982244121231333}
+  - component: {fileID: 3112054258557048752}
   m_Layer: 0
   m_Name: Grids
   m_TagString: Untagged
@@ -1525,21 +1638,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5589982244121231333
+--- !u!4 &3112054258557048752
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6856020153638833632}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 7730293238373763762}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8376038654285056704}
-  - {fileID: 2184631153172267878}
-  - {fileID: 2683498895158758709}
+  - {fileID: 5684542699379324492}
+  - {fileID: 2875547213862936366}
+  - {fileID: 7745452791994725785}
+  - {fileID: 1153058286807175512}
   m_Father: {fileID: 2015129484314678255}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
