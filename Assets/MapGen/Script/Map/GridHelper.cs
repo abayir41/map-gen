@@ -8,87 +8,35 @@ namespace MapGen.Map
 {
     public class GridHelper
     {
-        private readonly GridCell[,,] _grids;
-        private readonly MapSettings _mapSettings;
+        private Grid _grid;
 
-        public GridHelper(GridCell[,,] grid, MapSettings mapSettings)
+        public GridHelper(Grid grid)
         {
-            _grids = grid;
-            _mapSettings = mapSettings;
+            _grid = grid;
         }
-        
-        public List<List<GridCell>> FilterPathsByLenght(List<List<GridCell>> paths)
-        {
-            return paths.Where(path =>
-                FindLengthOfPath(path) > _mapSettings.TunnelMinLength).ToList();
-        }
-        
-        public List<List<GridCell>> FilterByHeight(List<List<GridCell>> paths)
-        {
-            var result = new List<List<GridCell>>();
-            
-            foreach (var path in paths)
-            {
-                var average = FindHeightAverageOfPath(path);
-                
-                if(average > _mapSettings.TunnelAverageMinHeight)
-                    result.Add(path);
-            }
-
-            return result;
-        }
-
-        public float FindHeightAverageOfPath(List<GridCell> path)
-        {
-            var sum = 0;
-            foreach (var gridElement in path)
-            {
-                var grid = gridElement;
-                while (grid.CellState == CellState.Filled)
-                {
-                    sum++;
-                    
-                    var pos = grid.Position;
-                    pos += Vector3Int.up;
-                        
-                    if(IsPosOutsideOfGrid(pos))
-                        break;
-                        
-                    grid = _grids[pos.x, pos.y, pos.z];
-                }
-            }
-
-            var average = (float) sum / path.Count;
-            return average;
-        }
-
-        public int FindLengthOfPath(List<GridCell> path)
-        {
-            return (path.First().Position - path.Last().Position).sqrMagnitude;
-        }  
         
         public bool IsPlacableSuitable(GridCell pos, Placable placable, float rotation)
         {
-            var requiredGrids = placable.Grids.FindAll(grid => grid.GetCellType() == PlacableCellType.Required);
-            foreach (var requiredGrid in requiredGrids)
+            var requiredGrids = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.Required);
+            foreach (var requiredCells in requiredGrids)
             {
-                foreach (var placableRequiredGrid in requiredGrid.CellPositions)
+                foreach (var placableRequiredCell in requiredCells.CellPositions)
                 {
-                    var checkedGridPos = pos.Position + RotateObstacleVector(rotation, placableRequiredGrid);
+                    var checkedGridPos = pos.Position + RotateObstacleVector(rotation, placableRequiredCell);
                     if (IsPosOutsideOfGrid(checkedGridPos))
                     {
                         return false;
                     }
-
-                    var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
-                    if (grid.CellState is not CellState.CanBeFilled)
+                    
+                    var cell = _grid.GetCell(checkedGridPos);
+                    if (cell.CellState is not CellState.CanBeFilled)
                     {
                         return false;
                     }
                 }
             }
 
-            var shouldPlaceOnGroundGrids = placable.Grids.FindAll(grid => grid.GetCellType() == PlacableCellType.ShouldPlaceOnGround);
+            var shouldPlaceOnGroundGrids = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.ShouldPlaceOnGround);
             foreach (var shouldPlaceOnGroundGrid in shouldPlaceOnGroundGrids)
             {
                 foreach (var placableShouldPlacedOnGroundGrid in shouldPlaceOnGroundGrid.CellPositions)
@@ -96,8 +44,8 @@ namespace MapGen.Map
                     var checkedGridPos =
                         pos.Position + RotateObstacleVector(rotation, placableShouldPlacedOnGroundGrid);
 
-                    var grid = _grids[checkedGridPos.x, checkedGridPos.y, checkedGridPos.z];
-                    if (grid.CellLayer != CellLayer.CanPlacableGround)
+                    var cell = _grid.GetCell(checkedGridPos);
+                    if (cell.CellLayer != CellLayer.CanPlacableGround)
                     {
                         return false;
                     }
@@ -109,39 +57,12 @@ namespace MapGen.Map
         
         public bool IsPosOutsideOfGrid(Vector3Int pos)
         {
-            return pos.x >= _grids.GetLength(0) || pos.x < 0 || 
-                   pos.y >= _grids.GetLength(1) || pos.y < 0 ||
-                   pos.z >= _grids.GetLength(2) || pos.z < 0;
+            return pos.x >= _grid.Cells.GetLength(0) || pos.x < 0 || 
+                   pos.y >= _grid.Cells.GetLength(1) || pos.y < 0 ||
+                   pos.z >= _grid.Cells.GetLength(2) || pos.z < 0;
         }
-        
-        public bool IsEdgeGroundYDimensionCheck(GridCell cell)
-        {
-            var pos = cell.Position;
-            
-            var offset = pos + Vector3Int.right;
-            var neighborGrid = _grids[offset.x, offset.y, offset.z];
-            if (!IsPosOutsideOfGrid(offset) && neighborGrid.CellState is CellState.CanBeFilled)
-                return true;
-            
-            offset = pos + Vector3Int.left;
-            neighborGrid = _grids[offset.x, offset.y, offset.z];
-            if (!IsPosOutsideOfGrid(offset) && neighborGrid.CellState is CellState.CanBeFilled)
-                return true;
-            
-            offset = pos + Vector3Int.forward;
-            neighborGrid = _grids[offset.x, offset.y, offset.z];
-            if (!IsPosOutsideOfGrid(offset) && neighborGrid.CellState is CellState.CanBeFilled)
-                return true;
-            
-            offset = pos + Vector3Int.back;
-            neighborGrid = _grids[offset.x, offset.y, offset.z];
-            if (!IsPosOutsideOfGrid(offset) && neighborGrid.CellState is CellState.CanBeFilled)
-                return true;
 
-            return false;
-        }
-        
-        public Vector3Int RotateObstacleVector(float angle, Vector3Int vector3Int)
+        public static Vector3Int RotateObstacleVector(float angle, Vector3Int vector3Int)
         {
             var rotation = Quaternion.AngleAxis(angle, Vector3.up);
             var result = rotation * vector3Int;
@@ -149,19 +70,6 @@ namespace MapGen.Map
                 Mathf.RoundToInt(result.z));
 
             return resultAsVector3Int;
-        }
-
-        public bool CanTunnelSpawnable(List<GridCell> tunnelPath, List<List<GridCell>> otherTunnels)
-        {
-            foreach (var savedPath in otherTunnels)
-            foreach (var pathGrid in tunnelPath)
-            foreach (var savedPathGrid in savedPath)
-            {
-                var distance = (savedPathGrid.Position - pathGrid.Position).sqrMagnitude;
-                if (distance < _mapSettings.BetweenTunnelMinSpace) return false;
-            }
-
-            return true;
         }
     }
 }

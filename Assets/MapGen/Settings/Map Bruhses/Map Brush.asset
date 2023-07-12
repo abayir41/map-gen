@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8797e43663d24f5da74c1c609f0c0544, type: 3}
-  m_Name: Objects Noise
+  m_Script: {fileID: 11500000, guid: 0b2abd3d4d474344977f5904266c9b1b, type: 3}
+  m_Name: Map Brush
   m_EditorClassIdentifier: 
-  noiseScale: 0.1
-  noiseOffset: {x: 18.75, y: 0}
+  _mapBrushSettings: {fileID: 11400000, guid: da5672087281f8d48a79907dab048ee9, type: 2}
