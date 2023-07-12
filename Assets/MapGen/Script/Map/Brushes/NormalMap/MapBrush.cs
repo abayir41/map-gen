@@ -98,7 +98,7 @@ namespace MapGen.Map.Brushes.NormalMap
             foreach (var selectedCell in groundCells)
             {
                 selectedCell.MakeCellCanBeFilledGround();
-                var placable =  SpawnObject(selectedCell, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
+                var placable =  WorldCreator.Instance.SpawnObject(selectedCell, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
                 result.Add(placable);
             }
 
@@ -123,7 +123,7 @@ namespace MapGen.Map.Brushes.NormalMap
                     var targetPos = new Vector3Int(selectedCell.Position.x, y, selectedCell.Position.z);
                     var cell = _selectedCells.Cells.Find(gridCell => gridCell.Position == targetPos);
                     cell.MakeCellCanBeFilledGround();
-                    var placable = SpawnObject(cell, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
+                    var placable = WorldCreator.Instance.SpawnObject(cell, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
                     result.Add(placable);
                 }
             }
@@ -196,7 +196,7 @@ namespace MapGen.Map.Brushes.NormalMap
 
                 if (_selectedCells.IsPlacableSuitable(pathPoint, _mapBrushSettings.TunnelBrush, rotationDegree))
                 {
-                    var placable = SpawnObject(pathPoint, _mapBrushSettings.TunnelBrush, CellLayer.Obstacle, rotationDegree);
+                    var placable = WorldCreator.Instance.SpawnObject(pathPoint, _mapBrushSettings.TunnelBrush, CellLayer.Obstacle, rotationDegree);
                     result.Add(placable);
                 }
             }
@@ -381,7 +381,7 @@ namespace MapGen.Map.Brushes.NormalMap
                 {
                     if (!_selectedCells.IsPlacableSuitable(cell, data.Placable, data.Rotation)) continue;
 
-                    var placable = SpawnObject(cell, data.Placable, CellLayer.Obstacle, data.Rotation);
+                    var placable = WorldCreator.Instance.SpawnObject(cell, data.Placable, CellLayer.Obstacle, data.Rotation);
                     result.Add(placable);
                     break;
                 }
@@ -389,74 +389,7 @@ namespace MapGen.Map.Brushes.NormalMap
 
             return result;
         }
-
-        [MethodTimer]
-        private Placable SpawnObject(GridCell pos, Placable placable, CellLayer cellLayer, float rotation)
-        {
-            if (!_selectedCells.IsPlacableSuitable(pos, placable, rotation))
-            {
-                Debug.LogWarning("Trying to spawn an object that is not suitable. Process Canceled");
-                return null;
-            }
-
-            var instantiatedPlacable = Instantiate(placable, WorldCreator.Instance.GridPrefabsParent);
-            instantiatedPlacable.InitializePlacable(pos.Position);
-            instantiatedPlacable.transform.position = pos.GetWorldPosition();
-            
-            if (instantiatedPlacable.Rotatable)
-            {
-                instantiatedPlacable.Rotate(rotation);
-            }
-
-            var physicalVolumes = instantiatedPlacable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.PhysicalVolume);
-            foreach (var physicalVolume in physicalVolumes)
-            {
-                foreach (var physicalCellPos in physicalVolume.CellPositions)
-                {
-                    var checkedGridPos = pos.Position + GridHelper.RotateObstacleVector(rotation, physicalCellPos);
-                    var cell = _selectedCells.GetCell(new Vector3Int(checkedGridPos.x, checkedGridPos.y, checkedGridPos.z));
-                    cell.FillCell(instantiatedPlacable, cellLayer);
-                }
-            }
-
-            var lockGrids = instantiatedPlacable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.Lock);
-            foreach (var lockGrid in lockGrids)
-            {
-                foreach (var placableLockGrid in lockGrid.CellPositions)
-                {
-                    var checkedGridPos = pos.Position + GridHelper.RotateObstacleVector(rotation, placableLockGrid);
-                    if (_selectedCells.IsPosOutsideOfGrid(checkedGridPos))
-                        continue;
-
-                    var cell = _selectedCells.GetCell(new Vector3Int(checkedGridPos.x, checkedGridPos.y, checkedGridPos.z));
-
-                    if (cell.CellState != CellState.Filled)
-                        cell.LockCell();
-                }
-            }
-
-            var newGroundGrids = instantiatedPlacable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.NewGround);
-            foreach (var newGroundGrid in newGroundGrids)
-            {
-                foreach (var placableNewGroundGrid in newGroundGrid.CellPositions)
-                {
-                    var checkedGridPos =
-                        pos.Position + GridHelper.RotateObstacleVector(rotation, placableNewGroundGrid);
-                    if (_selectedCells.IsPosOutsideOfGrid(checkedGridPos))
-                        continue;
-
-                    var cell = _selectedCells.GetCell(new Vector3Int(checkedGridPos.x, checkedGridPos.y, checkedGridPos.z));
-
-                    if (cell.CellState is not (CellState.Locked or CellState.Filled))
-                        cell.MakeCellCanBeFilledGround();
-                } 
-            }
-
-            return instantiatedPlacable;
-        }
-
         
-
         /*private void OnDrawGizmos()
         {
             if(!_drawGizmos) return;

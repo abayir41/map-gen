@@ -17,7 +17,6 @@ namespace MapGen.Placables
         [Header("Grid Properties")] 
         [SerializeField] protected List<PlacableGrid> _grids;
         [SerializeField] protected Transform _visualsParent;
-        [SerializeField] protected Transform _physicalParent;
         
         public List<PlacableGrid> Grids => _grids;
         public bool Rotatable => _rotatable;
@@ -37,15 +36,6 @@ namespace MapGen.Placables
                 _visualsParent = possibleVisualParent;
                 Debug.Log("Automatically visual parent added");
             }
-            
-            var possiblePhysicalParent = transform.root.Find("Physicals");
-            if (_physicalParent != possiblePhysicalParent)
-            {
-                _physicalParent = possiblePhysicalParent;
-                Debug.Log("Automatically physical parent added");
-            }
-            _physicalParent.localPosition = Vector3.zero;
-
         }
 
         public void Rotate(float degree)

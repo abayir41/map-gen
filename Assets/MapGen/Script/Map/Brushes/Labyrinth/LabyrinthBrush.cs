@@ -21,17 +21,18 @@ namespace MapGen.Map.Brushes
 
         public override List<Placable> Paint(List<GridCell> selectedCells, Grid grid)
         {
+            
             var result = new List<Placable>();
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
 
+
+            result.AddRange(CreateGround());
+            
             var labyrinthPieceSize = _labyrinthBrushSettings.WallThickness + _labyrinthBrushSettings.WayThickness;
             var labyrinthPieceAmount = new Vector2Int((_selectedCellsHelper.XWidth - labyrinthPieceSize) / labyrinthPieceSize,
                 (_selectedCellsHelper.ZWidth - labyrinthPieceSize) / labyrinthPieceSize);
             var maze = MazeGenerator.Generate(labyrinthPieceAmount.x, labyrinthPieceAmount.y, _labyrinthBrushSettings.RandomSettings.GetSeed());
-            
-            Debug.Log("Size: " + labyrinthPieceSize);
-            Debug.Log("Piece: " + labyrinthPieceAmount);
-            
+
             for (int x = 0; x < labyrinthPieceAmount.x; x++)
             {
                 for (int z = 0; z < labyrinthPieceAmount.y; z++)
@@ -79,6 +80,20 @@ namespace MapGen.Map.Brushes
                         }
                     }
                 }
+            }
+
+            return result;
+        }
+        
+        private List<Placable> CreateGround()
+        {
+            var result = new List<Placable>();
+            var groundCells = _selectedCellsHelper.GetYAxisOfGrid(LabyrinthBrushSettings.GROUND_Y_LEVEL);
+            foreach (var selectedCell in groundCells)
+            {
+                selectedCell.MakeCellCanBeFilledGround();
+                var placable =  WorldCreator.Instance.SpawnObject(selectedCell, _labyrinthBrushSettings.Ground, CellLayer.Ground, LabyrinthBrushSettings.GROUND_ROTATION);
+                result.Add(placable);
             }
 
             return result;

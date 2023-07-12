@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes;
 using MapGen.Placables;
@@ -12,11 +13,15 @@ namespace MapGen.Map
         
         public static WorldCreator Instance { get; private set; }
 
+
+        [SerializeField] private GameObject cam;
+        [SerializeField] private GameObject player;
         [SerializeField] private WorldSettings _worldSettings;
         [SerializeField] private Transform _gridPrefabsParent;
         [SerializeField] private Transform _mapBrushTargetedSelectableCellParent;
         [SerializeField] private SelectableGridCell _mapBrushTargetedSelectableCell;
         [SerializeField] private Brush _currentBrush;
+        
         
         public Transform GridPrefabsParent => _gridPrefabsParent;
         public Brush CurrentBrush => _currentBrush;
@@ -32,6 +37,15 @@ namespace MapGen.Map
             Grid = new Grid(_worldSettings.MapSize);
             _gridHelper = new GridHelper(Grid);
             InstantiateMapBrushTargetedSelectableCells();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                cam.SetActive(false);
+                player.SetActive(true);
+            }
         }
 
         private void InstantiateMapBrushTargetedSelectableCells()

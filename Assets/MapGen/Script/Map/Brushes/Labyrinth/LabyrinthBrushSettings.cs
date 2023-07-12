@@ -16,9 +16,11 @@ namespace LabGen.Labyrinth
         [SerializeField] private int _wayThickness;
         [SerializeField] private int _wallHeight;
         [SerializeField] private Placable _mazeCubicGridPlacable;
+        [SerializeField] private Placable _ground;
         public const int GROUND_ROTATION = 0;
+        public const int GROUND_Y_LEVEL = 0;
 
-        
+        public Placable Ground => _ground;
         public Placable MazeCubicGridPlacable => _mazeCubicGridPlacable;
         public RandomSettings RandomSettings => _randomSettings;
         public int WallThickness => _wallThickness;

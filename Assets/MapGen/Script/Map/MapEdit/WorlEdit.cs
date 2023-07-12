@@ -4,6 +4,7 @@ using System.Linq;
 using MapGen.GridSystem;
 using MapGen.Map.MapEdit.Brushes;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Weaver;
 using Debug = UnityEngine.Debug;
 
@@ -33,7 +34,11 @@ namespace MapGen.Map.MapEdit
                     _currentSelectBrush.BrushSizeZ, out var visuallySelectedCells))
             {
                 _visualSeenCells = visuallySelectedCells;
-                _selectedCells = _currentSelectBrush.GetWantedAreaAsGridCell(visuallySelectedCells, Grid);
+                if (IsLeftClicked())
+                {
+                    _selectedCells = _currentSelectBrush.GetWantedAreaAsGridCell(visuallySelectedCells, Grid);
+                    WorldCreator.PaintTheBrush(_selectedCells);
+                }
             }
             else
             {
@@ -41,18 +46,14 @@ namespace MapGen.Map.MapEdit
                 _selectedCells = null;
             }
 
-            if (IsLeftClicked())
-            {
-                WorldCreator.PaintTheBrush(_selectedCells);
-            }
+            
         }
         
         
         public bool RayToGridCell(out SelectableGridCell gridCell, LayerMask targetGrid)
         {
-            var mousePos = Input.mousePosition;
-            mousePos.z = sceneCamera.nearClipPlane;
-            var ray = sceneCamera.ScreenPointToRay(mousePos);
+            var mousePos = Mouse.current.position.ReadValue();
+            var ray = sceneCamera.ScreenPointToRay(new Vector3(mousePos.x, mousePos.y, sceneCamera.nearClipPlane));
 
             if (Physics.Raycast(ray, out var result, _maxDistance, targetGrid))
             {
