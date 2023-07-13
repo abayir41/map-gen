@@ -1,5 +1,4 @@
-﻿using MapGen.Placables;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MapGen.GridSystem
 {

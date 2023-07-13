@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using MapGen.GridSystem;
 using UnityEngine;
-using Weaver;
-using Debug = UnityEngine.Debug;
+using GridCell = MapGen.GridSystem.Obsolete.GridCell;
 
-namespace MapGen.Map
+namespace MapGen.GridSystem.Obsolete
 {
     public class Grid
     {
@@ -39,18 +36,18 @@ namespace MapGen.Map
 
         public Vector3 GetWorldPosition(GridCell gridCell)
         {
-            return gridCell.Position;
+            return gridCell.GlobalPosition;
         }
 
         public GridCell GetSameYAxisCell(GridCell cell, int yAxis)
         {
-            return Cells[cell.Position.x, yAxis, cell.Position.z];
+            return Cells[cell.GlobalPosition.x, yAxis, cell.GlobalPosition.z];
         }
 
         public List<GridCell> GetYAxis(GridCell cell)
         {
             return Enumerable.Range(0, Cells.GetLength(1))
-                .Select(y => Cells[cell.Position.x, y, cell.Position.z])
+                .Select(y => Cells[cell.GlobalPosition.x, y, cell.GlobalPosition.z])
                 .ToList();
         }
 
@@ -91,14 +88,14 @@ namespace MapGen.Map
         {
             
             
-            var minX = cell.Position.x + xNeighbors.x;
-            var maxX = cell.Position.x + xNeighbors.y;
+            var minX = cell.GlobalPosition.x + xNeighbors.x;
+            var maxX = cell.GlobalPosition.x + xNeighbors.y;
             
-            var minY = cell.Position.y + yNeighbors.x;
-            var maxY = cell.Position.y + yNeighbors.y;
+            var minY = cell.GlobalPosition.y + yNeighbors.x;
+            var maxY = cell.GlobalPosition.y + yNeighbors.y;
             
-            var minZ = cell.Position.z + zNeighbors.x;
-            var maxZ = cell.Position.z + zNeighbors.y;
+            var minZ = cell.GlobalPosition.z + zNeighbors.x;
+            var maxZ = cell.GlobalPosition.z + zNeighbors.y;
 
             var result = new List<GridCell>();
             for (int x = minX; x < maxX + 1; x++)

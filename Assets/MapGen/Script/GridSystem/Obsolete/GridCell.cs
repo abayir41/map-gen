@@ -1,22 +1,23 @@
 ﻿using MapGen.Placables;
 using UnityEngine;
 
-namespace MapGen.GridSystem
+namespace MapGen.GridSystem.Obsolete
 {
     public class GridCell
     {
-        public Vector3Int CellPosition { get; }
-        public Vector3 WorldPosition { get; }
+        public Vector3Int GlobalPosition { get; }
+        public Vector3Int LocalPosition { get; }
         public CellState CellState { get; private set; }
         public CellLayer CellLayer { get; private set; }
-        public Placable Item { get; private set; }
-        
-        public GridCell(Vector3Int cellPosition, Vector3 worldPosition)
+        public Placable PlacedItem { get; private set; }
+
+        public GridCell(int x, int y, int z)
         {
-            CellPosition = cellPosition;
-            WorldPosition = worldPosition;
+            GlobalPosition = new Vector3Int(x, y, z);
+            CellState = CellState.CanBeFilled;
+            CellLayer = CellLayer.Empty;
         }
-        
+
         public void FreeTheCell()
         {
             CellState = CellState.CanBeFilled;
@@ -35,7 +36,7 @@ namespace MapGen.GridSystem
 
         public void FillCell(Placable placable, CellLayer cellLayer)
         {
-            Item = placable;
+            PlacedItem = placable;
             CellState = CellState.Filled;
             CellLayer = cellLayer;
         }
@@ -43,6 +44,11 @@ namespace MapGen.GridSystem
         public void LockCell()
         {
             CellState = CellState.Locked;
+        }
+
+        public Vector3 GetWorldPosition()
+        {
+            return GlobalPosition;
         }
     }
 }

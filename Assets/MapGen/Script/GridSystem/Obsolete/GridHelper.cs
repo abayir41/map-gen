@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MapGen.GridSystem;
-using MapGen.Placables;
+﻿using MapGen.Placables;
 using UnityEngine;
+using GridCell = MapGen.GridSystem.Obsolete.GridCell;
 
-namespace MapGen.Map
+namespace MapGen.GridSystem.Obsolete
 {
     public class GridHelper
     {
-        private Grid _grid;
+        private GridSystem.Obsolete.Grid _grid;
 
-        public GridHelper(Grid grid)
+        public GridHelper(GridSystem.Obsolete.Grid grid)
         {
             _grid = grid;
         }
@@ -22,7 +20,7 @@ namespace MapGen.Map
             {
                 foreach (var placableRequiredCell in requiredCells.CellPositions)
                 {
-                    var checkedGridPos = pos.Position + RotateObstacleVector(rotation, placableRequiredCell);
+                    var checkedGridPos = pos.GlobalPosition + RotateObstacleVector(rotation, placableRequiredCell);
                     if (IsPosOutsideOfGrid(checkedGridPos))
                     {
                         return false;
@@ -42,7 +40,7 @@ namespace MapGen.Map
                 foreach (var placableShouldPlacedOnGroundGrid in shouldPlaceOnGroundGrid.CellPositions)
                 {
                     var checkedGridPos =
-                        pos.Position + RotateObstacleVector(rotation, placableShouldPlacedOnGroundGrid);
+                        pos.GlobalPosition + RotateObstacleVector(rotation, placableShouldPlacedOnGroundGrid);
 
                     var cell = _grid.GetCell(checkedGridPos);
                     if (cell.CellLayer != CellLayer.CanPlacableGround)
