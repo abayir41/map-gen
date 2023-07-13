@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing.Printing;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes;
 using MapGen.Placables;
+using MapGen.Utilities;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
+using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map
 {
@@ -19,35 +24,31 @@ namespace MapGen.Map
         [SerializeField] private WorldSettings _worldSettings;
         [SerializeField] private Transform _gridPrefabsParent;
         [SerializeField] private Transform _mapBrushTargetedSelectableCellParent;
-        [SerializeField] private SelectableGridCell _mapBrushTargetedSelectableCell;
         [SerializeField] private Brush _currentBrush;
-        
-        
+
         public Transform GridPrefabsParent => _gridPrefabsParent;
         public Brush CurrentBrush => _currentBrush;
         public WorldSettings WorldSettings => _worldSettings;
 
         public Grid Grid { get; private set; }
-        private GridHelper _gridHelper;
-
 
         private void Awake()
         {
             Instance = this;
-            Grid = new Grid(_worldSettings.MapSize);
-            _gridHelper = new GridHelper(Grid);
-            InstantiateMapBrushTargetedSelectableCells();
+            Grid = new Grid();
+            //InstantiateMapBrushTargetedSelectableCells();
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 cam.SetActive(false);
                 player.SetActive(true);
             }
         }
 
+        /*
         private void InstantiateMapBrushTargetedSelectableCells()
         {
             var cells = Grid.GetYAxisOfGrid(MAP_BRUSH_TARGETED_SELECTABLE_CELL_Y_AXIS);
@@ -59,33 +60,29 @@ namespace MapGen.Map
                 selectableGridCell.BoundedCell = gridCell;
             }
         }
+        */
 
-        public void PaintTheBrush(List<GridCell> selectedCells)
+        public void PaintTheBrush(List<Vector3Int> selectedCells)
         {
             DestroyPlacedPlacables(selectedCells);
             _currentBrush.Paint(selectedCells, Grid);
+
         }
         
-        private void DestroyPlacedPlacables(List<GridCell> selectedCells)
+        private void DestroyPlacedPlacables(List<Vector3Int> selectedCells)
         {
             foreach (var selectedCell in selectedCells)
             {
-                if (selectedCell.PlacedItem == null) continue;
-                DestroyItem(selectedCell.PlacedItem);
+                if(Grid.IsCellExist(selectedCell, out var cell) && cell.Item != null)
+                {
+                    DestroyItem(cell.Item);
+                }
             }
         }
         
         public void DestroyItem(Placable placable)
         {
-            foreach (var gridElement in Grid.Cells)
-            {
-                if (gridElement.PlacedItem == placable)
-                {
-                    gridElement.FreeTheCell();
-                    gridElement.MakeCellEmpty();
-                }
-            }
-
+            Grid.DeleteItem(placable);
             DestroyPlacable(placable);
         }
 
@@ -93,18 +90,14 @@ namespace MapGen.Map
         {
             Destroy(item.gameObject);
         }
-        
-        public Placable SpawnObject(GridCell pos, Placable placable, CellLayer cellLayer, float rotation, string objName = null)
-        {
-            if (!_gridHelper.IsPlacableSuitable(pos, placable, rotation))
-            {
-                Debug.LogWarning($"Trying to spawn an object that is not suitable. Process Canceled. Position: {pos.Position}");
-                return null;
-            }
 
-            var instantiatedPlacable = Instantiate(placable, WorldCreator.Instance.GridPrefabsParent);
-            instantiatedPlacable.InitializePlacable(pos.Position);
-            instantiatedPlacable.transform.position = pos.GetWorldPosition();
+        
+
+        public Placable SpawnObject(Vector3Int pos, Placable placable, CellLayer cellLayer, float rotation, List<Vector3Int> bounds = null, string objName = null)
+        {
+            var instantiatedPlacable = Instantiate(placable, _gridPrefabsParent);
+            instantiatedPlacable.InitializePlacable(pos);
+            instantiatedPlacable.transform.position = Grid.CellPositionToRealWorld(pos);
 
             if (objName != null)
                 instantiatedPlacable.name = objName;
@@ -113,51 +106,10 @@ namespace MapGen.Map
             {
                 instantiatedPlacable.Rotate(rotation);
             }
-
-            var physicalVolumes = instantiatedPlacable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.PhysicalVolume);
-            foreach (var physicalVolume in physicalVolumes)
-            {
-                foreach (var physicalCellPos in physicalVolume.CellPositions)
-                {
-                    var checkedGridPos = pos.Position + GridHelper.RotateObstacleVector(rotation, physicalCellPos);
-                    var cell = Grid.GetCell(new Vector3Int(checkedGridPos.x, checkedGridPos.y, checkedGridPos.z));
-                    cell.FillCell(instantiatedPlacable, cellLayer);
-                }
-            }
-
-            var lockGrids = instantiatedPlacable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.Lock);
-            foreach (var lockGrid in lockGrids)
-            {
-                foreach (var placableLockGrid in lockGrid.CellPositions)
-                {
-                    var checkedGridPos = pos.Position + GridHelper.RotateObstacleVector(rotation, placableLockGrid);
-                    if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
-                        continue;
-
-                    var cell = Grid.GetCell(new Vector3Int(checkedGridPos.x, checkedGridPos.y, checkedGridPos.z));
-
-                    if (cell.CellState != CellState.Filled)
-                        cell.LockCell();
-                }
-            }
-
-            var newGroundGrids = instantiatedPlacable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.NewGround);
-            foreach (var newGroundGrid in newGroundGrids)
-            {
-                foreach (var placableNewGroundGrid in newGroundGrid.CellPositions)
-                {
-                    var checkedGridPos =
-                        pos.Position + GridHelper.RotateObstacleVector(rotation, placableNewGroundGrid);
-                    if (_gridHelper.IsPosOutsideOfGrid(checkedGridPos))
-                        continue;
-
-                    var cell = Grid.GetCell(new Vector3Int(checkedGridPos.x, checkedGridPos.y, checkedGridPos.z));
-
-                    if (cell.CellState is not (CellState.Locked or CellState.Filled))
-                        cell.MakeCellCanBeFilledGround();
-                } 
-            }
-
+            
+            Grid.AddItem(instantiatedPlacable, pos, rotation, cellLayer);
+         
+            
             return instantiatedPlacable;
         }
     }

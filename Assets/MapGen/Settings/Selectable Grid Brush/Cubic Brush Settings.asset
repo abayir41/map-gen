@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5df4d3ad94204e7bae8c0a1406656321, type: 3}
-  m_Name: Selectable Map Brush
+  m_Script: {fileID: 11500000, guid: 291b987983484e23bfe1e5dc644c6726, type: 3}
+  m_Name: Cubic Brush Settings
   m_EditorClassIdentifier: 
   _targetSelectableGridCells:
     serializedVersion: 2
     m_Bits: 256
-  _brushSizeX: {x: 0, y: 40}
-  _brushSizeY: {x: 0, y: 0}
-  _brushSizeZ: {x: 0, y: 40}
+  _brushSize: {x: 50, y: 5, z: 50}

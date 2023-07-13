@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using MapGen.GridSystem;
+using MapGen.GridSystem.Obsolete;
 using MapGen.Map.MapEdit.Brushes;
+using MapGen.Placables;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Weaver;
 using Debug = UnityEngine.Debug;
+using Grid = MapGen.GridSystem.Grid;
+using GridCell = MapGen.GridSystem.Obsolete.GridCell;
 
 namespace MapGen.Map.MapEdit
 {
@@ -16,55 +21,81 @@ namespace MapGen.Map.MapEdit
         private static Grid Grid => WorldCreator.Grid;
 
         [SerializeField] private bool _showGizmos;
-        [SerializeField] private BrushSettings _currentSelectBrush;
+        [SerializeField] private CubicBrushSettings _currentSelectCubicBrush;
         [SerializeField] private Camera sceneCamera;
         [SerializeField] private int _maxDistance;
 
-        public BrushSettings CurrentSelectBrush => _currentSelectBrush;
+        public CubicBrushSettings CurrentSelectCubicBrush => _currentSelectCubicBrush;
 
-        private List<GridCell> _visualSeenCells = new();
-        private List<GridCell> _selectedCells = new();
+        private CubicSelectedArea _visualSeenCells;
+        private CubicSelectedArea _selectedCells;
+        private Plane _selectableCellsGround;
+        private Vector3 _selectedPoint;
+    
+
+        private void Awake()
+        {
+            _selectableCellsGround = new Plane(WorldSettings.PLANE_NORMAL, WorldSettings.PLANE_HEIGHT);
+        }
 
         private void Update()
         {
-            if(!RayToGridCell(out var gridCell, _currentSelectBrush.TargetSelectableGridCells)) return;
+            if(!RayToGridCell(_currentSelectCubicBrush.TargetSelectableGridCells, out var cellPos)) return;
 
+
+            var cubicSelectedArea = new CubicSelectedArea(
+                cellPos - _currentSelectCubicBrush.BrushSize / 2,
+                cellPos + _currentSelectCubicBrush.BrushSize / 2);
             
-            if (Grid.GetWithNeighbor(gridCell.BoundedCell, _currentSelectBrush.BrushSizeX, _currentSelectBrush.BrushSizeY,
-                    _currentSelectBrush.BrushSizeZ, out var visuallySelectedCells))
+            _visualSeenCells = cubicSelectedArea;
+            
+            //Debug.Log($"{cubicSelectedArea.StartCellPos}, {cubicSelectedArea.EndCellPos}");
+            
+            if (IsLeftClicked())
             {
-                _visualSeenCells = visuallySelectedCells;
-                if (IsLeftClicked())
+                Paint(cubicSelectedArea);
+            }
+        }
+
+        public void Paint(CubicSelectedArea cubicSelectedArea)
+        {
+            var selectedCellPoss = new List<Vector3Int>();
+            for (int x = cubicSelectedArea.StartCellPos.x; x < cubicSelectedArea.EndCellPos.x + 1; x++)
+            {
+                for (int y = cubicSelectedArea.StartCellPos.y; y < cubicSelectedArea.EndCellPos.y + 1; y++)
                 {
-                    _selectedCells = _currentSelectBrush.GetWantedAreaAsGridCell(visuallySelectedCells, Grid);
-                    WorldCreator.PaintTheBrush(_selectedCells);
+                    for (int z = cubicSelectedArea.StartCellPos.z; z < cubicSelectedArea.EndCellPos.z + 1; z++)
+                    {
+                        selectedCellPoss.Add(new Vector3Int(x,y,z));
+                    }
                 }
-            }
-            else
-            {
-                _visualSeenCells = null;
-                _selectedCells = null;
-            }
 
-            
+            }
+                
+            WorldCreator.PaintTheBrush(selectedCellPoss);
         }
         
         
-        public bool RayToGridCell(out SelectableGridCell gridCell, LayerMask targetGrid)
+        public bool RayToGridCell(LayerMask targetGrid, out Vector3Int cellPos)
         {
             var mousePos = Mouse.current.position.ReadValue();
             var ray = sceneCamera.ScreenPointToRay(new Vector3(mousePos.x, mousePos.y, sceneCamera.nearClipPlane));
 
             if (Physics.Raycast(ray, out var result, _maxDistance, targetGrid))
             {
-                gridCell = result.collider.GetComponent<SelectableGridCell>();
+                cellPos = result.collider.GetComponent<SelectableGridCell>().BoundedCell.CellPosition;
                 return true;
             }
-            else
+            
+            if (_selectableCellsGround.Raycast(ray, out var enter))
             {
-                gridCell = null;
-                return false;
+                var hitPoint = ray.GetPoint(enter);
+                cellPos = WorldCreator.Grid.RealWorldToCellPosition(hitPoint);
+                return true;
             }
+            
+            cellPos = Vector3Int.zero;
+            return false;
         }
 
         public bool IsLeftClicked()
@@ -77,19 +108,11 @@ namespace MapGen.Map.MapEdit
             if(!_showGizmos) return;
 
             Gizmos.color = Color.green;
-            if (_visualSeenCells != null && _visualSeenCells.Count > 0)
+            if (_visualSeenCells != null)
             {
-                Gizmos.DrawWireCube(
-                    new Vector3(
-                        (float)_visualSeenCells.Average(cell => cell.Position.x),
-                        (float)_visualSeenCells.Average(cell => cell.Position.y),
-                        (float)_visualSeenCells.Average(cell => cell.Position.z)
-                    ),
-                    new Vector3(
-                        _visualSeenCells.Max(cell => cell.Position.x) - _visualSeenCells.Min(cell => cell.Position.x),
-                        _visualSeenCells.Max(cell => cell.Position.y) - _visualSeenCells.Min(cell => cell.Position.y),
-                        _visualSeenCells.Max(cell => cell.Position.z) - _visualSeenCells.Min(cell => cell.Position.z)
-                    ));
+                var center = (_visualSeenCells.StartCellPos + _visualSeenCells.EndCellPos) / 2;
+                var size = _visualSeenCells.EndCellPos - _visualSeenCells.StartCellPos;
+                Gizmos.DrawCube(center, size);
             }
         }
     }

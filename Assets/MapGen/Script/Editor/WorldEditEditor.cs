@@ -13,7 +13,7 @@ namespace MapGen.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            DrawSettingsEditor(_self.CurrentSelectBrush, ref _foldout, ref _cachedEditor);
+            DrawSettingsEditor(_self.CurrentSelectCubicBrush, ref _foldout, ref _cachedEditor);
         }
     }
 }

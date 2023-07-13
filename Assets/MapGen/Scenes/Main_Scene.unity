@@ -756,7 +756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showGizmos: 1
-  _currentSelectBrush: {fileID: 11400000, guid: 8a3543836f065e3429fd7e331a291697, type: 2}
+  _currentSelectCubicBrush: {fileID: 11400000, guid: fc0c41952435e5e4c91127eeebb357da, type: 2}
   sceneCamera: {fileID: 687690567}
   _maxDistance: 1000
 --- !u!1 &1594297515
@@ -980,8 +980,7 @@ MonoBehaviour:
   _worldSettings: {fileID: 11400000, guid: a245b69541f93ee40af258a9d9d04476, type: 2}
   _gridPrefabsParent: {fileID: 293857008}
   _mapBrushTargetedSelectableCellParent: {fileID: 1594297516}
-  _mapBrushTargetedSelectableCell: {fileID: 2222524241330915079, guid: 837cdc2eeca2bd046912faa38f205e76, type: 3}
-  _currentBrush: {fileID: 11400000, guid: 8ec1233d404667d44a8417d50b03e33a, type: 2}
+  _currentBrush: {fileID: 11400000, guid: 22762c8f21e1c99438a5ae3de78123ef, type: 2}
 --- !u!224 &1975725732 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 597308369130767402, guid: 2f7f3dde7ae722a4aafffe20691ad702, type: 3}

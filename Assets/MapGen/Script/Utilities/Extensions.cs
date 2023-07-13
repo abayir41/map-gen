@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace MapGen.Utilities
 {
@@ -19,6 +20,16 @@ namespace MapGen.Utilities
             foreach (T value in Enum.GetValues(input.GetType()))
                 if (input.HasFlag(value))
                     yield return value;
+        }
+        
+        public static Vector3Int RotateVector(this Vector3Int vector3Int, float angle)
+        {
+            var rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            var result = rotation * vector3Int;
+            var resultAsVector3Int = new Vector3Int(Mathf.RoundToInt(result.x), Mathf.RoundToInt(result.y),
+                Mathf.RoundToInt(result.z));
+
+            return resultAsVector3Int;
         }
     }
 }

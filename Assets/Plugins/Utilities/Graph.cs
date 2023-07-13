@@ -16,8 +16,6 @@ namespace Plugins.Utilities
             adj = new List<List<int>>(v);
             for (var i = 0; i < v; i++) adj.Add(new List<int>());
         }
-        
-        //
 
         // function to form edge between
         // two vertices source and dest
