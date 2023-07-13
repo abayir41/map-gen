@@ -2,57 +2,43 @@
 using System.Linq;
 using MapGen.GridSystem;
 using UnityEngine;
+using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes.NormalMap
 {
-    public class MapBrushCellsHelper : SelectedCellsHelper
+    public class MapBrushHelper : SelectedCellsHelper
     {
         private MapBrushSettings MapBrushSettings { get; }
 
-
-        public MapBrushCellsHelper(List<GridCell> cells, Grid grid, MapBrushSettings mapBrushSettings) : base(cells, grid)
+        public MapBrushHelper(List<Vector3Int> cells, Grid grid, MapBrushSettings mapBrushSettings) : base(cells, grid)
         {
             MapBrushSettings = mapBrushSettings;
         }
 
-        public bool IsEdgeGroundYDimensionCheck(GridCell cell)
+        public bool IsEdgeGroundYDimensionCheck(Vector3Int pos)
         {
-            var pos = cell.Position;
-            
             var offset = pos + Vector3Int.right;
-            if (!IsPosOutsideOfGrid(offset))
+            if (!Grid.IsCellExist(offset, out var cell) || cell.CellState is CellState.CanBeFilled)
             {
-                if (GetCell(offset).CellState is CellState.CanBeFilled)
-                {
-                    return true;
-                }
+                return true;
             }
             
             offset = pos + Vector3Int.left;
-            if (!IsPosOutsideOfGrid(offset))
+            if (!Grid.IsCellExist(offset, out cell) || cell.CellState is CellState.CanBeFilled)
             {
-                if (GetCell(offset).CellState is CellState.CanBeFilled)
-                {
-                    return true;
-                }
+                return true;
             }
             
             offset = pos + Vector3Int.back;
-            if (!IsPosOutsideOfGrid(offset))
+            if (!Grid.IsCellExist(offset, out cell) || cell.CellState is CellState.CanBeFilled)
             {
-                if (GetCell(offset).CellState is CellState.CanBeFilled)
-                {
-                    return true;
-                }
+                return true;
             }
             
             offset = pos + Vector3Int.forward;
-            if (!IsPosOutsideOfGrid(offset))
+            if (!Grid.IsCellExist(offset, out cell) || cell.CellState is CellState.CanBeFilled)
             {
-                if (GetCell(offset).CellState is CellState.CanBeFilled)
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
@@ -75,7 +61,7 @@ namespace MapGen.Map.Brushes.NormalMap
         
         public int FindLengthOfPath(List<GridCell> path)
         {
-            return (path.First().Position - path.Last().Position).sqrMagnitude;
+            return (path.First().CellPosition - path.Last().CellPosition).sqrMagnitude;
         }
         
         public List<List<GridCell>> FilterPathsByLenght(List<List<GridCell>> paths)
@@ -94,13 +80,13 @@ namespace MapGen.Map.Brushes.NormalMap
                 {
                     sum++;
                     
-                    var pos = cell.Position;
+                    var pos = cell.CellPosition;
                     pos += Vector3Int.up;
-                        
-                    if(IsPosOutsideOfGrid(pos))
+
+                    if (!Grid.IsCellExist(pos, out cell))
+                    {
                         break;
-                        
-                    cell = GetCell(new Vector3Int(pos.x, pos.y, pos.z));
+                    }
                 }
             }
 
@@ -114,7 +100,7 @@ namespace MapGen.Map.Brushes.NormalMap
             foreach (var pathGrid in tunnelPath)
             foreach (var savedPathGrid in savedPath)
             {
-                var distance = (savedPathGrid.Position - pathGrid.Position).sqrMagnitude;
+                var distance = (savedPathGrid.CellPosition - pathGrid.CellPosition).sqrMagnitude;
                 if (distance < MapBrushSettings.BetweenTunnelMinSpace) return false;
             }
 

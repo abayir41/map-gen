@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MapGen.GridSystem;
-using MapGen.Map.Brushes.BrushHelper;
 using MapGen.Placables;
 using MapGen.TunnelSystem;
 using MapGen.Utilities;
 using Plugins.Utilities;
 using UnityEngine;
 using Weaver;
+using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes.NormalMap
 {
@@ -16,15 +16,19 @@ namespace MapGen.Map.Brushes.NormalMap
     public class MapBrush : Brush
     {
         [SerializeField] private MapBrushSettings _mapBrushSettings;
-        private MapBrushCellsHelper _selectedCells;
-        private Grid _grid;
-
         public MapBrushSettings MapBrushSettings => _mapBrushSettings;
+        
+        
+        private MapBrushHelper _helper;
+        private Grid _grid;
+        private List<Vector3Int> _groundCells;
+        private List<Vector3Int> _selectedCells;
 
-        public override List<Placable> Paint(List<GridCell> selectedCells, Grid grid)
+        public override List<Placable> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             _grid = grid;
-            _selectedCells = new MapBrushCellsHelper(selectedCells, grid, _mapBrushSettings);
+            _helper = new MapBrushHelper(selectedCells, grid, _mapBrushSettings);
+            _groundCells = _helper.GetYAxisOfGrid(MapBrushSettings.GROUND_Y_LEVEL);
             return GenerateMap();
         }
         
@@ -94,10 +98,12 @@ namespace MapGen.Map.Brushes.NormalMap
         private List<Placable> CreateGround()
         {
             var result = new List<Placable>();
-            var groundCells = _selectedCells.GetYAxisOfGrid(MapBrushSettings.GROUND_Y_LEVEL);
-            foreach (var selectedCell in groundCells)
+            foreach (var selectedCell in _groundCells)
             {
-                selectedCell.MakeCellCanBeFilledGround();
+                if (_grid.IsCellExist(selectedCell, out var cell))
+                {
+                    cell.MakeCellCanBeFilledGround();
+                }
                 var placable =  WorldCreator.Instance.SpawnObject(selectedCell, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
                 result.Add(placable);
             }
@@ -108,22 +114,25 @@ namespace MapGen.Map.Brushes.NormalMap
         [MethodTimer]
         private List<Placable> CreateMountains()
         {
-            var mountains = _mapBrushSettings.GroundPlacementNoise.Generate(_grid.MaxX, _grid.MaxZ);
+            var mountains = _mapBrushSettings.GroundPlacementNoise.Generate(_helper.XWidth + 1, _helper.ZWidth + 1);
             var result = new List<Placable>();
 
-            foreach (var selectedCell in _selectedCells.Cells)
+            foreach (var selectedPos in _groundCells)
             {
-                var selectedCellPos = selectedCell.Position;
-                var height = mountains[selectedCellPos.x, selectedCellPos.z] * _mapBrushSettings.GroundHeightFactor -
+                var height = mountains[selectedPos.x - _helper.MinX, selectedPos.z - _helper.MinZ] * _mapBrushSettings.GroundHeightFactor -
                              _mapBrushSettings.GroundMoveDownFactor;
 
                 for (var y = MapBrushSettings.MOUNTAIN_Y_START_LEVEL; y < height; y++)
                 {
-                    if (ZeroOneIntervalToPercent(mountains[selectedCellPos.x, selectedCellPos.z]) < height) break;
-                    var targetPos = new Vector3Int(selectedCell.Position.x, y, selectedCell.Position.z);
-                    var cell = _selectedCells.Cells.Find(gridCell => gridCell.Position == targetPos);
-                    cell.MakeCellCanBeFilledGround();
-                    var placable = WorldCreator.Instance.SpawnObject(cell, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
+                    if (ZeroOneIntervalToPercent(mountains[selectedPos.x - _helper.MinX, selectedPos.z - _helper.MinZ]) < height) break;
+                    var targetPos = new Vector3Int(selectedPos.x, y, selectedPos.z);
+
+                    if (!_grid.IsCellExist(targetPos, out var cell))
+                    {
+                        cell.MakeCellCanBeFilledGround();
+                    }
+                    
+                    var placable = WorldCreator.Instance.SpawnObject(targetPos, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
                     result.Add(placable);
                 }
             }
@@ -147,16 +156,16 @@ namespace MapGen.Map.Brushes.NormalMap
             if (tunnelPaths.Count == 0) return null;
 
             var pathsAsGridCells = tunnelPaths.ConvertAll(input => input.ConvertAll(node => node.GridCell));
-            var lenghtFilteredTunnels = _selectedCells.FilterByHeight(pathsAsGridCells);
+            var lenghtFilteredTunnels = _helper.FilterByHeight(pathsAsGridCells);
             var fixedTunnelPaths = lenghtFilteredTunnels.ConvertAll(FixThePath);
-            var heightFilteredTunnels = _selectedCells.FilterPathsByLenght(fixedTunnelPaths);
-            var orderedTunnels = heightFilteredTunnels.OrderByDescending(_selectedCells.FindHeightAverageOfPath).ToList();
+            var heightFilteredTunnels = _helper.FilterPathsByLenght(fixedTunnelPaths);
+            var orderedTunnels = heightFilteredTunnels.OrderByDescending(_helper.FindHeightAverageOfPath).ToList();
 
             var cachedPaths = new List<List<GridCell>>();
             var result = new List<Placable>();
             foreach (var path in orderedTunnels)
             {
-                if (_selectedCells.CanTunnelSpawnable(path, cachedPaths))
+                if (_helper.CanTunnelSpawnable(path, cachedPaths))
                 {
                     var placable = CreateTunnel(path);
                     cachedPaths.Add(path);
@@ -172,7 +181,7 @@ namespace MapGen.Map.Brushes.NormalMap
         {
             var start = path.First();
             var end = path.Last();
-            var direction = end.Position - start.Position;
+            var direction = end.CellPosition - start.CellPosition;
             var direction2D = new Vector2Int(direction.x, direction.z);
             var rotationDegree = Mathf.Atan2(direction2D.y, direction2D.x) / Mathf.PI * 180;
             rotationDegree *= -1;
@@ -183,20 +192,18 @@ namespace MapGen.Map.Brushes.NormalMap
             {
                 foreach (var tunnelBrushDestroyPoint in _mapBrushSettings.TunnelBrush.DestroyPoints.CellPositions)
                 {
-                    var pos = pathPoint.Position +
-                              GridHelper.RotateObstacleVector(rotationDegree, tunnelBrushDestroyPoint);
+                    var rotatedVector = pathPoint.CellPosition + tunnelBrushDestroyPoint.RotateVector(rotationDegree);
 
-                    if (_selectedCells.IsPosOutsideOfGrid(pos)) continue;
+                    if (!_selectedCells.Contains(rotatedVector)) continue;
+                    if (!_grid.IsCellExist(rotatedVector, out var cell)) continue;
+                    if (cell.Item is TunnelBrush) continue;
 
-                    var cell = _selectedCells.GetCell(new Vector3Int(pos.x, pos.y, pos.z));
-                    if (cell.PlacedItem is TunnelBrush) continue;
-
-                    WorldCreator.Instance.DestroyItem(cell.PlacedItem);
+                    WorldCreator.Instance.DestroyItem(cell.Item);
                 }
 
-                if (_selectedCells.IsPlacableSuitable(pathPoint, _mapBrushSettings.TunnelBrush, rotationDegree))
+                if (_grid.IsPlacableSuitable(pathPoint.CellPosition, _mapBrushSettings.TunnelBrush, rotationDegree))
                 {
-                    var placable = WorldCreator.Instance.SpawnObject(pathPoint, _mapBrushSettings.TunnelBrush, CellLayer.Obstacle, rotationDegree);
+                    var placable = WorldCreator.Instance.SpawnObject(pathPoint.CellPosition, _mapBrushSettings.TunnelBrush, CellLayer.Obstacle, rotationDegree, _selectedCells);
                     result.Add(placable);
                 }
             }
@@ -209,18 +216,20 @@ namespace MapGen.Map.Brushes.NormalMap
         {
             var nodes = new List<Node>();
 
-            var yFilteredSelected = _selectedCells.GetYAxisOfGrid(layer);
-            foreach (var selectedCell in yFilteredSelected)
+            var yFilteredSelectedPoss = _helper.GetYAxisOfGrid(layer);
+            foreach (var selectedPos in yFilteredSelectedPoss)
             {
-                if (selectedCell.CellState == CellState.Filled && _selectedCells.IsEdgeGroundYDimensionCheck(selectedCell))
+                if(!_grid.IsCellExist(selectedPos, out var cell)) continue;
+                
+                if (cell.CellState == CellState.Filled && _helper.IsEdgeGroundYDimensionCheck(selectedPos))
                 {
-                    nodes.Add(new Node(nodes.Count, NodeState.EdgeGround, selectedCell));
+                    nodes.Add(new Node(nodes.Count, NodeState.EdgeGround, cell));
                     continue;
                 }
 
-                if (selectedCell.CellState == CellState.Filled)
+                if (cell.CellState == CellState.Filled)
                 {
-                    nodes.Add(new Node(nodes.Count, NodeState.Ground, selectedCell));
+                    nodes.Add(new Node(nodes.Count, NodeState.Ground, cell));
                 }
             }
             return nodes;
@@ -231,31 +240,28 @@ namespace MapGen.Map.Brushes.NormalMap
         {
             var pathFinder = new PathFinder(nodes.Count);
 
-            for (var x = _selectedCells.MinX; x < _selectedCells.MaxX - 1; x++)
-            for (var z = _selectedCells.MinZ; z < _selectedCells.MaxZ - 1; z++)
+            foreach (var node in nodes)
             {
-                var cell = _selectedCells.GetCell(new Vector3Int(x, layer, z));
-
-                if (nodes.All(node => node.GridCell != cell))
-                    continue;
-
-                var nodeGrid = nodes.First(node => node.GridCell == cell);
-                var right = _selectedCells.GetCell(new Vector3Int(x + 1, layer, z));
-                var bottom = _selectedCells.GetCell(new Vector3Int(x, layer, z + 1));
-
-                if (nodes.Any(node => node.GridCell == right))
+                var rightPos = new Vector3Int(node.GridCell.CellPosition.x + 1, layer, node.GridCell.CellPosition.z);
+                if (_grid.IsCellExist(rightPos, out var rightCell))
                 {
-                    var rightGrid = nodes.First(node => node.GridCell == right);
-                    pathFinder.AddEdge(rightGrid.ID, nodeGrid.ID);
+                    var rightNode = nodes.FirstOrDefault(rightNode => rightNode.GridCell == rightCell);
+                    if (rightNode != null)
+                    {
+                        pathFinder.AddEdge(node.ID, rightNode.ID);
+                    }
                 }
-
-                if (nodes.Any(node => node.GridCell == bottom))
+                
+                var bottomPos = new Vector3Int(node.GridCell.CellPosition.x, layer, node.GridCell.CellPosition.z + 1);
+                if (_grid.IsCellExist(bottomPos, out var bottomCell))
                 {
-                    var bottomGrid = nodes.First(node => node.GridCell == bottom);
-                    pathFinder.AddEdge(bottomGrid.ID, nodeGrid.ID);
+                    var bottomNode = nodes.FirstOrDefault(bottomNode => bottomNode.GridCell == bottomCell);
+                    if (bottomNode != null)
+                    {
+                        pathFinder.AddEdge(node.ID, bottomNode.ID);
+                    }
                 }
             }
-
             return pathFinder;
         }
 
@@ -295,7 +301,7 @@ namespace MapGen.Map.Brushes.NormalMap
                 for (var yAxis = -1; yAxis <= 1; yAxis++)
                 {
                     var possibleNeighbor = nodes.FirstOrDefault(node =>
-                        node.GridCell.Position == start.GridCell.Position + new Vector3Int(xAxis, 0, yAxis));
+                        node.GridCell.CellPosition == start.GridCell.CellPosition + new Vector3Int(xAxis, 0, yAxis));
 
                     if (possibleNeighbor == null || result.Contains(possibleNeighbor)) continue;
                         
@@ -319,7 +325,7 @@ namespace MapGen.Map.Brushes.NormalMap
                     Parallel.For(i + 1, edgeGroup.Count, a =>
                     {
                         var edgeNodeB = edgeGroup[a];
-                        if ((edgeNodeA.GridCell.Position - edgeNodeB.GridCell.Position).sqrMagnitude <
+                        if ((edgeNodeA.GridCell.CellPosition - edgeNodeB.GridCell.CellPosition).sqrMagnitude <
                             _mapBrushSettings.TunnelMinLength) return;
 
                         var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
@@ -336,13 +342,24 @@ namespace MapGen.Map.Brushes.NormalMap
 
         private List<GridCell> FixThePath(List<GridCell> path)
         {
-            var start = path.First().Position;
-            var end = path.Last().Position;
+            var start = path.First().CellPosition;
+            var end = path.Last().CellPosition;
             var yLayer = start.y;
 
             var newPath =
                 BresenhamLineAlgorithm.DrawLine(new Vector2Int(start.x, start.z), new Vector2Int(end.x, end.z));
-            var result = newPath.ConvertAll(input => _selectedCells.GetCell(new Vector3Int(input.x, yLayer, input.y)));
+
+            var result = new List<GridCell>();
+            foreach (var point in newPath)
+            {
+                var pos = new Vector3Int(point.x, yLayer, point.y);
+                if (!_grid.IsCellExist(pos, out var cell))
+                {
+                    cell = _grid.CreateCell(pos);
+                }
+                
+                result.Add(cell);
+            }
             return result;
         }
 
@@ -363,25 +380,25 @@ namespace MapGen.Map.Brushes.NormalMap
             }
                 
 
-            var noise = _mapBrushSettings.ObjectPlacementNoise.Generate(_grid.MaxX, _grid.MaxZ);
+            var noise = _mapBrushSettings.ObjectPlacementNoise.Generate(_helper.XWidth + 1, _helper.ZWidth + 1);
 
             var result = new List<Placable>();
             
             
-            foreach (var x in Enumerable.Range(_selectedCells.MinX, _selectedCells.XWidth).OrderBy(_ => UnityEngine.Random.value))
-            foreach (var z in Enumerable.Range(_selectedCells.MinZ, _selectedCells.ZWidth).OrderBy(_ => UnityEngine.Random.value))
+            foreach (var x in Enumerable.Range(_helper.MinX, _helper.XWidth).OrderBy(_ => UnityEngine.Random.value))
+            foreach (var z in Enumerable.Range(_helper.MinZ, _helper.ZWidth).OrderBy(_ => UnityEngine.Random.value))
             {
-                if (ZeroOneIntervalToPercent(noise[x, z]) < _mapBrushSettings.ObjectPlacementThreshold) continue;
+                if (ZeroOneIntervalToPercent(noise[x - _helper.MinX, z - _helper.MinZ]) < _mapBrushSettings.ObjectPlacementThreshold) continue;
 
                 var shuffledPlacables = rotatedPlacables.GetRandomAmountAndShuffled();
 
-                var cell = _selectedCells.GetCell(new Vector3Int(x, layer, z));
+                var cellPos = new Vector3Int(x, layer, z);
 
                 foreach (var data in shuffledPlacables)
                 {
-                    if (!_selectedCells.IsPlacableSuitable(cell, data.Placable, data.Rotation)) continue;
+                    if (!_grid.IsPlacableSuitable(cellPos, data.Placable, data.Rotation)) continue;
 
-                    var placable = WorldCreator.Instance.SpawnObject(cell, data.Placable, CellLayer.Obstacle, data.Rotation);
+                    var placable = WorldCreator.Instance.SpawnObject(cellPos, data.Placable, CellLayer.Obstacle, data.Rotation, _selectedCells);
                     result.Add(placable);
                     break;
                 }

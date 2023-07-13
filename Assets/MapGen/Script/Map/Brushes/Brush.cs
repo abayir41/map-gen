@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using MapGen.GridSystem;
 using MapGen.Placables;
 using UnityEngine;
+using MapGen.GridSystem;
+using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes
 {
     public abstract class Brush : ScriptableObject
     {
-        public abstract List<Placable> Paint(List<GridCell> selectedCells, Grid grid);
+        public abstract List<Placable> Paint(List<Vector3Int> selectedCells, Grid grid);
     }
 }
