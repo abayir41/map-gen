@@ -118,25 +118,24 @@ namespace MapGen.Map.Brushes.NormalMap
         {
             var paths = new List<List<GridCell>>();
 
-            Parallel.ForEach(edgeGroups, edgeGroup =>
+            foreach (var edgeGroup in edgeGroups)
             {
-                Parallel.For(0, edgeGroup.Count - 1, i =>
+                for (var i = 0; i < edgeGroup.Count - 1; i++)
                 {
                     var edgeNodeA = edgeGroup[i];
 
-                    Parallel.For(i + 1, edgeGroup.Count, a =>
+                    for (var a = i + 1; a < edgeGroup.Count; a++)
                     {
                         var edgeNodeB = edgeGroup[a];
                         var distance = (edgeNodeA.CellPosition - edgeNodeB.CellPosition).sqrMagnitude;
-                        if (distance < _mapBrushSettings.TunnelMinLength) return;
+                        if (distance < _mapBrushSettings.TunnelMinLength) continue;
 
                         var path = FindPath(edgeNodeA, edgeNodeB);
                         
                         paths.Add(path);
-                    });
-                });
-            });
-
+                    }
+                }
+            }
             return paths;
         }
         

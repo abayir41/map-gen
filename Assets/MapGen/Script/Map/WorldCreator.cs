@@ -56,7 +56,7 @@ namespace MapGen.Map
 
         public void PaintTheBrush(List<Vector3Int> selectedCells)
         {
-            //DestroyPlacedPlacables(selectedCells);
+            DestroyPlacedPlacables(selectedCells);
             _currentBrush.Paint(selectedCells, Grid);
 
         }
