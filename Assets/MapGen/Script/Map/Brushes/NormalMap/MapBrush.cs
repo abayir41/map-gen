@@ -8,6 +8,7 @@ using MapGen.Utilities;
 using Plugins.Utilities;
 using UnityEngine;
 using Weaver;
+using Debug = UnityEngine.Debug;
 using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes.NormalMap
@@ -154,7 +155,7 @@ namespace MapGen.Map.Brushes.NormalMap
             var tunnelPaths = FindAllEdgeToEdgePathsFromGroups(edgeGroups, nodes, pathFinder);
 
             if (tunnelPaths.Count == 0) return null;
-
+            
             var pathsAsGridCells = tunnelPaths.ConvertAll(input => input.ConvertAll(node => node.GridCell));
             var lenghtFilteredTunnels = _helper.FilterByHeight(pathsAsGridCells);
             var fixedTunnelPaths = lenghtFilteredTunnels.ConvertAll(FixThePath);
@@ -172,6 +173,7 @@ namespace MapGen.Map.Brushes.NormalMap
                     result.AddRange(placable);
                 }
             }
+            
 
             return result;
         }
@@ -190,20 +192,26 @@ namespace MapGen.Map.Brushes.NormalMap
 
             foreach (var pathPoint in path)
             {
-                foreach (var tunnelBrushDestroyPoint in _mapBrushSettings.TunnelBrush.DestroyPoints.CellPositions)
+                var tunnelDestroyGrids = _mapBrushSettings.TunnelBrush.Grids.Where(grid =>
+                    grid.PlacableCellType == PlacableCellType.TunnelDestroy);
+                foreach (var tunnelDestroyGrid in tunnelDestroyGrids)
                 {
-                    var rotatedVector = pathPoint.CellPosition + tunnelBrushDestroyPoint.RotateVector(rotationDegree);
+                    foreach (var tunnelBrushDestroyPoint in tunnelDestroyGrid.CellPositions)
+                    {
+                        var rotatedVector = pathPoint.CellPosition +
+                                            tunnelBrushDestroyPoint.RotateVector(rotationDegree);
 
-                    if (!_selectedCells.Contains(rotatedVector)) continue;
-                    if (!_grid.IsCellExist(rotatedVector, out var cell)) continue;
-                    if (cell.Item is TunnelBrush) continue;
+                        if (!_grid.IsCellExist(rotatedVector, out var cell)) continue;
 
-                    WorldCreator.Instance.DestroyItem(cell.Item);
+                        if (cell.Item is null or TunnelBrush) continue;
+
+                        WorldCreator.Instance.DestroyItem(cell.Item);
+                    }
                 }
-
+                
                 if (_grid.IsPlacableSuitable(pathPoint.CellPosition, _mapBrushSettings.TunnelBrush, rotationDegree))
                 {
-                    var placable = WorldCreator.Instance.SpawnObject(pathPoint.CellPosition, _mapBrushSettings.TunnelBrush, CellLayer.Obstacle, rotationDegree, _selectedCells);
+                    var placable = WorldCreator.Instance.SpawnObject(pathPoint.CellPosition, _mapBrushSettings.TunnelBrush, CellLayer.Obstacle, rotationDegree);
                     result.Add(placable);
                 }
             }
@@ -311,6 +319,7 @@ namespace MapGen.Map.Brushes.NormalMap
             }
         }
 
+
         [MethodTimer]
         private List<List<Node>> FindAllEdgeToEdgePathsFromGroups(List<List<Node>> edgeGroups, List<Node> allNodes, PathFinder pathFinder)
         {
@@ -327,7 +336,7 @@ namespace MapGen.Map.Brushes.NormalMap
                         var edgeNodeB = edgeGroup[a];
                         if ((edgeNodeA.GridCell.CellPosition - edgeNodeB.GridCell.CellPosition).sqrMagnitude <
                             _mapBrushSettings.TunnelMinLength) return;
-
+                        
                         var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
 
                         if (path == null) return;
@@ -337,6 +346,7 @@ namespace MapGen.Map.Brushes.NormalMap
                     });
                 });
             });
+            
             return paths;
         }
 
@@ -398,7 +408,7 @@ namespace MapGen.Map.Brushes.NormalMap
                 {
                     if (!_grid.IsPlacableSuitable(cellPos, data.Placable, data.Rotation)) continue;
 
-                    var placable = WorldCreator.Instance.SpawnObject(cellPos, data.Placable, CellLayer.Obstacle, data.Rotation, _selectedCells);
+                    var placable = WorldCreator.Instance.SpawnObject(cellPos, data.Placable, CellLayer.Obstacle, data.Rotation);
                     result.Add(placable);
                     break;
                 }

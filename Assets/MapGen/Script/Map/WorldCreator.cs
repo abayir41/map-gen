@@ -93,7 +93,7 @@ namespace MapGen.Map
 
         
 
-        public Placable SpawnObject(Vector3Int pos, Placable placable, CellLayer cellLayer, float rotation, List<Vector3Int> bounds = null, string objName = null)
+        public Placable SpawnObject(Vector3Int pos, Placable placable, CellLayer cellLayer, float rotation, string objName = null)
         {
             var instantiatedPlacable = Instantiate(placable, _gridPrefabsParent);
             instantiatedPlacable.InitializePlacable(pos);

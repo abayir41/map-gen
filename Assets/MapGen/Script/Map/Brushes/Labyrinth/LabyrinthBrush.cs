@@ -172,7 +172,7 @@ namespace MapGen.Map.Brushes
                 
                 watch.Start();
                 var placable = WorldCreator.Instance.SpawnObject(pos, _labyrinthBrushSettings.MazeCubicGridPlacable, CellLayer.Ground,
-                    LabyrinthBrushSettings.GROUND_ROTATION, null,position.ToString());
+                    LabyrinthBrushSettings.GROUND_ROTATION,position.ToString());
                 result.Add(placable);
 
                 watch.Stop();
