@@ -1,6 +1,4 @@
-﻿using System;
-using MapGen.Map.Brushes.NormalMap;
-using MapGen.Map.MapEdit;
+﻿using MapGen.Map.MapEdit;
 using UnityEngine;
 using UnityEngine.UI;
 
