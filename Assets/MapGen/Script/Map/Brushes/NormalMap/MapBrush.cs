@@ -148,18 +148,13 @@ namespace MapGen.Map.Brushes.NormalMap
         [MethodTimer]
         private List<Placable> MakeTunnels(int layer)
         {
-            var nodes = CreateTunnelNodes(layer);
-            var pathFinder = CreateTunnelNodeGraph(nodes, layer);
-            var edges = nodes.Where(node => node.NodeState == NodeState.EdgeGround).ToList();
-            var edgeGroups = GroupEdgeNodes(edges);
-            var tunnelPaths = FindAllEdgeToEdgePathsFromGroups(edgeGroups, nodes, pathFinder);
-
+            var edgeTunnelGridCells = _helper.FindEdgeTunnelGridCells(layer);
+            var groupedEdgeTunnelGridCells = _helper.GroupEdgeGroundTunnelGrid(edgeTunnelGridCells);
+            var tunnelPaths = _helper.FindAllEdgeToEdgePathsFromGroups(groupedEdgeTunnelGridCells); 
+            
             if (tunnelPaths.Count == 0) return null;
             
-            var pathsAsGridCells = tunnelPaths.ConvertAll(input => input.ConvertAll(node => node.GridCell));
-            var lenghtFilteredTunnels = _helper.FilterByHeight(pathsAsGridCells);
-            var fixedTunnelPaths = lenghtFilteredTunnels.ConvertAll(FixThePath);
-            var heightFilteredTunnels = _helper.FilterPathsByLenght(fixedTunnelPaths);
+            var heightFilteredTunnels = _helper.FilterByHeight(tunnelPaths);
             var orderedTunnels = heightFilteredTunnels.OrderByDescending(_helper.FindHeightAverageOfPath).ToList();
 
             var cachedPaths = new List<List<GridCell>>();
@@ -219,160 +214,8 @@ namespace MapGen.Map.Brushes.NormalMap
             return result;
         }
 
-        [MethodTimer]
-        private List<Node> CreateTunnelNodes(int layer)
-        {
-            var nodes = new List<Node>();
-
-            var yFilteredSelectedPoss = _helper.GetYAxisOfGrid(layer);
-            foreach (var selectedPos in yFilteredSelectedPoss)
-            {
-                if(!_grid.IsCellExist(selectedPos, out var cell)) continue;
-                
-                if (cell.CellState == CellState.Filled && _helper.IsEdgeGroundYDimensionCheck(selectedPos))
-                {
-                    nodes.Add(new Node(nodes.Count, NodeState.EdgeGround, cell));
-                    continue;
-                }
-
-                if (cell.CellState == CellState.Filled)
-                {
-                    nodes.Add(new Node(nodes.Count, NodeState.Ground, cell));
-                }
-            }
-            return nodes;
-        }
-
-        [MethodTimer]
-        private PathFinder CreateTunnelNodeGraph(List<Node> nodes, int layer)
-        {
-            var pathFinder = new PathFinder(nodes.Count);
-
-            foreach (var node in nodes)
-            {
-                var rightPos = new Vector3Int(node.GridCell.CellPosition.x + 1, layer, node.GridCell.CellPosition.z);
-                if (_grid.IsCellExist(rightPos, out var rightCell))
-                {
-                    var rightNode = nodes.FirstOrDefault(rightNode => rightNode.GridCell == rightCell);
-                    if (rightNode != null)
-                    {
-                        pathFinder.AddEdge(node.ID, rightNode.ID);
-                    }
-                }
-                
-                var bottomPos = new Vector3Int(node.GridCell.CellPosition.x, layer, node.GridCell.CellPosition.z + 1);
-                if (_grid.IsCellExist(bottomPos, out var bottomCell))
-                {
-                    var bottomNode = nodes.FirstOrDefault(bottomNode => bottomNode.GridCell == bottomCell);
-                    if (bottomNode != null)
-                    {
-                        pathFinder.AddEdge(node.ID, bottomNode.ID);
-                    }
-                }
-            }
-            return pathFinder;
-        }
-
-        [MethodTimer]
-        private List<List<Node>> GroupEdgeNodes(List<Node> edgeNodes)
-        {
-            var result = new List<List<Node>>();
-            var remainingNodes = new List<Node>(edgeNodes);
-            
-            foreach (var node in edgeNodes)
-            {
-                var processNode = true;
-                foreach (var list in result)
-                {
-                    if (list.Contains(node))
-                    {
-                        processNode = false;
-                        break;
-                    }
-                }
-
-                if (!processNode) continue;
-
-                var group = new List<Node> {node};
-                FindAllNeighborEdges(node, remainingNodes, group);
-                remainingNodes = remainingNodes.Except(group).ToList();
-                result.Add(group);
-            }
-
-            return result;
-        }
-
-        private void FindAllNeighborEdges(Node start, List<Node> nodes, List<Node> result)
-        {
-            for (var xAxis = -1; xAxis <= 1; xAxis++)
-            {
-                for (var yAxis = -1; yAxis <= 1; yAxis++)
-                {
-                    var possibleNeighbor = nodes.FirstOrDefault(node =>
-                        node.GridCell.CellPosition == start.GridCell.CellPosition + new Vector3Int(xAxis, 0, yAxis));
-
-                    if (possibleNeighbor == null || result.Contains(possibleNeighbor)) continue;
-                        
-                    result.Add(possibleNeighbor);
-                    FindAllNeighborEdges(possibleNeighbor, nodes, result);
-                }
-            }
-        }
-
-
-        [MethodTimer]
-        private List<List<Node>> FindAllEdgeToEdgePathsFromGroups(List<List<Node>> edgeGroups, List<Node> allNodes, PathFinder pathFinder)
-        {
-            var paths = new List<List<Node>>();
-
-            Parallel.ForEach(edgeGroups, edgeGroup =>
-            {
-                Parallel.For(0, edgeGroup.Count - 1, i =>
-                {
-                    var edgeNodeA = edgeGroup[i];
-
-                    Parallel.For(i + 1, edgeGroup.Count, a =>
-                    {
-                        var edgeNodeB = edgeGroup[a];
-                        var distance = (edgeNodeA.GridCell.CellPosition - edgeNodeB.GridCell.CellPosition).sqrMagnitude;
-                        if (distance < _mapBrushSettings.TunnelMinLength) return;
-                        
-                        var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
-
-                        if (path == null) return;
-
-                        var pathAsNodes = path.Select(input => allNodes.First(node => node.ID == input)).ToList();
-                        paths.Add(pathAsNodes);
-                    });
-                });
-            });
-
-            return paths;
-        }
-
-        private List<GridCell> FixThePath(List<GridCell> path)
-        {
-            var start = path.First().CellPosition;
-            var end = path.Last().CellPosition;
-            var yLayer = start.y;
-
-            var newPath =
-                BresenhamLineAlgorithm.DrawLine(new Vector2Int(start.x, start.z), new Vector2Int(end.x, end.z));
-
-            var result = new List<GridCell>();
-            foreach (var point in newPath)
-            {
-                var pos = new Vector3Int(point.x, yLayer, point.y);
-                if (!_grid.IsCellExist(pos, out var cell))
-                {
-                    cell = _grid.CreateCell(pos);
-                }
-                
-                result.Add(cell);
-            }
-            return result;
-        }
-
+        
+        
 
         [MethodTimer]
         private List<Placable> SpawnObstacles(int layer)

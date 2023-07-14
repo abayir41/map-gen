@@ -1,18 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MapGen.GridSystem;
+using Plugins.Utilities;
 using UnityEngine;
+using Weaver;
 using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes.NormalMap
 {
     public class MapBrushHelper : SelectedCellsHelper
     {
-        private MapBrushSettings MapBrushSettings { get; }
+        private readonly Grid _grid;
+        private readonly MapBrushSettings _mapBrushSettings;
 
         public MapBrushHelper(List<Vector3Int> cells, Grid grid, MapBrushSettings mapBrushSettings) : base(cells, grid)
         {
-            MapBrushSettings = mapBrushSettings;
+            _grid = grid;
+            _mapBrushSettings = mapBrushSettings;
         }
 
         public bool IsEdgeGroundYDimensionCheck(Vector3Int pos)
@@ -44,6 +49,120 @@ namespace MapGen.Map.Brushes.NormalMap
             return false;
         }
 
+        [MethodTimer]
+        public List<GridCell> FindEdgeTunnelGridCells(int layer)
+        {
+            var gridCells = new List<GridCell>();
+
+            var yFilteredSelectedPoss = GetYAxisOfGrid(layer);
+            foreach (var selectedPos in yFilteredSelectedPoss)
+            {
+                if(!_grid.IsCellExist(selectedPos, out var cell)) continue;
+                
+                if (cell.CellState == CellState.Filled && IsEdgeGroundYDimensionCheck(selectedPos))
+                {
+                    gridCells.Add(cell);
+                }
+            }
+            return gridCells;
+        }
+        
+        [MethodTimer]
+        public List<List<GridCell>> GroupEdgeGroundTunnelGrid(List<GridCell> edgeNodes)
+        {
+            var result = new List<List<GridCell>>();
+            var remainingNodes = new List<GridCell>(edgeNodes);
+            
+            foreach (var node in edgeNodes)
+            {
+                var processNode = true;
+                foreach (var list in result)
+                {
+                    if (list.Contains(node))
+                    {
+                        processNode = false;
+                        break;
+                    }
+                }
+
+                if (!processNode) continue;
+
+                var group = new List<GridCell> {node};
+                FindAllNeighborEdges(node, remainingNodes, group);
+                remainingNodes = remainingNodes.Except(group).ToList();
+                result.Add(group);
+            }
+
+            return result;
+        }
+        
+        private void FindAllNeighborEdges(GridCell start, List<GridCell> cells, List<GridCell> result)
+        {
+            for (var xAxis = -1; xAxis <= 1; xAxis++)
+            {
+                for (var yAxis = -1; yAxis <= 1; yAxis++)
+                {
+                    var possibleNeighbor = cells.FirstOrDefault(node =>
+                        node.CellPosition == start.CellPosition + new Vector3Int(xAxis, 0, yAxis));
+
+                    if (possibleNeighbor == null || result.Contains(possibleNeighbor)) continue;
+                        
+                    result.Add(possibleNeighbor);
+                    FindAllNeighborEdges(possibleNeighbor, cells, result);
+                }
+            }
+        }
+        
+        [MethodTimer]
+        public List<List<GridCell>> FindAllEdgeToEdgePathsFromGroups(List<List<GridCell>> edgeGroups)
+        {
+            var paths = new List<List<GridCell>>();
+
+            Parallel.ForEach(edgeGroups, edgeGroup =>
+            {
+                Parallel.For(0, edgeGroup.Count - 1, i =>
+                {
+                    var edgeNodeA = edgeGroup[i];
+
+                    Parallel.For(i + 1, edgeGroup.Count, a =>
+                    {
+                        var edgeNodeB = edgeGroup[a];
+                        var distance = (edgeNodeA.CellPosition - edgeNodeB.CellPosition).sqrMagnitude;
+                        if (distance < _mapBrushSettings.TunnelMinLength) return;
+
+                        var path = FindPath(edgeNodeA, edgeNodeB);
+                        
+                        paths.Add(path);
+                    });
+                });
+            });
+
+            return paths;
+        }
+        
+        private List<GridCell> FindPath(GridCell startEdge, GridCell endEdge)
+        {
+            var startPos = startEdge.CellPosition;
+            var endPos = endEdge.CellPosition;
+            var yLayer = startPos.y;
+
+            var newPath =
+                BresenhamLineAlgorithm.DrawLine(new Vector2Int(startPos.x, startPos.z), new Vector2Int(endPos.x, endPos.z));
+
+            var result = new List<GridCell>();
+            foreach (var point in newPath)
+            {
+                var pos = new Vector3Int(point.x, yLayer, point.y);
+                if (!_grid.IsCellExist(pos, out var cell))
+                {
+                    cell = _grid.CreateCell(pos);
+                }
+                
+                result.Add(cell);
+            }
+            return result;
+        }
+        
         public List<List<GridCell>> FilterByHeight(List<List<GridCell>> paths)
         {
             var result = new List<List<GridCell>>();
@@ -52,7 +171,7 @@ namespace MapGen.Map.Brushes.NormalMap
             {
                 var average = FindHeightAverageOfPath(path);
                 
-                if(average > MapBrushSettings.TunnelAverageMinHeight)
+                if(average > _mapBrushSettings.TunnelAverageMinHeight)
                     result.Add(path);
             }
 
@@ -64,11 +183,7 @@ namespace MapGen.Map.Brushes.NormalMap
             return (path.First().CellPosition - path.Last().CellPosition).sqrMagnitude;
         }
         
-        public List<List<GridCell>> FilterPathsByLenght(List<List<GridCell>> paths)
-        {
-            return paths.Where(path =>
-                FindLengthOfPath(path) > MapBrushSettings.TunnelMinLength).ToList();
-        }
+     
         
         public float FindHeightAverageOfPath(List<GridCell> path)
         {
@@ -101,7 +216,7 @@ namespace MapGen.Map.Brushes.NormalMap
             foreach (var savedPathGrid in savedPath)
             {
                 var distance = (savedPathGrid.CellPosition - pathGrid.CellPosition).sqrMagnitude;
-                if (distance < MapBrushSettings.BetweenTunnelMinSpace) return false;
+                if (distance < _mapBrushSettings.BetweenTunnelMinSpace) return false;
             }
 
             return true;
