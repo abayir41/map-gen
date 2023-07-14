@@ -8,9 +8,8 @@ namespace MapGen.GridSystem
 {
     public class Grid
     {
-        public Dictionary<Placable, PlacableGrids> ItemCellsDict { get; }
+        private Dictionary<Placable, PlacableGrids> ItemCellsDict { get; }
 
-        //private List<GridCell> CachedCells { get; } = new();
         private Dictionary<Vector3Int, GridCell> CachedCells { get; } = new();
 
         public Grid()
@@ -20,7 +19,6 @@ namespace MapGen.GridSystem
 
         public GridCell GetCell(Vector3Int cellPosition)
         {
-//           return CachedCells.Find(cell => cell.CellPosition == cellPosition);
             return CachedCells[cellPosition];
         }
 
@@ -40,20 +38,6 @@ namespace MapGen.GridSystem
         public bool IsCellExist(Vector3Int localGridPosition, out GridCell cachedCell)
         {
             return CachedCells.TryGetValue(localGridPosition, out cachedCell);
-            /*
-            var cell = CachedCells.FirstOrDefault(cell => cell.CellPosition == localGridPosition);
-            
-            if (cell == null)
-            {
-                cachedCell = null;
-                return false;
-            }
-            else
-            {
-                cachedCell = cell;
-                return true;
-            }
-            */
         }
 
         public GridCell CreateCell(Vector3Int cellPos)
@@ -62,11 +46,6 @@ namespace MapGen.GridSystem
             CachedCells.Add(cellPos, newCell);
             return newCell;
 
-            /*
-            var newCell = new GridCell(cellPos, CellPositionToRealWorld(cellPos));
-            CachedCells.Add(newCell);
-            return newCell;
-            */
         }
 
         public bool IsPlacableSuitable(Vector3Int cellPos, Placable placable, float rotation, List<Vector3Int> bounds = null)
