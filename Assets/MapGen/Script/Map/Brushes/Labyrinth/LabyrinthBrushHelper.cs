@@ -7,22 +7,22 @@ namespace MapGen.Map.Brushes.BrushHelper
 {
     public class LabyrinthBrushHelper
     {
-        public Dictionary<MazeCubicPositions, List<Vector3Int>> PosVisualsDict { get; }
+        public Dictionary<MazeCubicPositions, HashSet<Vector3Int>> PosVisualsDict { get; }
 
-        public LabyrinthBrushHelper(Vector2Int startPoint, int wallThickness, int wayThickness, int wallHeight)
+        public LabyrinthBrushHelper(Vector2Int startPoint, int wallThickness, int wayThickness, int wallHeight, int yOffset)
         {
-            PosVisualsDict = new Dictionary<MazeCubicPositions, List<Vector3Int>>();
+            PosVisualsDict = new Dictionary<MazeCubicPositions, HashSet<Vector3Int>>();
             var enums = Enum.GetValues(typeof(MazeCubicPositions));
             foreach (MazeCubicPositions position in enums)
             {
-                PosVisualsDict.Add(position, new List<Vector3Int>());
+                PosVisualsDict.Add(position, new HashSet<Vector3Int>());
             }
             
             for (var x = 0; x < wallThickness + wayThickness + wallThickness; x++)
             {
                 for (var z = 0; z < wallThickness + wayThickness + wallThickness; z++)
                 {
-                    for (var y = 0; y < wallHeight; y++)
+                    for (var y = yOffset; y < wallHeight + yOffset; y++)
                     {
                         var position = FindMazeCubicPositionCorrespondingToPosition(new Vector2Int(x, z), wallThickness, wayThickness);
                         PosVisualsDict[position].Add(new Vector3Int(startPoint.x + x, y, startPoint.y + z));

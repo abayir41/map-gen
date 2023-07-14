@@ -19,6 +19,7 @@ namespace LabGen.Labyrinth
         [SerializeField] private Placable _ground;
         public const int GROUND_ROTATION = 0;
         public const int GROUND_Y_LEVEL = 0;
+        public const int LABYRINTH_START_Y_LEVEL = 1;
 
         public Placable Ground => _ground;
         public Placable MazeCubicGridPlacable => _mazeCubicGridPlacable;
