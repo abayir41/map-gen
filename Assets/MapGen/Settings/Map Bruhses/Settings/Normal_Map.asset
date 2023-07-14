@@ -35,7 +35,7 @@ MonoBehaviour:
   groundHeightFactor: 45.78
   groundMoveDownFactor: 20.95
   tunnelYLevel: 1
-  tunnelMinLength: 29.44
+  tunnelMinLength: 79.36
   tunnelAverageMinHeight: 6.22
   betweenTunnelMinSpace: 177.2
   _tunnelBrush: {fileID: 4574748764192346455, guid: cc79e7757c3cc8d42b90fb60e8a64611, type: 3}

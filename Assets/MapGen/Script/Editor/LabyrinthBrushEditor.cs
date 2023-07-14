@@ -1,5 +1,6 @@
 ﻿using LabGen.Labyrinth;
 using MapGen.Map.Brushes;
+using MapGen.Map.Brushes.Labyrinth;
 using UnityEditor;
 using UnityEngine;
 
