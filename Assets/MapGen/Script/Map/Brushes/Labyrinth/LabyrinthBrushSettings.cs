@@ -1,10 +1,8 @@
-﻿using System;
-using LabGen.Placables;
-using MapGen.Placables;
+﻿using MapGen.Placables;
 using MapGen.Random;
 using UnityEngine;
 
-namespace LabGen.Labyrinth
+namespace MapGen.Map.Brushes.Labyrinth
 {
     
     [CreateAssetMenu(fileName = "Labyrinth Brush Settings", menuName = "MapGen/Brushes/Labyrinth/Brush Settings", order = 0)]

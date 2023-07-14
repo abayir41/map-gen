@@ -1,11 +1,10 @@
 ﻿using MapGen.Map.MapEdit;
-using MapGen.Map.MapEdit.Brushes;
 using UnityEditor;
 
 namespace MapGen.Editor
 {
-    [CustomEditor(typeof(WorlEdit))]
-    public class WorldEditEditor : SettingDrawer<WorlEdit>
+    [CustomEditor(typeof(WorldEdit))]
+    public class WorldEditEditor : SettingDrawer<WorldEdit>
     {
         private UnityEditor.Editor _cachedEditor;
         private bool _foldout;
@@ -13,7 +12,7 @@ namespace MapGen.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            DrawSettingsEditor(_self.CurrentSelectCubicBrush, ref _foldout, ref _cachedEditor);
+            DrawSettingsEditor(Self.CurrentSelectCubicBrush, ref _foldout, ref _cachedEditor);
         }
     }
 }

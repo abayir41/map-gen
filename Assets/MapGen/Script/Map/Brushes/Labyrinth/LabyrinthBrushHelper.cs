@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using LabGen.Placables;
 using UnityEngine;
 
-namespace MapGen.Map.Brushes.BrushHelper
+namespace MapGen.Map.Brushes.Labyrinth
 {
     public class LabyrinthBrushHelper
     {

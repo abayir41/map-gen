@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace MapGen.Placables
+namespace MapGen.Placables.GridCreators
 {
     public class ShouldPlaceOnGroundGridCreator : VisualUserGridCreator
     {

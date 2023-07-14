@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using MapGen.Map;
 using MapGen.Placables;
 using MapGen.Utilities;
@@ -27,14 +26,14 @@ namespace MapGen.GridSystem
 
         public Vector3 CellPositionToRealWorld(Vector3Int cellPos)
         {
-            return WorldSettings.GRID_CELL_REAL_WORLD_SIZE * cellPos;
+            return WorldSettings.GridCellRealWorldSize * cellPos;
         }
 
         public Vector3Int RealWorldToCellPosition(Vector3 realWorldPos)
         {
-            var x = Mathf.FloorToInt(realWorldPos.x / WorldSettings.GRID_CELL_REAL_WORLD_SIZE.y);
-            var y = Mathf.FloorToInt(realWorldPos.y / WorldSettings.GRID_CELL_REAL_WORLD_SIZE.y);
-            var z = Mathf.FloorToInt(realWorldPos.z / WorldSettings.GRID_CELL_REAL_WORLD_SIZE.z);
+            var x = Mathf.FloorToInt(realWorldPos.x / WorldSettings.GridCellRealWorldSize.y);
+            var y = Mathf.FloorToInt(realWorldPos.y / WorldSettings.GridCellRealWorldSize.y);
+            var z = Mathf.FloorToInt(realWorldPos.z / WorldSettings.GridCellRealWorldSize.z);
             return new Vector3Int(x, y, z);
         }
         

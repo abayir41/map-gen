@@ -1,12 +1,11 @@
-﻿using MapGen.Map.Brushes;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace MapGen.Editor
 {
     public class SettingDrawer<T> : UnityEditor.Editor where T : Object
     {
-        protected T _self;
+        protected T Self { get; private set; }
 
         protected static void DrawSettingsEditor(Object settings, ref bool foldout, ref UnityEditor.Editor cachedEditor)
         {
@@ -21,7 +20,7 @@ namespace MapGen.Editor
 
         private void OnEnable()
         {
-            _self = (T) target;
+            Self = (T) target;
         }
     }
 }

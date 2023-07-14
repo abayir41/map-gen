@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Collections.Generic;
 using MapGen.GridSystem;
-using MapGen.GridSystem.Obsolete;
 using MapGen.Map.MapEdit.Brushes;
-using MapGen.Placables;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Weaver;
-using Debug = UnityEngine.Debug;
-using Grid = MapGen.GridSystem.Grid;
-using GridCell = MapGen.GridSystem.Obsolete.GridCell;
 
 namespace MapGen.Map.MapEdit
 {
-    public class WorlEdit : MonoBehaviour
+    public class WorldEdit : MonoBehaviour
     {
+        public static WorldEdit Instance { get; private set; }
+        
         private static WorldCreator WorldCreator => WorldCreator.Instance;
-        private static Grid Grid => WorldCreator.Grid;
 
         [SerializeField] private bool _showGizmos;
         [SerializeField] private CubicBrushSettings _currentSelectCubicBrush;
@@ -35,7 +27,8 @@ namespace MapGen.Map.MapEdit
 
         private void Awake()
         {
-            _selectableCellsGround = new Plane(WorldSettings.PLANE_NORMAL, WorldSettings.PLANE_HEIGHT);
+            Instance = this;
+            _selectableCellsGround = new Plane(WorldSettings.PlaneNormal, WorldSettings.PlaneHeight);
         }
 
         private void Update()

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using MapGen.Placables.GridCreators;
 using UnityEngine;
 
-namespace MapGen.Placables
+namespace MapGen.Placables.GridCreators
 {
     public class NormalGridCreator : GridCreatorMono 
     {

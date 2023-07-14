@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MapGen.GridSystem;
-using MapGen.GridSystem.Obsolete;
-using UnityEngine;
-using Weaver;
-using GridCell = MapGen.GridSystem.Obsolete.GridCell;
+﻿using UnityEngine;
 
 namespace MapGen.Map.MapEdit.Brushes
 {

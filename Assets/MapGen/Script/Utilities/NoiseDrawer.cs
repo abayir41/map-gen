@@ -1,5 +1,6 @@
-﻿using MapGen.Map;
+﻿using System;
 using MapGen.Map.Brushes.NormalMap;
+using MapGen.Map.MapEdit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +11,11 @@ namespace MapGen.Utilities
         [SerializeField] private float scaleAmount;
         [SerializeField] private RawImage noiseTextureImage;
         [SerializeField] private RectTransform textureRect;
-        [SerializeField] private MapBrushSettings _mapBrushSettings;
         [SerializeField] private Noise.Noise noise;
         [SerializeField] private bool useCustomWidth;
         [SerializeField] private Vector2Int size;
+
+        private WorldEdit WorldEdit => WorldEdit.Instance;
 
         private void Update()
         {
@@ -23,7 +25,12 @@ namespace MapGen.Utilities
             }
             else
             {
-                //SetNoiseTexture(noise.Generate(_mapBrush.MapSize.x, _mapBrush.MapSize.z), _mapBrush.MapSize.x, _mapBrush.MapSize.z);
+                SetNoiseTexture(
+                    noise.Generate(
+                        WorldEdit.CurrentSelectCubicBrush.BrushSize.x,
+                        WorldEdit.CurrentSelectCubicBrush.BrushSize.z), 
+                    WorldEdit.CurrentSelectCubicBrush.BrushSize.x,
+                    WorldEdit.CurrentSelectCubicBrush.BrushSize.z);
             }
         }
 

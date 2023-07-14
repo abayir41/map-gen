@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using MapGen.Placables;
 using UnityEngine;
-using MapGen.GridSystem;
 using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes

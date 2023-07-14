@@ -1,7 +1,5 @@
-﻿using MapGen.Map;
-using MapGen.Map.Brushes.NormalMap;
+﻿using MapGen.Map.Brushes.NormalMap;
 using UnityEditor;
-using UnityEngine;
 
 namespace MapGen.Editor
 {
@@ -18,9 +16,9 @@ namespace MapGen.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            DrawSettingsEditor(_self.ObjectPlacementNoise, ref _objectPlacementFoldout, ref _objectPlacementNoiseSettings);
-            DrawSettingsEditor(_self.GroundPlacementNoise, ref _groundNoiseFoldout, ref _groundNoiseSettings);
-            DrawSettingsEditor(_self.RandomSettings, ref _randomSettingsFoldout, ref _randomSettings);
+            DrawSettingsEditor(Self.ObjectPlacementNoise, ref _objectPlacementFoldout, ref _objectPlacementNoiseSettings);
+            DrawSettingsEditor(Self.GroundPlacementNoise, ref _groundNoiseFoldout, ref _groundNoiseSettings);
+            DrawSettingsEditor(Self.RandomSettings, ref _randomSettingsFoldout, ref _randomSettings);
         }
     }
 }

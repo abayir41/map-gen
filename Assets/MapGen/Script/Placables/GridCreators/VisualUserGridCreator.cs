@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using MapGen.Placables.GridCreators;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace MapGen.Placables
+namespace MapGen.Placables.GridCreators
 {
     public class VisualUserGridCreator : GridCreatorMono
     {

@@ -334,19 +334,19 @@ namespace MapGen.Map.Brushes.NormalMap
                     Parallel.For(i + 1, edgeGroup.Count, a =>
                     {
                         var edgeNodeB = edgeGroup[a];
-                        if ((edgeNodeA.GridCell.CellPosition - edgeNodeB.GridCell.CellPosition).sqrMagnitude <
-                            _mapBrushSettings.TunnelMinLength) return;
+                        var distance = (edgeNodeA.GridCell.CellPosition - edgeNodeB.GridCell.CellPosition).sqrMagnitude;
+                        if (distance < _mapBrushSettings.TunnelMinLength) return;
                         
                         var path = pathFinder.FindShortestPath(edgeNodeA.ID, edgeNodeB.ID);
 
                         if (path == null) return;
 
-                        var pathAsNodes = path.ConvertAll(input => allNodes.First(node => node.ID == input));
+                        var pathAsNodes = path.Select(input => allNodes.First(node => node.ID == input)).ToList();
                         paths.Add(pathAsNodes);
                     });
                 });
             });
-            
+
             return paths;
         }
 

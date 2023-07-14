@@ -1,4 +1,4 @@
-﻿namespace LabGen.Placables
+﻿namespace MapGen.Map.Brushes.Labyrinth
 {
     public enum MazeCubicPositions
     {

@@ -1,8 +1,5 @@
-﻿using System;
-using MapGen.Map;
-using MapGen.Placables;
+﻿using MapGen.Placables;
 using UnityEditor;
-using UnityEngine;
 
 namespace MapGen.Editor
 {

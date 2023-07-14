@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing.Printing;
+﻿using System.Collections.Generic;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes;
 using MapGen.Placables;
-using MapGen.Utilities;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map
 {
     public class WorldCreator : MonoBehaviour
     {
-        private const int MAP_BRUSH_TARGETED_SELECTABLE_CELL_Y_AXIS = 0;
-        
         public static WorldCreator Instance { get; private set; }
 
 
@@ -23,7 +16,6 @@ namespace MapGen.Map
         [SerializeField] private GameObject player;
         [SerializeField] private WorldSettings _worldSettings;
         [SerializeField] private Transform _gridPrefabsParent;
-        [SerializeField] private Transform _mapBrushTargetedSelectableCellParent;
         [SerializeField] private Brush _currentBrush;
 
         public Transform GridPrefabsParent => _gridPrefabsParent;

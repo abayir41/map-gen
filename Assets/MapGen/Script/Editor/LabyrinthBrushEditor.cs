@@ -1,8 +1,5 @@
-﻿using LabGen.Labyrinth;
-using MapGen.Map.Brushes;
-using MapGen.Map.Brushes.Labyrinth;
+﻿using MapGen.Map.Brushes.Labyrinth;
 using UnityEditor;
-using UnityEngine;
 
 namespace MapGen.Editor
 {
@@ -15,7 +12,7 @@ namespace MapGen.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            DrawSettingsEditor(_self.LabyrinthBrushSettings, ref _foldout, ref _cachedEditor);
+            DrawSettingsEditor(Self.LabyrinthBrushSettings, ref _foldout, ref _cachedEditor);
         }
     }
 }
