@@ -13,7 +13,7 @@ using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes.NormalMap
 {
-    [CreateAssetMenu(fileName = "Map Brush", menuName = "MapGen/Brushes//Normal Map/Brush", order = 0)]
+    [CreateAssetMenu(fileName = "Map Brush", menuName = "MapGen/Brushes/Normal Map/Brush", order = 0)]
     public class MapBrush : Brush
     {
         [SerializeField] private MapBrushSettings _mapBrushSettings;
