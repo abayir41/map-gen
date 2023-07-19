@@ -15,4 +15,4 @@ MonoBehaviour:
   _targetSelectableGridCells:
     serializedVersion: 2
     m_Bits: 256
-  _brushSize: {x: 50, y: 16, z: 50}
+  _brushSize: {x: 50, y: 2, z: 50}

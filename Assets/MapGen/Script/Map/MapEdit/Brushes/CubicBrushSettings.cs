@@ -10,6 +10,10 @@ namespace MapGen.Map.MapEdit.Brushes
         [SerializeField] private Vector3Int _brushSize;
 
         public LayerMask TargetSelectableGridCells => _targetSelectableGridCells;
-        public Vector3Int BrushSize => _brushSize;
+        public Vector3Int BrushSize
+        {
+            get => _brushSize;
+            set => _brushSize = value;
+        }
     }
 }

@@ -4,12 +4,12 @@ using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes.Eraser
-{
-    
-    [CreateAssetMenu(fileName = "Eraser Brush", menuName = "MapGen/Brushes/Eraser", order = 0)]
-    public class EraserBrush : Brush
+{ 
+    public class EraserBrush : IBrush
     {
-        public override List<Placable> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public string BrushName => "Eraser";
+
+        public void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             foreach (var selectedCell in selectedCells)
             {
@@ -18,8 +18,6 @@ namespace MapGen.Map.Brushes.Eraser
                     WorldCreator.Instance.DestroyItem(cell.Item);
                 }
             }
-
-            return new List<Placable>();
         }
     }
 }

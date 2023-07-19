@@ -18,12 +18,11 @@ namespace MapGen.Map.MapEdit
         [SerializeField] private int _maxDistance;
 
         public CubicBrushSettings CurrentSelectCubicBrush => _currentSelectCubicBrush;
+        public int SelectedAreYOffset;
+        
 
         private CubicSelectedArea _visualSeenCells;
-        private CubicSelectedArea _selectedCells;
         private Plane _selectableCellsGround;
-        private Vector3 _selectedPoint;
-    
 
         private void Awake()
         {
@@ -33,16 +32,17 @@ namespace MapGen.Map.MapEdit
 
         private void Update()
         {
-            if(!RayToGridCell(_currentSelectCubicBrush.TargetSelectableGridCells, out var cellPos)) return;
-
+            if (!RayToGridCell(_currentSelectCubicBrush.TargetSelectableGridCells, out var cellPos))
+            {
+                _visualSeenCells = null;
+                return;
+            }
 
             var cubicSelectedArea = new CubicSelectedArea(
-                cellPos - _currentSelectCubicBrush.BrushSize / 2,
-                cellPos + _currentSelectCubicBrush.BrushSize / 2);
+                cellPos + Vector3Int.up * SelectedAreYOffset - _currentSelectCubicBrush.BrushSize / 2,
+                cellPos + Vector3Int.up * SelectedAreYOffset + _currentSelectCubicBrush.BrushSize / 2);
             
             _visualSeenCells = cubicSelectedArea;
-            
-            //Debug.Log($"{cubicSelectedArea.StartCellPos}, {cubicSelectedArea.EndCellPos}");
             
             if (IsLeftClicked())
             {
@@ -80,7 +80,7 @@ namespace MapGen.Map.MapEdit
                 return true;
             }
             
-            if (_selectableCellsGround.Raycast(ray, out var enter))
+            if (_selectableCellsGround.Raycast(ray, out var enter) && enter < _maxDistance)
             {
                 var hitPoint = ray.GetPoint(enter);
                 cellPos = WorldCreator.Grid.RealWorldToCellPosition(hitPoint);
@@ -93,7 +93,7 @@ namespace MapGen.Map.MapEdit
 
         public bool IsLeftClicked()
         {
-            return Input.GetMouseButton(0);
+            return Input.GetMouseButtonDown(0);
         }
 
         private void OnDrawGizmos()
@@ -105,7 +105,7 @@ namespace MapGen.Map.MapEdit
             {
                 var center = (_visualSeenCells.StartCellPos + _visualSeenCells.EndCellPos) / 2;
                 var size = _visualSeenCells.EndCellPos - _visualSeenCells.StartCellPos;
-                Gizmos.DrawCube(center, size);
+                Gizmos.DrawWireCube(center, size);
             }
         }
     }

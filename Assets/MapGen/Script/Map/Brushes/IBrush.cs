@@ -5,8 +5,9 @@ using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes
 {
-    public abstract class Brush : ScriptableObject
+    public interface IBrush
     {
-        public abstract List<Placable> Paint(List<Vector3Int> selectedCells, Grid grid);
+        public string BrushName { get; }
+        public void Paint(List<Vector3Int> selectedCells, Grid grid);
     }
 }
