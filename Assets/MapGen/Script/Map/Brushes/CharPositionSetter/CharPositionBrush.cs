@@ -18,7 +18,7 @@ namespace MapGen.Map.Brushes
 
         public void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
-            _fpsState.charSpawnPos = selectedCells.First();
+            _fpsState.CharSpawnPos = selectedCells.First();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace MapGen.Map.Brushes
         public IBrush PreviousBrush()
         {
             _brushIndex--;
-            if (_brushIndex <= 0)
+            if (_brushIndex <= -1)
             {
                 _brushIndex = _brushes.Count - 1;
             }

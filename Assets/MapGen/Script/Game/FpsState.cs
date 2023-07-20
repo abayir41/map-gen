@@ -6,9 +6,9 @@ namespace MapGen
     public class FpsState : State
     {
         [SerializeField] private EditState _editState;
-        [SerializeField] private GameObject _fpsController;
+        [SerializeField] private FpsChar _fpsController;
 
-        public Vector3 charSpawnPos;
+        public Vector3 CharSpawnPos;
         
         private GameManager GameManager => GameManager.Instance;
         
@@ -22,13 +22,13 @@ namespace MapGen
 
         public override void OnStateEnter()
         {
-            _fpsController.transform.position = charSpawnPos;
-            _fpsController.SetActive(true);
+            _fpsController.gameObject.SetActive(true);
+            _fpsController.SetPos(CharSpawnPos);
         }
 
         public override void OnStateExit()
         {
-            _fpsController.SetActive(false);
+            _fpsController.gameObject.SetActive(false);
         }
     }
 }

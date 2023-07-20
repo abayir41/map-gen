@@ -3,6 +3,7 @@ using MapGen.Map.Brushes;
 using MapGen.Map.MapEdit;
 using UnityEngine;
 using Plugins.Editor;
+using TMPro;
 
 namespace MapGen
 {
@@ -13,10 +14,18 @@ namespace MapGen
         [SerializeField] private GameObject _worldCreator;
         [SerializeField] private GameObject _gridSelector;
         [SerializeField] private BrushSelector _brushSelector;
-
+        [SerializeField] private TextMeshProUGUI yOffsetText;
+        
+        
         private GameManager GameManager => GameManager.Instance;
         private WorldEdit WorldEdit => WorldEdit.Instance;
-        
+
+
+        private void Start()
+        {
+            yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
+        }
+
         private void Update()
         {
             if (Input.GetKey(KeyCode.LeftControl))
@@ -35,10 +44,13 @@ namespace MapGen
                 if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
                 {
                     WorldEdit.SelectedAreYOffset++;
+                    yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
+
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
                 {
                     WorldEdit.SelectedAreYOffset--;
+                    yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
                 }
             }
             
@@ -77,7 +89,7 @@ namespace MapGen
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawCube(_fpsState.charSpawnPos, Vector3.one);
+            Gizmos.DrawCube(_fpsState.CharSpawnPos, Vector3.one);
         }
     }
 }

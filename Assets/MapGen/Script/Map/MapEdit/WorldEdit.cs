@@ -104,7 +104,7 @@ namespace MapGen.Map.MapEdit
             if (_visualSeenCells != null)
             {
                 var center = (_visualSeenCells.StartCellPos + _visualSeenCells.EndCellPos) / 2;
-                var size = _visualSeenCells.EndCellPos - _visualSeenCells.StartCellPos;
+                var size = _visualSeenCells.EndCellPos - _visualSeenCells.StartCellPos + Vector3Int.one;
                 Gizmos.DrawWireCube(center, size);
             }
         }
