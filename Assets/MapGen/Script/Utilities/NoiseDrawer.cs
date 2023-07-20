@@ -10,26 +10,11 @@ namespace MapGen.Utilities
         [SerializeField] private RawImage noiseTextureImage;
         [SerializeField] private RectTransform textureRect;
         [SerializeField] private Noise.Noise noise;
-        [SerializeField] private bool useCustomWidth;
         [SerializeField] private Vector2Int size;
-
-        private WorldEdit WorldEdit => WorldEdit.Instance;
-
+        
         private void Update()
         {
-            if (useCustomWidth)
-            {
-                SetNoiseTexture(noise.Generate(size.x, size.y), size.x, size.y);
-            }
-            else
-            {
-                SetNoiseTexture(
-                    noise.Generate(
-                        WorldEdit.CurrentSelectCubicBrush.BrushSize.x,
-                        WorldEdit.CurrentSelectCubicBrush.BrushSize.z), 
-                    WorldEdit.CurrentSelectCubicBrush.BrushSize.x,
-                    WorldEdit.CurrentSelectCubicBrush.BrushSize.z);
-            }
+            SetNoiseTexture(noise.Generate(size.x, size.y), size.x, size.y);
         }
 
         private void SetNoiseTexture(float[,] noisee, int width, int height)

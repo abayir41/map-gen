@@ -266,7 +266,6 @@ MonoBehaviour:
   _camera: {fileID: 687690565}
   _worldCreator: {fileID: 1928094612}
   _gridSelector: {fileID: 1360371019}
-  _brushSelector: {fileID: 1736009911}
   yOffsetText: {fileID: 1374732008}
 --- !u!1 &456597465
 GameObject:
@@ -455,7 +454,6 @@ MonoBehaviour:
   noiseTextureImage: {fileID: 1283986691}
   textureRect: {fileID: 1283986690}
   noise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
-  useCustomWidth: 0
   size: {x: 100, y: 100}
 --- !u!1 &627509826
 GameObject:
@@ -653,7 +651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &760312081
 Transform:
   m_ObjectHideFlags: 0
@@ -930,7 +928,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showGizmos: 1
-  _currentSelectCubicBrush: {fileID: 11400000, guid: fc0c41952435e5e4c91127eeebb357da, type: 2}
   sceneCamera: {fileID: 687690567}
   _maxDistance: 1000
   SelectedAreYOffset: 0
@@ -1254,6 +1251,9 @@ MonoBehaviour:
   _labyrinthBrush: {fileID: 11400000, guid: 8ec1233d404667d44a8417d50b03e33a, type: 2}
   _mapBrush: {fileID: 11400000, guid: 22762c8f21e1c99438a5ae3de78123ef, type: 2}
   _obstaclesBrush: {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}
+  _mountainBrush: {fileID: 11400000, guid: 238efa7900a3b1942bfb7200a9a2ea07, type: 2}
+  _eraserBrush: {fileID: 11400000, guid: 3a7acc54aec6cb8428d5ff83a5253a18, type: 2}
+  _charPositionBrush: {fileID: 11400000, guid: 7e7072f756fd7094eac94b77945dd322, type: 2}
 --- !u!1 &1742567422
 GameObject:
   m_ObjectHideFlags: 0
