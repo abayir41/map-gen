@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MapGen.Map.Brushes.Eraser;
 using MapGen.Map.Brushes.NormalMap;
+using MapGen.Map.Brushes.ObstacleSpawner;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +16,8 @@ namespace MapGen.Map.Brushes
         [SerializeField] private GroundBrush.GroundBrush _groundBrush;
         [SerializeField] private Labyrinth.LabyrinthBrush _labyrinthBrush;
         [SerializeField] private MapBrush _mapBrush;
-        
+        [SerializeField] private ObstaclesBrush _obstaclesBrush;
+
 
         public IBrush CurrentBrush { get; private set; }
 
@@ -31,6 +33,7 @@ namespace MapGen.Map.Brushes
             _brushes.Add(_mapBrush);
             _brushes.Add(new EraserBrush());
             _brushes.Add(new CharPositionBrush(_fpsState));
+            _brushes.Add(_obstaclesBrush);
 
             CurrentBrush = _groundBrush;
             brushName.text = "Brush: " + CurrentBrush.BrushName;

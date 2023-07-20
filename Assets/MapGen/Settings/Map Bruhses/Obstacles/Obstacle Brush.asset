@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 291b987983484e23bfe1e5dc644c6726, type: 3}
-  m_Name: Cubic Brush Settings
+  m_Script: {fileID: 11500000, guid: 9dee796132b743d99239bfdf58c3ae74, type: 3}
+  m_Name: Obstacle Brush
   m_EditorClassIdentifier: 
-  _targetSelectableGridCells:
-    serializedVersion: 2
-    m_Bits: 256
-  _brushSize: {x: 25, y: 1, z: 25}
+  _obstacleBrushSettings: {fileID: 11400000, guid: c30978108e53bf74ab9ed39b9e4f4078, type: 2}

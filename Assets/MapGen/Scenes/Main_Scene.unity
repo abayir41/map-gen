@@ -1253,6 +1253,7 @@ MonoBehaviour:
   _groundBrush: {fileID: 11400000, guid: f6f66414fd1feab4fa371d2d15157f8d, type: 2}
   _labyrinthBrush: {fileID: 11400000, guid: 8ec1233d404667d44a8417d50b03e33a, type: 2}
   _mapBrush: {fileID: 11400000, guid: 22762c8f21e1c99438a5ae3de78123ef, type: 2}
+  _obstaclesBrush: {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}
 --- !u!1 &1742567422
 GameObject:
   m_ObjectHideFlags: 0

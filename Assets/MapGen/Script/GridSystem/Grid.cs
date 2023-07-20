@@ -82,7 +82,12 @@ namespace MapGen.GridSystem
                         return false;
                     }
                     
-                    if (IsCellExist(checkingCellPos, out var cell) && cell.CellLayer is not CellLayer.CanPlacableGround)
+                    if (!IsCellExist(checkingCellPos, out var cell))
+                    {
+                        return false;
+                    }
+
+                    if (cell.CellLayer is not CellLayer.CanPlacableGround)
                     {
                         return false;
                     }
