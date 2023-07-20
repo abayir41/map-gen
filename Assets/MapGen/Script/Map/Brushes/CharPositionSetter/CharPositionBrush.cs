@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes
 {
-    public class CharPositionBrush : IBrush
+    [CreateAssetMenu(fileName = "Char Position Setter", menuName = "MapGen/Brushes/Char Position Setter", order = 0)]
+    public class CharPositionBrush : ScriptableObject, IBrush
     {
         public string BrushName => "Char Pos Setter";
-
-        private FpsState _fpsState;
-        public CharPositionBrush(FpsState fpsState)
-        {
-            _fpsState = fpsState;
-        }
+        public List<IBrushArea> BrushAreas => new() { _charPositionSetterArea };
+        
+        
+        [SerializeField] private CharPositionSetterArea _charPositionSetterArea;
+        
 
         public void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
-            _fpsState.CharSpawnPos = selectedCells.First();
+            FpsState.Instance.CharSpawnPos = selectedCells.First();
         }
     }
 }

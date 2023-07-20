@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MapGen.GridSystem;
+using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
 using MapGen.Utilities;
 using UnityEngine;
@@ -13,12 +14,14 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
     [CreateAssetMenu(fileName = "Obstacle Brush", menuName = "MapGen/Brushes/Obstacles/Brush", order = 0)]
     public class ObstaclesBrush : ScriptableObject, IBrush
     {
+        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
         [SerializeField] private ObstacleBrushSettings _obstacleBrushSettings;
         
         public string BrushName => "Obstacle";
 
         private SelectedCellsHelper _helper;
-        
+        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
+
         public void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             _helper = new SelectedCellsHelper(selectedCells, grid);

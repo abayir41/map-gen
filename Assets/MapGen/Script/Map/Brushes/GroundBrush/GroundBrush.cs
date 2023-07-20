@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MapGen.GridSystem;
+using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Map.Brushes.NormalMap;
 using MapGen.Placables;
 using UnityEngine;
@@ -12,11 +13,12 @@ namespace MapGen.Map.Brushes.GroundBrush
     [CreateAssetMenu(fileName = "Ground Brush", menuName = "MapGen/Brushes/Ground/Ground Brush", order = 0)]
     public class GroundBrush : ScriptableObject, IBrush
     {
+        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
         [SerializeField] private GroundBrushSettings _groundBrushSettings;
-        public GroundBrushSettings GroundBrushSettings => _groundBrushSettings;
-        
-        
+
+
         public string BrushName => "Ground";
+        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
 
         public void Paint(List<Vector3Int> selectedCells, Grid grid)
         {

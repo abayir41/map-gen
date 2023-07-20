@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MapGen.GridSystem;
+using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
 using MapGen.TunnelSystem;
 using MapGen.Utilities;
@@ -16,16 +17,17 @@ namespace MapGen.Map.Brushes.NormalMap
     [CreateAssetMenu(fileName = "Map Brush", menuName = "MapGen/Brushes/Normal Map/Brush", order = 0)]
     public class MapBrush : ScriptableObject, IBrush
     {
+        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
         [SerializeField] private MapBrushSettings _mapBrushSettings;
-        public MapBrushSettings MapBrushSettings => _mapBrushSettings;
-        
-        
+
+
         private MapBrushHelper _helper;
         private Grid _grid;
         private List<Vector3Int> _groundCells;
         private List<Vector3Int> _selectedCells;
 
         public string BrushName => "Map";
+        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
 
         public void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
@@ -132,8 +134,11 @@ namespace MapGen.Map.Brushes.NormalMap
 
                     if (!_grid.IsCellExist(targetPos, out var cell))
                     {
-                        cell.MakeCellCanBeFilledGround();
+                        cell = _grid.CreateCell(targetPos);
                     }
+                    
+                    cell.MakeCellCanBeFilledGround();
+
                     
                     var placable = WorldCreator.Instance.SpawnObject(targetPos, _mapBrushSettings.Ground, CellLayer.Ground, MapBrushSettings.GROUND_ROTATION);
                     result.Add(placable);

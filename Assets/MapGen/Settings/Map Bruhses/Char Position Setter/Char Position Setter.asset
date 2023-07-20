@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dee796132b743d99239bfdf58c3ae74, type: 3}
-  m_Name: Obstacle Brush
+  m_Script: {fileID: 11500000, guid: 1d3f333473344563a3608481baefe92b, type: 3}
+  m_Name: Char Position Setter
   m_EditorClassIdentifier: 
-  _cubicPlainXYBrush: {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
-  _obstacleBrushSettings: {fileID: 11400000, guid: c30978108e53bf74ab9ed39b9e4f4078, type: 2}
+  _charPositionSetterArea: {fileID: 11400000, guid: a18c39ebca02861448c91c95d90e75b0, type: 2}

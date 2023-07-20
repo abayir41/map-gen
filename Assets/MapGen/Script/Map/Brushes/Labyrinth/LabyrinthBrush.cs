@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MapGen.GridSystem;
+using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
 using Maze;
 using Unity.VisualScripting;
@@ -13,15 +14,15 @@ namespace MapGen.Map.Brushes.Labyrinth
     public class LabyrinthBrush : ScriptableObject, IBrush
     {
         [SerializeField] private LabyrinthBrushSettings _labyrinthBrushSettings;
+        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
 
-        public LabyrinthBrushSettings LabyrinthBrushSettings => _labyrinthBrushSettings;
 
-        
         private SelectedCellsHelper _selectedCellsHelper;
         private Grid _grid;
         private List<Vector3Int> _groundCells;
 
         public string BrushName => "Labyrinth";
+        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
 
         public void Paint(List<Vector3Int> selectedCells, Grid grid)
         {

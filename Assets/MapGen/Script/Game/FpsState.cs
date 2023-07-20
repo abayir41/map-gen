@@ -5,13 +5,29 @@ namespace MapGen
 {
     public class FpsState : State
     {
+        public static FpsState Instance
+        {
+            get;
+            private set;
+        }
+        
         [SerializeField] private EditState _editState;
         [SerializeField] private FpsChar _fpsController;
 
         public Vector3 CharSpawnPos;
         
         private GameManager GameManager => GameManager.Instance;
-        
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void Start()
+        {
+            this.gameObject.SetActive(false);
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Tab))

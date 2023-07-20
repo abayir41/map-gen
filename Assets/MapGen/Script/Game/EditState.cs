@@ -1,5 +1,6 @@
 ﻿using System;
 using MapGen.Map.Brushes;
+using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Map.MapEdit;
 using UnityEngine;
 using Plugins.Editor;
@@ -13,13 +14,12 @@ namespace MapGen
         [SerializeField] private GameObject _camera;
         [SerializeField] private GameObject _worldCreator;
         [SerializeField] private GameObject _gridSelector;
-        [SerializeField] private BrushSelector _brushSelector;
         [SerializeField] private TextMeshProUGUI yOffsetText;
         
         
         private GameManager GameManager => GameManager.Instance;
         private WorldEdit WorldEdit => WorldEdit.Instance;
-
+        private BrushSelector BrushSelector => BrushSelector.Instance;
 
         private void Start()
         {
@@ -28,32 +28,40 @@ namespace MapGen
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.LeftControl))
+            
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
             {
-                if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
+                if (Input.GetKey(KeyCode.LeftControl) && BrushSelector.CurrentBrushArea is IIncreasableBrushArea increasableBrushArea)
                 {
-                    WorldEdit.CurrentSelectCubicBrush.BrushSize += new Vector3Int(1, 0, 1);
+                    increasableBrushArea.IncreaseArea(1);
                 }
-                else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
+                else if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    WorldEdit.CurrentSelectCubicBrush.BrushSize -= new Vector3Int(1, 0, 1);
+                    BrushSelector.NextBrushArea();
                 }
-            }
-            else
-            {
-                if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
+                else
                 {
                     WorldEdit.SelectedAreYOffset++;
                     yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
-
                 }
-                else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
+            {
+                if (Input.GetKey(KeyCode.LeftControl) && BrushSelector.CurrentBrushArea is IIncreasableBrushArea increasableBrushArea)
+                {
+                    increasableBrushArea.DecreaseArea(1);
+                }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    BrushSelector.PreviousBrushArea();
+                }
+                else
                 {
                     WorldEdit.SelectedAreYOffset--;
                     yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
                 }
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 GameManager.SwitchState(this, _fpsState);
@@ -61,12 +69,12 @@ namespace MapGen
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                _brushSelector.PreviousBrush();
+                BrushSelector.PreviousBrush();
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                _brushSelector.NextBrush();
+                BrushSelector.NextBrush();
             }
         }
 

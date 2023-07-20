@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Labyrinth Brush
   m_EditorClassIdentifier: 
   _labyrinthBrushSettings: {fileID: 11400000, guid: c9c4de9cbb053c2488a1219d5a36a84f, type: 2}
+  _cubicPlainXYBrush: {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}

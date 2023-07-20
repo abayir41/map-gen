@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace MapGen.Map.Brushes.ObstacleSpawner
 {
-    
     [CreateAssetMenu(fileName = "Obstacle Brush Settings", menuName = "MapGen/Brushes/Obstacles/Brush Settings", order = 0)]
     public class ObstacleBrushSettings : ScriptableObject
     {
@@ -26,7 +25,5 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         public RandomSettings RandomSettings => randomSettings;
         public Noise.Noise ObjectPlacementNoise => objectPlacementNoise;
         public float ObjectPlacementThreshold => objectPlacementThreshold;
-
-
     }
 }
