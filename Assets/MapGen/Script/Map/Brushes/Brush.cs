@@ -8,7 +8,10 @@ namespace MapGen.Map.Brushes
 {
     public abstract class Brush : ScriptableObject
     {
+        [SerializeField] private bool _supportMultipleCells = true;
         [SerializeField] private List<BrushArea> _brushAreas;
+
+        public bool SupportMultipleCells => _supportMultipleCells;
         public virtual List<BrushArea> BrushAreas => _brushAreas;
         
         

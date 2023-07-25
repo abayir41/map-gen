@@ -22,7 +22,7 @@ namespace MapGen.Utilities
                     yield return value;
         }
         
-        public static Vector3Int RotateVector(this Vector3Int vector3Int, float angle)
+        public static Vector3Int RotateVector(this Vector3Int vector3Int, int angle)
         {
             var rotation = Quaternion.AngleAxis(angle, Vector3.up);
             var result = rotation * vector3Int;

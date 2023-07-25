@@ -25,4 +25,4 @@ MonoBehaviour:
   - {fileID: 2683300341979957061, guid: 919c68a81bd5a93409da87f7635b7140, type: 3}
   - {fileID: 8213404422655174283, guid: bb5e66dc965a6034e9a08a726473ea95, type: 3}
   _maxObstacleRotation: 360
-  objectPlacementThreshold: 65
+  objectPlacementThreshold: 1.5

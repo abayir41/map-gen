@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c4dad822264aa285558d0d039862e5, type: 3}
   m_Name: Labyrinth Brush
   m_EditorClassIdentifier: 
+  _supportMultipleCells: 1
   _brushAreas:
   - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
   _labyrinthBrushSettings: {fileID: 11400000, guid: c9c4de9cbb053c2488a1219d5a36a84f, type: 2}
+  GroundBrush: {fileID: 11400000, guid: f6f66414fd1feab4fa371d2d15157f8d, type: 2}
+  ObstaclesBrush: {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}

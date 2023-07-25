@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using MapGen.Map.MapEdit;
 using UnityEngine;
 
 namespace MapGen.Map.Brushes.BrushAreas

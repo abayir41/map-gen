@@ -35,13 +35,11 @@ namespace MapGen.Map.Brushes.Mountains
                     if (ZeroOneIntervalToPercent(mountains[selectedPos.x - _selectedCellsHelper.MinX, selectedPos.z - _selectedCellsHelper.MinZ]) < height) break;
                     var targetPos = new Vector3Int(selectedPos.x, y, selectedPos.z);
 
-                    if (!grid.IsCellExist(targetPos, out var cell))
+                    if (grid.IsCellExist(targetPos, out var cell))
                     {
-                        cell = grid.CreateCell(targetPos);
+                        if(cell.CellState != CellState.CanBeFilled) continue;
                     }
-                    
-                    cell.MakeCellCanBeFilledGround();
-                    
+
                     WorldCreator.Instance.SpawnObject(targetPos, _mountainBrushSettings.Ground, CellLayer.Ground, MountainBrushSettings.GROUND_ROTATION);
                 }
             }

@@ -2,7 +2,7 @@
 
 namespace MapGen.TunnelSystem
 {
-    public class TunnelBrush : Placable
+    public class TunnelPlacable : Placable
     {
         
     }

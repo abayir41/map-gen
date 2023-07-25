@@ -18,12 +18,14 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         [SerializeField] private List<Placable> placables;
         [SerializeField] private float _maxObstacleRotation;
         [SerializeField] [Range(0,100)] private float objectPlacementThreshold;
-        
-        
+
         public List<Placable> Placables => placables;
         public float MaxObstacleRotation => _maxObstacleRotation;
         public RandomSettings RandomSettings => randomSettings;
         public Noise.Noise ObjectPlacementNoise => objectPlacementNoise;
         public float ObjectPlacementThreshold => objectPlacementThreshold;
+
+        
+        [System.NonSerialized] public RotationMap RotationMap;
     }
 }

@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee5f0077339c489a984e6a870a082f63, type: 3}
-  m_Name: StabileRandom
+  m_Script: {fileID: 11500000, guid: fe5c684b66f84fcd9a461a09efaf9e3f, type: 3}
+  m_Name: Tunnel Brush Settings
   m_EditorClassIdentifier: 
-  seed: 67
+  tunnelMinLength: 10
+  tunnelAverageMinHeight: 10
+  betweenTunnelMinSpace: 10
+  _tunnelBrush: {fileID: 4574748764192346455, guid: cc79e7757c3cc8d42b90fb60e8a64611, type: 3}

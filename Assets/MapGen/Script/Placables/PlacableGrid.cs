@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MapGen.Placables.GridCreators;
+using MapGen.Utilities;
 using UnityEngine;
 
 namespace MapGen.Placables
@@ -69,6 +70,11 @@ namespace MapGen.Placables
                 Gizmos.DrawSphere(pos, _gizmoRadius);
                 Gizmos.DrawWireCube(pos, Vector3.one);
             }
+        }
+
+        public List<Vector3Int> GetRotatedCells(int degree)
+        {
+            return _cellPositions.ConvertAll(input => input.RotateVector(degree));
         }
     }
 }

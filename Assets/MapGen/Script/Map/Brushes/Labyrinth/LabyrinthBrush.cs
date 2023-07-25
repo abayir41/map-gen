@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using MapGen.GridSystem;
-using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
 using Maze;
 using Unity.VisualScripting;
@@ -14,23 +12,21 @@ namespace MapGen.Map.Brushes.Labyrinth
     public class LabyrinthBrush : Brush
     {
         [SerializeField] private LabyrinthBrushSettings _labyrinthBrushSettings;
-
-
+        [SerializeField] private GroundBrush.GroundBrush _groundBrush;
+        [SerializeField] private ObstacleSpawner.ObstaclesBrush _obstaclesBrush;
+        
         private SelectedCellsHelper _selectedCellsHelper;
         private Grid _grid;
-        private List<Vector3Int> _groundCells;
 
         public override string BrushName => "Labyrinth";
 
         public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
-            
-            var result = new List<Placable>();
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
-            _groundCells = _selectedCellsHelper.GetYAxisOfGrid(LabyrinthBrushSettings.GROUND_Y_LEVEL);
+            var map = new RotationMap();
             _grid = grid;
 
-            result.AddRange(CreateGround());
+            _groundBrush.Paint(selectedCells, grid);
             
             var labyrinthPieceSize = _labyrinthBrushSettings.WallThickness + _labyrinthBrushSettings.WayThickness;
             var labyrinthPieceAmount = new Vector2Int((_selectedCellsHelper.XWidth - labyrinthPieceSize) / labyrinthPieceSize,
@@ -48,6 +44,25 @@ namespace MapGen.Map.Brushes.Labyrinth
                     
                     var labyrinthBrushHelper = new LabyrinthBrushHelper(startPoint, _labyrinthBrushSettings.WallThickness,
                         _labyrinthBrushSettings.WayThickness, _labyrinthBrushSettings.WallHeight, LabyrinthBrushSettings.LABYRINTH_START_Y_LEVEL);
+                    
+                    
+                    var mazeCell = maze[x, z];
+
+                    
+                    for (var wayX = 0; wayX < _labyrinthBrushSettings.WayThickness; wayX++)
+                    {
+                        for (var wayY = 0; wayY < _labyrinthBrushSettings.WayThickness; wayY++)
+                        {
+                            if (!mazeCell.HasFlag(WallState.Left) && !mazeCell.HasFlag(WallState.Right))
+                            {
+                                map.SetCell(startPoint + Vector2Int.one * _labyrinthBrushSettings.WallThickness + new Vector2Int(wayX, wayY), new RotationMapCell(LabyrinthBrushSettings.HorizontalDegrees));
+                            } 
+                            else if (!mazeCell.HasFlag(WallState.Up) && !mazeCell.HasFlag(WallState.Down))
+                            {
+                                map.SetCell(startPoint + Vector2Int.one * _labyrinthBrushSettings.WallThickness + new Vector2Int(wayX, wayY), new RotationMapCell(LabyrinthBrushSettings.VerticalDegrees));
+                            }
+                        }
+                    }
                     
                     
                     var cell = maze[x, z];
@@ -78,27 +93,27 @@ namespace MapGen.Map.Brushes.Labyrinth
                     {
                         if (leftWallState == null || !leftWallState.HasFlag(WallState.Up))
                         {
-                            result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopLeft));
+                            OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopLeft);
                         }
-                        result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Top));
-                        result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopRight));
+                        OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Top);
+                        OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopRight);
                     }
 
                     if (left)
                     {
                         if (!up && (leftWallState == null || !leftWallState.HasFlag(WallState.Up)))
                         {
-                            result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopLeft));
+                            OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopLeft);
                         }
 
                         if ((leftBottomWallState == null || !leftBottomWallState.HasFlag(WallState.Up)) &&
                             (bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) && 
                             (bottomWallState == null || !bottomWallState.HasFlag(WallState.Left)))
                         {
-                            result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomLeft));
+                            OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomLeft);
                         }
                         
-                        result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Left));
+                        OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Left);
                     }
 
                     if (x == labyrinthPieceAmount.x - 1)
@@ -107,13 +122,13 @@ namespace MapGen.Map.Brushes.Labyrinth
                         {
                             if (!up)
                             {
-                                result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopRight));
+                                OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.TopRight);
                             }
-                            result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Right));
+                            OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Right);
 
                             if ((bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) && (bottomWallState == null || !bottomWallState.HasFlag(WallState.Right)))
                             {
-                                result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomRight));
+                                OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomRight);
                             }
                         }
                     }
@@ -124,61 +139,42 @@ namespace MapGen.Map.Brushes.Labyrinth
                         {
                             if (!right)
                             {
-                                result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomRight));
+                                OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomRight);
                             }
 
                             if (!left && (leftWallState == null || !leftWallState.HasFlag(WallState.Down)))
                             {
-                                result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomLeft));
+                                OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.BottomLeft);
                             }
                             
-                            result.AddRange(OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Bottom));
+                            OpenWallIfNecessary(labyrinthBrushHelper, MazeCubicPositions.Bottom);
                         }
                     }
                 }
             }
+
             
-            result.ToList();
+            var oldMap = _obstaclesBrush.ObstacleBrushSettings.RotationMap;
+            _obstaclesBrush.ObstacleBrushSettings.RotationMap = map;
+
+            var yOffsetedCells = selectedCells.ConvertAll(pos => pos + Vector3Int.up * LabyrinthBrushSettings.LABYRINTH_START_Y_LEVEL);
+            _obstaclesBrush.Paint(yOffsetedCells, grid);
+
+            _obstaclesBrush.ObstacleBrushSettings.RotationMap = oldMap;
+            
         }
         
-        private List<Placable> CreateGround()
-        {
-            var result = new List<Placable>();
-            foreach (var selectedCell in _groundCells)
-            {
-                if (_grid.IsCellExist(selectedCell, out var cell))
-                {
-                    cell.MakeCellCanBeFilledGround();
-                }
-                var placable =  WorldCreator.Instance.SpawnObject(selectedCell, _labyrinthBrushSettings.Ground, CellLayer.Ground, LabyrinthBrushSettings.GROUND_ROTATION);
-                result.Add(placable);
-            }
-
-            return result;
-        }
-
         
-        
-        public List<Placable> OpenWallIfNecessary(LabyrinthBrushHelper brushHelper, MazeCubicPositions position)
+        public void OpenWallIfNecessary(LabyrinthBrushHelper brushHelper, MazeCubicPositions position)
         {
-            var result = new List<Placable>();
-            
             var positions = brushHelper.PosVisualsDict[position];
             
             foreach (var pos in positions)
             {
-                if (_grid.IsCellExist(pos, out var cell))
-                {
-                    cell.MakeCellCanBeFilledGround();
-                }
-                
-                var placable = WorldCreator.Instance.SpawnObject(pos, _labyrinthBrushSettings.MazeCubicGridPlacable, CellLayer.Ground,
-                    LabyrinthBrushSettings.GROUND_ROTATION,position.ToString());
-                result.Add(placable);
-                
+                if (_grid.IsCellExist(pos, out var cell) && cell.CellState != CellState.CanBeFilled) continue;
+
+                WorldCreator.Instance.SpawnObject(pos, _labyrinthBrushSettings.MazeCubicGridPlacable, CellLayer.Ground, LabyrinthBrushSettings.WALL_ROTATION,position.ToString());
             }
-            
-            return result;
         }
     }
 }

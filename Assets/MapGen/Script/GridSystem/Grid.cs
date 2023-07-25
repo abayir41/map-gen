@@ -29,9 +29,10 @@ namespace MapGen.GridSystem
 
         public Vector3Int RealWorldToCellPosition(Vector3 realWorldPos)
         {
-            var x = Mathf.FloorToInt(realWorldPos.x / WorldSettings.GridCellRealWorldSize.y);
-            var y = Mathf.FloorToInt(realWorldPos.y / WorldSettings.GridCellRealWorldSize.y);
-            var z = Mathf.FloorToInt(realWorldPos.z / WorldSettings.GridCellRealWorldSize.z);
+            var x = Mathf.RoundToInt(realWorldPos.x / WorldSettings.GridCellRealWorldSize.y);
+            var y = Mathf.RoundToInt(realWorldPos.y / WorldSettings.GridCellRealWorldSize.y);
+            var z = Mathf.RoundToInt(realWorldPos.z / WorldSettings.GridCellRealWorldSize.z);
+            
             return new Vector3Int(x, y, z);
         }
         
@@ -48,7 +49,7 @@ namespace MapGen.GridSystem
 
         }
 
-        public bool IsPlacableSuitable(Vector3Int cellPos, Placable placable, float rotation, List<Vector3Int> bounds = null)
+        public bool IsPlacableSuitable(Vector3Int cellPos, Placable placable, int rotation, List<Vector3Int> bounds = null)
         {
             var requiredGrids = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.Required);
             foreach (var requiredCells in requiredGrids)
@@ -97,7 +98,7 @@ namespace MapGen.GridSystem
             return true;
         }
 
-        public void AddItem(Placable placable, Vector3Int originPos, float rotation, CellLayer cellLayer)
+        public void AddItem(Placable placable, Vector3Int originPos, int rotation, CellLayer cellLayer)
         {
             var newGroundCells = new List<GridCell>();
             var physicalCells = new List<GridCell>();

@@ -216,7 +216,7 @@ Transform:
   - {fileID: 431870166}
   - {fileID: 760312081}
   m_Father: {fileID: 1742567423}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &431870165
 GameObject:
@@ -265,11 +265,13 @@ MonoBehaviour:
   _fpsState: {fileID: 760312082}
   _camera: {fileID: 687690565}
   _worldCreator: {fileID: 1928094612}
-  _gridSelector: {fileID: 1360371019}
   _canvas: {fileID: 1727787753}
+  _showGizmos: 1
   yOffsetText: {fileID: 1374732008}
   brushName: {fileID: 1844515896}
   brushAreaName: {fileID: 694139218}
+  sceneCamera: {fileID: 687690567}
+  _maxDistance: 1000
 --- !u!1 &451480134
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,7 +666,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1742567423}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &463332169
 MonoBehaviour:
@@ -1291,54 +1293,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283986689}
   m_CullTransparentMesh: 1
---- !u!1 &1360371019
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1360371020}
-  - component: {fileID: 1360371021}
-  m_Layer: 0
-  m_Name: Grid Selector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1360371020
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360371019}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1742567423}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1360371021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360371019}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c92bc2c8113647c7898f52aa9bd6fba8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _showGizmos: 1
-  sceneCamera: {fileID: 687690567}
-  _maxDistance: 1000
-  SelectedAreYOffset: 0
 --- !u!1 &1374732006
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,7 +1596,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1742567423}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1736009911
 MonoBehaviour:
@@ -1665,6 +1619,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 22762c8f21e1c99438a5ae3de78123ef, type: 2}
   - {fileID: 11400000, guid: 238efa7900a3b1942bfb7200a9a2ea07, type: 2}
   - {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}
+  - {fileID: 11400000, guid: 6bcc289907cd32b4ebc931840a0bee25, type: 2}
 --- !u!1 &1742567422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,7 +1649,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 624954699}
-  - {fileID: 1360371020}
   - {fileID: 1928094613}
   - {fileID: 463332168}
   - {fileID: 328697567}
@@ -1872,7 +1826,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1742567423}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1928094614
 MonoBehaviour:
@@ -1888,7 +1842,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _worldSettings: {fileID: 11400000, guid: a245b69541f93ee40af258a9d9d04476, type: 2}
   _gridPrefabsParent: {fileID: 293857008}
-  _brushSelector: {fileID: 1736009911}
 --- !u!224 &1975725732 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 597308369130767402, guid: 2f7f3dde7ae722a4aafffe20691ad702, type: 3}

@@ -13,7 +13,6 @@ namespace MapGen.Map
         
         [SerializeField] private WorldSettings _worldSettings;
         [SerializeField] private Transform _gridPrefabsParent;
-        [SerializeField] private BrushSelector _brushSelector;
 
         public Grid Grid { get; private set; }
 
@@ -25,7 +24,7 @@ namespace MapGen.Map
 
         public void PaintTheBrush(List<Vector3Int> selectedCells)
         {
-            _brushSelector.CurrentBrush.Paint(selectedCells, Grid);
+            BrushSelector.Instance.CurrentBrush.Paint(selectedCells, Grid);
 
         }
         
@@ -51,9 +50,7 @@ namespace MapGen.Map
             Destroy(item.gameObject);
         }
 
-        
-
-        public Placable SpawnObject(Vector3Int pos, Placable placable, CellLayer cellLayer, float rotation, string objName = null)
+        public Placable SpawnObject(Vector3Int pos, Placable placable, CellLayer cellLayer, int rotation, string objName = null)
         {
             var instantiatedPlacable = Instantiate(placable, _gridPrefabsParent);
             instantiatedPlacable.InitializePlacable(pos);

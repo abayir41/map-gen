@@ -28,9 +28,9 @@ namespace MapGen.Map.Brushes.GroundBrush
             var result = new List<Placable>();
             foreach (var selectedCell in selectedCells)
             {
-                if (grid.IsCellExist(selectedCell, out var cell))
+                if (grid.IsCellExist(selectedCell, out var cell)) 
                 {
-                    cell.MakeCellCanBeFilledGround();
+                    if(cell.CellState != CellState.CanBeFilled) continue;
                 }
 
                 var placable = WorldCreator.Instance.SpawnObject(selectedCell, _groundBrushSettings.Ground,

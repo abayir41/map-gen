@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MapGen.GridSystem;
+using MapGen.Map.Brushes.NormalMap;
 using Plugins.Utilities;
 using UnityEngine;
 using Weaver;
 using Grid = MapGen.GridSystem.Grid;
 
-namespace MapGen.Map.Brushes.NormalMap
+namespace MapGen.Map.Brushes.TunnelBrush
 {
-    public class MapBrushHelper : SelectedCellsHelper
+    public class TunnelBrushHelper : SelectedCellsHelper
     {
         private readonly Grid _grid;
-        private readonly MapBrushSettings _mapBrushSettings;
+        private readonly TunnelBrushSettings _mapBrushSettings;
 
-        public MapBrushHelper(List<Vector3Int> cells, Grid grid, MapBrushSettings mapBrushSettings) : base(cells, grid)
+        public TunnelBrushHelper(List<Vector3Int> cells, Grid grid, TunnelBrushSettings mapBrushSettings) : base(cells, grid)
         {
             _grid = grid;
             _mapBrushSettings = mapBrushSettings;
