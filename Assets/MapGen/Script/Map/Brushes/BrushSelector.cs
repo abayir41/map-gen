@@ -15,20 +15,12 @@ namespace MapGen.Map.Brushes
         public static BrushSelector Instance { get; private set; }
         
         [SerializeField] private FpsState _fpsState;
-        [SerializeField] private TextMeshProUGUI brushName;
+        [SerializeField] private List<Brush> _brushes;
 
-        [SerializeField] private GroundBrush.GroundBrush _groundBrush;
-        [SerializeField] private Labyrinth.LabyrinthBrush _labyrinthBrush;
-        [SerializeField] private MapBrush _mapBrush;
-        [SerializeField] private ObstaclesBrush _obstaclesBrush;
-        [SerializeField] private MountainBrush _mountainBrush;
-        [SerializeField] private EraserBrush _eraserBrush;
-        [SerializeField] private CharPositionBrush _charPositionBrush;
 
-        public IBrush CurrentBrush => _brushes[_brushIndex];
-        public IBrushArea CurrentBrushArea => CurrentBrush.BrushAreas[_brushAreaIndex];
+        public Brush CurrentBrush => _brushes[_brushIndex];
+        public BrushArea CurrentBrushArea => CurrentBrush.BrushAreas[_brushAreaIndex];
 
-        private List<IBrush> _brushes;
         private int _brushIndex;
         private int _brushAreaIndex;
 
@@ -37,16 +29,6 @@ namespace MapGen.Map.Brushes
             Instance = this;
             
             _brushIndex = 0;
-            _brushes = new List<IBrush>();
-            _brushes.Add(_groundBrush);
-            _brushes.Add(_labyrinthBrush);
-            _brushes.Add(_mapBrush);
-            _brushes.Add(_eraserBrush);
-            _brushes.Add(_charPositionBrush);
-            _brushes.Add(_obstaclesBrush);
-            _brushes.Add(_mountainBrush);
-
-            brushName.text = "Brush: " + CurrentBrush.BrushName;
         }
 
         public void NextBrush()
@@ -57,8 +39,6 @@ namespace MapGen.Map.Brushes
             {
                 _brushIndex = 0;
             }
-
-            brushName.text = "Brush: " + CurrentBrush.BrushName;
         }
 
         public void PreviousBrush()
@@ -69,8 +49,6 @@ namespace MapGen.Map.Brushes
             {
                 _brushIndex = _brushes.Count - 1;
             }
-            
-            brushName.text = "Brush: " + CurrentBrush.BrushName;
         }
 
         public void NextBrushArea()

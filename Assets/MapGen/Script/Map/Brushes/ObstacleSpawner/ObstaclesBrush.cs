@@ -12,17 +12,15 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
 {
     
     [CreateAssetMenu(fileName = "Obstacle Brush", menuName = "MapGen/Brushes/Obstacles/Brush", order = 0)]
-    public class ObstaclesBrush : ScriptableObject, IBrush
+    public class ObstaclesBrush : Brush
     {
-        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
         [SerializeField] private ObstacleBrushSettings _obstacleBrushSettings;
         
-        public string BrushName => "Obstacle";
+        public override string BrushName => "Obstacle";
 
         private SelectedCellsHelper _helper;
-        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
 
-        public void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             _helper = new SelectedCellsHelper(selectedCells, grid);
             var layer = selectedCells.First().y;

@@ -8,16 +8,16 @@ using Grid = MapGen.GridSystem.Grid;
 namespace MapGen.Map.Brushes
 {
     [CreateAssetMenu(fileName = "Char Position Setter", menuName = "MapGen/Brushes/Char Position Setter", order = 0)]
-    public class CharPositionBrush : ScriptableObject, IBrush
+    public class CharPositionBrush : Brush
     {
-        public string BrushName => "Char Pos Setter";
-        public List<IBrushArea> BrushAreas => new() { _charPositionSetterArea };
-        
-        
         [SerializeField] private CharPositionSetterArea _charPositionSetterArea;
-        
 
-        public void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override List<BrushArea> BrushAreas => new List<BrushArea>() { _charPositionSetterArea };
+
+
+        public override string BrushName => "Char Pos Setter";
+
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             FpsState.Instance.CharSpawnPos = selectedCells.First();
         }

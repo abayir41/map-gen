@@ -11,20 +11,18 @@ using Grid = MapGen.GridSystem.Grid;
 namespace MapGen.Map.Brushes.Labyrinth
 {
     [CreateAssetMenu(fileName = "Labyrinth Brush", menuName = "MapGen/Brushes/Labyrinth/Brush", order = 0)]
-    public class LabyrinthBrush : ScriptableObject, IBrush
+    public class LabyrinthBrush : Brush
     {
         [SerializeField] private LabyrinthBrushSettings _labyrinthBrushSettings;
-        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
 
 
         private SelectedCellsHelper _selectedCellsHelper;
         private Grid _grid;
         private List<Vector3Int> _groundCells;
 
-        public string BrushName => "Labyrinth";
-        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
+        public override string BrushName => "Labyrinth";
 
-        public void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             
             var result = new List<Placable>();

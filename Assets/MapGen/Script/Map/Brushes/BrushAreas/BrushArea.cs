@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace MapGen.Map.Brushes.BrushAreas
 {
-    public interface IBrushArea
+    public abstract class BrushArea : ScriptableObject
     {
-        public List<Vector3Int> GetBrushArea();
+        public abstract List<Vector3Int> GetBrushArea();
     }
 }

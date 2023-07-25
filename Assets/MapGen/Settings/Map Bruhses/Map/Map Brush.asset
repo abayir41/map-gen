@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2abd3d4d474344977f5904266c9b1b, type: 3}
   m_Name: Map Brush
   m_EditorClassIdentifier: 
-  _cubicPlainXYBrush: {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
+  _brushAreas:
+  - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
   _mapBrushSettings: {fileID: 11400000, guid: da5672087281f8d48a79907dab048ee9, type: 2}

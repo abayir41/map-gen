@@ -15,9 +15,8 @@ using Grid = MapGen.GridSystem.Grid;
 namespace MapGen.Map.Brushes.NormalMap
 {
     [CreateAssetMenu(fileName = "Map Brush", menuName = "MapGen/Brushes/Normal Map/Brush", order = 0)]
-    public class MapBrush : ScriptableObject, IBrush
+    public class MapBrush : Brush
     {
-        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
         [SerializeField] private MapBrushSettings _mapBrushSettings;
 
 
@@ -26,10 +25,9 @@ namespace MapGen.Map.Brushes.NormalMap
         private List<Vector3Int> _groundCells;
         private List<Vector3Int> _selectedCells;
 
-        public string BrushName => "Map";
-        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
+        public override string BrushName => "Map";
 
-        public void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             _grid = grid;
             _helper = new MapBrushHelper(selectedCells, grid, _mapBrushSettings);

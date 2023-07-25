@@ -11,16 +11,13 @@ namespace MapGen.Map.Brushes.GroundBrush
 {
     
     [CreateAssetMenu(fileName = "Ground Brush", menuName = "MapGen/Brushes/Ground/Ground Brush", order = 0)]
-    public class GroundBrush : ScriptableObject, IBrush
+    public class GroundBrush : Brush
     {
-        [SerializeField] private CubicPlainXYBrushArea _cubicPlainXYBrush;
         [SerializeField] private GroundBrushSettings _groundBrushSettings;
 
 
-        public string BrushName => "Ground";
-        public List<IBrushArea> BrushAreas => new() { _cubicPlainXYBrush };
-
-        public void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override string BrushName => "Ground";
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             CreateGround(selectedCells, grid);
         }

@@ -14,8 +14,10 @@ namespace MapGen
         [SerializeField] private GameObject _camera;
         [SerializeField] private GameObject _worldCreator;
         [SerializeField] private GameObject _gridSelector;
+        [SerializeField] private GameObject _canvas;
         [SerializeField] private TextMeshProUGUI yOffsetText;
-        
+        [SerializeField] private TextMeshProUGUI brushName;
+        [SerializeField] private TextMeshProUGUI brushAreaName;
         
         private GameManager GameManager => GameManager.Instance;
         private WorldEdit WorldEdit => WorldEdit.Instance;
@@ -23,7 +25,9 @@ namespace MapGen
 
         private void Start()
         {
-            yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
+            yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset + " - Mouse Wheel";
+            brushName.text = "Brush: " + BrushSelector.CurrentBrush.BrushName + " - Q or E";
+            brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
         }
 
         private void Update()
@@ -38,11 +42,12 @@ namespace MapGen
                 else if (Input.GetKey(KeyCode.LeftShift))
                 {
                     BrushSelector.NextBrushArea();
+                    brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
                 }
                 else
                 {
                     WorldEdit.SelectedAreYOffset++;
-                    yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
+                    yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset + " - Mouse Wheel";
                 }
             }
             else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
@@ -54,11 +59,12 @@ namespace MapGen
                 else if (Input.GetKey(KeyCode.LeftShift))
                 {
                     BrushSelector.PreviousBrushArea();
+                    brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
                 }
                 else
                 {
                     WorldEdit.SelectedAreYOffset--;
-                    yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset;
+                    yOffsetText.text = "Brush Y Offset: " + WorldEdit.SelectedAreYOffset + " - Mouse Wheel";
                 }
             }
 
@@ -70,11 +76,15 @@ namespace MapGen
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 BrushSelector.PreviousBrush();
+                brushName.text = "Brush: " + BrushSelector.CurrentBrush.BrushName + " - Q or E";
+                brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 BrushSelector.NextBrush();
+                brushName.text = "Brush: " + BrushSelector.CurrentBrush.BrushName + " - Q or E";
+                brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
             }
         }
 
@@ -84,6 +94,7 @@ namespace MapGen
             _camera.SetActive(true);
             _worldCreator.SetActive(true);
             _gridSelector.SetActive(true);
+            _canvas.SetActive(true);
         }
 
         public override void OnStateExit()
@@ -92,6 +103,7 @@ namespace MapGen
             _camera.SetActive(false);
             _gridSelector.SetActive(false);
             _worldCreator.SetActive(false);
+            _canvas.SetActive(false);
         }
 
         private void OnDrawGizmos()

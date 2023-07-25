@@ -5,11 +5,11 @@ namespace MapGen.Map.Brushes.BrushAreas
 {
     
     [CreateAssetMenu(fileName = "Cubic Plain XYZ", menuName = "MapGen/Brush Areas/Cubic XYZ Area", order = 0)]
-    public class CubicXYZBrushArea : ScriptableObject, IBrushArea, IIncreasableBrushArea
+    public class CubicXYZBrushArea : BrushArea, IIncreasableBrushArea
     {
         [SerializeField] private Vector3Int _brushSize;
 
-        public List<Vector3Int> GetBrushArea()
+        public override List<Vector3Int> GetBrushArea()
         {
             var minX = -_brushSize.x / 2;
             var minZ = -_brushSize.z / 2;

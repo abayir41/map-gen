@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dee796132b743d99239bfdf58c3ae74, type: 3}
   m_Name: Obstacle Brush
   m_EditorClassIdentifier: 
-  _cubicPlainXYBrush: {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
+  _brushAreas:
+  - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
   _obstacleBrushSettings: {fileID: 11400000, guid: c30978108e53bf74ab9ed39b9e4f4078, type: 2}
