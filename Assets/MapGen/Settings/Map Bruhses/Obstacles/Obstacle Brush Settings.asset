@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a312713b4e14c688c28f094cea944bb, type: 3}
   m_Name: Obstacle Brush Settings
   m_EditorClassIdentifier: 
-  randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
   objectPlacementNoise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
+  randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
+  _useNoiseMap: 1
   placables:
   - {fileID: 3858007598822130187, guid: 252b63502f98cc643990cc31b8c80923, type: 3}
   - {fileID: 6857646536276948154, guid: c7d13d9283a315f46a8280abf2f70d08, type: 3}
@@ -24,5 +25,6 @@ MonoBehaviour:
   - {fileID: 4727080097559331581, guid: c9a4633f0fdc62f46b795bcae2ecf27d, type: 3}
   - {fileID: 2683300341979957061, guid: 919c68a81bd5a93409da87f7635b7140, type: 3}
   - {fileID: 8213404422655174283, guid: bb5e66dc965a6034e9a08a726473ea95, type: 3}
+  - {fileID: 8213404422655174283, guid: 44ba401f1f51c8e49b54d85d88821205, type: 3}
   _maxObstacleRotation: 360
-  objectPlacementThreshold: 1.5
+  objectPlacementThreshold: 49.3

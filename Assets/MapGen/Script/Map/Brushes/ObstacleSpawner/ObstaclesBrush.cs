@@ -16,14 +16,11 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
     {
         [SerializeField] private ObstacleBrushSettings _obstacleBrushSettings;
 
-
+        
         public ObstacleBrushSettings ObstacleBrushSettings => _obstacleBrushSettings;
         public override string BrushName => "Obstacle";
         
-        
-        
         private SelectedCellsHelper _helper;
-        
         
         public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
@@ -47,51 +44,50 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
                 }
             }
 
-            var noise = _obstacleBrushSettings.ObjectPlacementNoise.Generate(_helper.XWidth + 1, _helper.ZWidth + 1);
-
-            if (_obstacleBrushSettings.RotationMap is null)
+            float[,] spawnProbability;
+            if (_obstacleBrushSettings.UseNoiseMap)
             {
-                foreach (var x in Enumerable.Range(_helper.MinX, _helper.XWidth).OrderBy(_ => UnityEngine.Random.value))
-                foreach (var z in Enumerable.Range(_helper.MinZ, _helper.ZWidth).OrderBy(_ => UnityEngine.Random.value))
-                {
-                    if (ZeroOneIntervalToPercent(noise[x - _helper.MinX, z - _helper.MinZ]) < _obstacleBrushSettings.ObjectPlacementThreshold) continue;
-                
-                    var shuffledPlacables = rotatedPlacables.GetRandomAmountAndShuffled();
-
-                    var cellPos = new Vector3Int(x, layer, z);
-
-                    foreach (var data in shuffledPlacables)
-                    {
-                        if (!grid.IsPlacableSuitable(cellPos, data.Placable, data.Rotation)) continue;
-                    
-                        WorldCreator.Instance.SpawnObject(cellPos, data.Placable, CellLayer.Obstacle, data.Rotation);
-                        break;
-                    }
-                }    
+                var noise = _obstacleBrushSettings.ObjectPlacementNoise.Generate(_helper.XWidth + 1, _helper.ZWidth + 1);
+                spawnProbability = noise;
             }
             else
             {
-                foreach (var x in Enumerable.Range(_helper.MinX, _helper.XWidth).OrderBy(_ => UnityEngine.Random.value))
-                foreach (var z in Enumerable.Range(_helper.MinZ, _helper.ZWidth).OrderBy(_ => UnityEngine.Random.value))
-                {
-                    if (ZeroOneIntervalToPercent(noise[x - _helper.MinX, z - _helper.MinZ]) < _obstacleBrushSettings.ObjectPlacementThreshold) continue;
-                
-                    var shuffledPlacables = rotatedPlacables.GetRandomAmountAndShuffled();
-
-                    var cellPos = new Vector3Int(x, layer, z);
-
-                    foreach (var data in shuffledPlacables)
-                    {
-                        if (!_obstacleBrushSettings.RotationMap.IsCellExist(new Vector2Int(x, z), out var rotationMapCell)) continue;
-                        if(!rotationMapCell.Rotations.Contains(data.Rotation))  continue;
-                    
-                        if (!grid.IsPlacableSuitable(cellPos, data.Placable, data.Rotation)) continue;
-                    
-                        WorldCreator.Instance.SpawnObject(cellPos, data.Placable, CellLayer.Obstacle, data.Rotation);
-                        break;
-                    }
-                }    
+                spawnProbability = _obstacleBrushSettings.ObjectPlacementProbability;
             }
+            
+            
+            foreach (var x in Enumerable.Range(_helper.MinX, _helper.XWidth).OrderBy(_ => UnityEngine.Random.value))
+            foreach (var z in Enumerable.Range(_helper.MinZ, _helper.ZWidth).OrderBy(_ => UnityEngine.Random.value))
+            {
+                if (ZeroOneIntervalToPercent(spawnProbability[x - _helper.MinX, z - _helper.MinZ]) < _obstacleBrushSettings.ObjectPlacementThreshold) continue;
+            
+                var shuffledPlacables = rotatedPlacables.GetRandomAmountAndShuffled();
+                
+                var cellPos = new Vector3Int(x, layer, z);
+                
+                foreach (var data in shuffledPlacables)
+                {
+                    if(!CanObstacleSpawnable(data, cellPos, grid)) continue;
+
+                    WorldCreator.Instance.SpawnObject(cellPos, data.Placable, CellLayer.Obstacle, data.Rotation);
+                    break;
+                }
+            }
+        }
+
+        private bool CanObstacleSpawnable(PlacableData data, Vector3Int cellPos, Grid grid)
+        {
+            var xzPos = new Vector2Int(cellPos.x, cellPos.z);
+
+            if (_obstacleBrushSettings.RotationMap != null)
+            {
+                if (!_obstacleBrushSettings.RotationMap.IsCellExist(xzPos, out var rotationMapCell)) return false;
+                if (!rotationMapCell.Rotations.Contains(data.Rotation))  return false;
+            }
+            
+            if (!grid.IsPlacableSuitable(cellPos, data.Placable, data.Rotation)) return false;
+            
+            return true;
         }
         
         private float ZeroOneIntervalToPercent(float zeroOneInterval)

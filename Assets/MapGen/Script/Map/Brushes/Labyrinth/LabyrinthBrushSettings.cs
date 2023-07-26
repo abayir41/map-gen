@@ -15,10 +15,10 @@ namespace MapGen.Map.Brushes.Labyrinth
         [SerializeField] private int _wayThickness;
         [SerializeField] private int _wallHeight;
         [SerializeField] private Placable _mazeCubicGridPlacable;
-        [SerializeField] private Placable _ground;
-        
+        [SerializeField] [Range(0, 1)] private float firstEdgeObstacleProbability;
+        [SerializeField] [Range(0, 1)] private float secondEdgeObstacleProbability;
+
         public const int WALL_ROTATION = 0;
-        public const int GROUND_Y_LEVEL = 0;
         public const int LABYRINTH_START_Y_LEVEL = 1;
         public const int OBSTACLES_START_Y_LEVEL = 1;
 
@@ -26,11 +26,12 @@ namespace MapGen.Map.Brushes.Labyrinth
         public static int[] VerticalDegrees { get; } = { 90, 270 };
         
         
-        public Placable Ground => _ground;
         public Placable MazeCubicGridPlacable => _mazeCubicGridPlacable;
         public RandomSettings RandomSettings => _randomSettings;
         public int WallThickness => _wallThickness;
         public int WayThickness => _wayThickness;
         public int WallHeight => _wallHeight;
+        public float FirstEdgeObstacleProbability => firstEdgeObstacleProbability;
+        public float SecondEdgeObstacleProbability => secondEdgeObstacleProbability;
     }
 }

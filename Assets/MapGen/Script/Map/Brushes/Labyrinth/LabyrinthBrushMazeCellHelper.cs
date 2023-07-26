@@ -4,12 +4,14 @@ using UnityEngine;
 
 namespace MapGen.Map.Brushes.Labyrinth
 {
-    public class LabyrinthBrushHelper
+    public class LabyrinthBrushMazeCellHelper
     {
         public Dictionary<MazeCubicPositions, HashSet<Vector3Int>> PosVisualsDict { get; }
+        private Vector2Int _startPoint;
 
-        public LabyrinthBrushHelper(Vector2Int startPoint, int wallThickness, int wayThickness, int wallHeight, int yOffset)
+        public LabyrinthBrushMazeCellHelper(Vector2Int startPoint, int wallThickness, int wayThickness, int wallHeight, int yOffset)
         {
+            _startPoint = startPoint;
             PosVisualsDict = new Dictionary<MazeCubicPositions, HashSet<Vector3Int>>();
             var enums = Enum.GetValues(typeof(MazeCubicPositions));
             foreach (MazeCubicPositions position in enums)
@@ -29,7 +31,7 @@ namespace MapGen.Map.Brushes.Labyrinth
                 }
             }
         }
-        
+
         private MazeCubicPositions FindMazeCubicPositionCorrespondingToPosition(Vector2Int pos, int wallThickness, int wayThickness)
         {
             if (pos.x >= 0 && pos.x < wallThickness)
