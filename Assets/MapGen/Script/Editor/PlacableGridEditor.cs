@@ -8,6 +8,7 @@ namespace MapGen.Editor
     {
         protected void OnEnable()
         {
+            if(target == null) return;
             var placableGrid = (PlacableGrid) target;
             placableGrid.DrawGizmo = true;
             placableGrid.OnValidate();
@@ -15,6 +16,7 @@ namespace MapGen.Editor
 
         protected void OnDisable()
         {
+            if(target == null) return;
             var placableGrid = (PlacableGrid) target;
             placableGrid.DrawGizmo = false;
             placableGrid.OnValidate();

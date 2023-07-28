@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,22 +12,28 @@ namespace MapGen.Placables
         [Header("Placable Properties")] 
         [SerializeField] private bool _rotatable;
         [Range(1,359)] [SerializeField] private int _rotationDegreeStep = 15;
-
-        public int RotationDegreeStep => Mathf.Clamp(_rotationDegreeStep,1,360);
-
+        [SerializeField] private Vector3Int _origin;
+        
         [Header("Grid Properties")] 
         [SerializeField] protected List<PlacableGrid> _grids;
         [SerializeField] protected Transform _visualsParent;
         
+        [Header("Gizmo Settings")]
+        [SerializeField] public bool DrawGizmo;
+        [SerializeField] private Color _gizmoColor = Color.red;
+        [SerializeField] private float _gizmoRadius = 0.25f;
+        
+        public int RotationDegreeStep => Mathf.Clamp(_rotationDegreeStep,1,360);
         public List<PlacableGrid> Grids => _grids;
         public bool Rotatable => _rotatable;
+        public Vector3Int Origin => _origin;
 
         public void InitializePlacable(Vector3Int gridPos)
         {
             GridPos = gridPos;
         }
 
-        private void OnValidate()
+        public void OnValidate()
         {
             _grids = GetComponentsInChildren<PlacableGrid>().ToList();
             
@@ -36,6 +43,15 @@ namespace MapGen.Placables
                 _visualsParent = possibleVisualParent;
                 Debug.Log("Automatically visual parent added");
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if(!DrawGizmo) return;
+            
+            Gizmos.color = _gizmoColor;
+            Gizmos.DrawSphere(_origin, _gizmoRadius);
+            Gizmos.DrawWireCube(_origin, Vector3.one);
         }
 
         public void Rotate(float degree)

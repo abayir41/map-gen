@@ -71,10 +71,5 @@ namespace MapGen.Placables
                 Gizmos.DrawWireCube(pos, Vector3.one);
             }
         }
-
-        public List<Vector3Int> GetRotatedCells(int degree)
-        {
-            return _cellPositions.ConvertAll(input => input.RotateVector(degree));
-        }
     }
 }

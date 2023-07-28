@@ -17,7 +17,7 @@ namespace MapGen.Map.Brushes.GroundBrush
 
 
         public override string BrushName => "Ground";
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
         {
             CreateGround(selectedCells, grid);
         }

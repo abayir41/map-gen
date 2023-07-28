@@ -20,7 +20,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
         private TunnelBrushHelper _helper;
         
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
         {
             var layer = selectedCells.First().y;
             _helper = new TunnelBrushHelper(selectedCells, grid, _tunnelBrushSettings);
@@ -70,14 +70,14 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
             foreach (var pathPoint in path)
             {
-                var tunnelDestroyGrids = _tunnelBrushSettings.TunnelBrush.Grids.Where(grid =>
-                    grid.PlacableCellType == PlacableCellType.TunnelDestroy);
+                var tunnelDestroyGrids = _tunnelBrushSettings.TunnelBrush.Grids.Where(placableGrid =>
+                    placableGrid.PlacableCellType == PlacableCellType.TunnelDestroy);
                 foreach (var tunnelDestroyGrid in tunnelDestroyGrids)
                 {
                     foreach (var tunnelBrushDestroyPoint in tunnelDestroyGrid.CellPositions)
                     {
                         var rotatedVector = pathPoint.CellPosition +
-                                            tunnelBrushDestroyPoint.RotateVector(rotationDegreeInt);
+                                            tunnelBrushDestroyPoint.RotateVector(rotationDegreeInt, _tunnelBrushSettings.TunnelBrush.Origin);
 
                         if (!grid.IsCellExist(rotatedVector, out var cell)) continue;
 

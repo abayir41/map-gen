@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f471b81616e649f7974af0e1d7cd750d, type: 3}
+  m_Name: Obstacle Brush
+  m_EditorClassIdentifier: 
+  _supportMultipleCells: 0
+  _brushAreas: []
+  _placableAreas:
+  - {fileID: 11400000, guid: 06eaa21f823453142910eb7952e56baf, type: 2}
+  - {fileID: 11400000, guid: df604408a17632345b028cc0c3360f44, type: 2}
+  - {fileID: 11400000, guid: a75030fddbb64e341b87e900fa5362a7, type: 2}
+  - {fileID: 11400000, guid: 5fc16caaf897ed24db41b98f3bdbf182, type: 2}
+  - {fileID: 11400000, guid: 3f0bea7a71a33c64c8753d979bbcdc2a, type: 2}
+  - {fileID: 11400000, guid: 5ef784443c9147144aa5247df0e8f7a0, type: 2}
+  - {fileID: 11400000, guid: 238c6002e5862f749a210586ede2c944, type: 2}
+  - {fileID: 11400000, guid: 04e64463334ed7440b518bff96b2279d, type: 2}
+  - {fileID: 11400000, guid: c28cde88f089eca44a341b271524f497, type: 2}
+  - {fileID: 11400000, guid: 5629e14b2d4cc78479e24499a76b4897, type: 2}

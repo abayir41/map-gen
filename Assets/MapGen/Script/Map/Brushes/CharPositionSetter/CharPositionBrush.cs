@@ -17,7 +17,7 @@ namespace MapGen.Map.Brushes
 
         public override string BrushName => "Char Pos Setter";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
         {
             FpsState.Instance.CharSpawnPos = selectedCells.First();
         }

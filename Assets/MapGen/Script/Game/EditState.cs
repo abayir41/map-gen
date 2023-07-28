@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.GridSystem;
 using MapGen.Map;
 using MapGen.Map.Brushes;
 using MapGen.Map.Brushes.BrushAreas;
@@ -27,6 +28,7 @@ namespace MapGen
         [Header("Editing")]
         [SerializeField] private Camera sceneCamera;
         [SerializeField] private int _maxDistance;
+        [SerializeField] private LayerMask _selectableGridMask;
 
         private static WorldCreator WorldCreator => WorldCreator.Instance;
         private GameManager GameManager => GameManager.Instance;
@@ -60,8 +62,8 @@ namespace MapGen
                 return;
             }
 
-            var brushArea = BrushSelector.CurrentBrushArea.GetBrushArea();
-            var currentlyLookingArea = ApplyOffsetToPoss(brushArea, cellPos + Vector3Int.up * _selectedAreYOffset);
+            var startPoint = cellPos + Vector3Int.up * _selectedAreYOffset;
+            var currentlyLookingArea = BrushSelector.CurrentBrushArea.GetBrushArea(startPoint);
             
             _currentlyLookingArea = currentlyLookingArea;
             
@@ -90,11 +92,11 @@ namespace MapGen
             {
                 if (_selectedCells.Count == 0)
                 {
-                    WorldCreator.PaintTheBrush(_currentlyLookingArea);
+                    WorldCreator.PaintTheBrush(_currentlyLookingArea, startPoint);
                 }
                 else
                 {
-                    WorldCreator.PaintTheBrush(_selectedCells.ToList());
+                    WorldCreator.PaintTheBrush(_selectedCells.ToList(), startPoint);
                 }
                 
                 ResetSelectedArea();
@@ -106,13 +108,13 @@ namespace MapGen
             var mousePos = Mouse.current.position.ReadValue();
             var ray = sceneCamera.ScreenPointToRay(new Vector3(mousePos.x, mousePos.y, sceneCamera.nearClipPlane));
 
-            /*
-            if (Physics.Raycast(ray, out var result, _maxDistance))
+            
+            if (Physics.Raycast(ray, out var result, _maxDistance, _selectableGridMask))
             {
                 cellPos = result.collider.GetComponent<SelectableGridCell>().BoundedCell.CellPosition;
                 return true;
             }
-            */
+            
             
             if (_selectableCellsGround.Raycast(ray, out var enter) && enter < _maxDistance)
             {
@@ -226,7 +228,7 @@ namespace MapGen
 
             if (_currentlyLookingArea != null)
             {
-                Gizmos.color = Color.green;
+                Gizmos.color = BrushSelector.CurrentBrushArea.AreaColor;
                 foreach (var currentlyLookingCell in _currentlyLookingArea)
                 {
                     Gizmos.DrawWireCube(currentlyLookingCell, WorldSettings.GridCellRealWorldSize);
@@ -235,11 +237,6 @@ namespace MapGen
             
             Gizmos.color = Color.magenta;
             Gizmos.DrawCube(_fpsState.CharSpawnPos, WorldSettings.GridCellRealWorldSize);
-        }
-        
-        public List<Vector3Int> ApplyOffsetToPoss(List<Vector3Int> poss, Vector3Int offset)
-        {
-            return poss.ConvertAll(input => input + offset);
         }
     }
 }

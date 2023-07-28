@@ -15,8 +15,11 @@ namespace MapGen.Map.Brushes
         public virtual List<BrushArea> BrushAreas => _brushAreas;
         
         
+        public BrushArea CurrentBrushArea { get; set; } 
+        
+            
         public abstract string BrushName { get; }
-        public abstract void Paint(List<Vector3Int> selectedCells, Grid grid);
+        public abstract void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint);
         
     }
 }

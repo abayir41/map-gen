@@ -272,6 +272,9 @@ MonoBehaviour:
   brushAreaName: {fileID: 694139218}
   sceneCamera: {fileID: 687690567}
   _maxDistance: 1000
+  _selectableGridMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &451480134
 GameObject:
   m_ObjectHideFlags: 0
@@ -1428,37 +1431,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374732006}
   m_CullTransparentMesh: 1
---- !u!1 &1594297515
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1594297516}
-  m_Layer: 0
-  m_Name: Map Brush
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1594297516
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1594297515}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1984068250}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1727787753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,6 +1592,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 238efa7900a3b1942bfb7200a9a2ea07, type: 2}
   - {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}
   - {fileID: 11400000, guid: 6bcc289907cd32b4ebc931840a0bee25, type: 2}
+  - {fileID: 11400000, guid: a88d5d290595558499cc5e317b8e5c16, type: 2}
 --- !u!1 &1742567422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,6 +1815,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _worldSettings: {fileID: 11400000, guid: a245b69541f93ee40af258a9d9d04476, type: 2}
   _gridPrefabsParent: {fileID: 293857008}
+  _selectableGridCellParent: {fileID: 1984068250}
+  _selectableGridCell: {fileID: 2222524241330915079, guid: 837cdc2eeca2bd046912faa38f205e76, type: 3}
 --- !u!224 &1975725732 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 597308369130767402, guid: 2f7f3dde7ae722a4aafffe20691ad702, type: 3}
@@ -1874,8 +1849,7 @@ Transform:
   m_LocalPosition: {x: 3.987368, y: -12.334233, z: 21.373253}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1594297516}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

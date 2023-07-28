@@ -9,7 +9,7 @@ namespace MapGen.Map.Brushes.BrushAreas
     {
         [SerializeField] private Vector3Int _brushSize;
 
-        public override List<Vector3Int> GetBrushArea()
+        public override List<Vector3Int> GetBrushArea(Vector3Int startPoint)
         {
             var minX = -_brushSize.x / 2;
             var minZ = -_brushSize.z / 2;
@@ -45,7 +45,9 @@ namespace MapGen.Map.Brushes.BrushAreas
                 }
             }
 
-            return selectedCellPoss;
+            var result = ApplyOffsetToPoss(selectedCellPoss, startPoint);
+            
+            return result;
         }
 
         public void IncreaseArea(int amount)

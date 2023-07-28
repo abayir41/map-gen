@@ -20,11 +20,9 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         public ObstacleBrushSettings ObstacleBrushSettings => _obstacleBrushSettings;
         public override string BrushName => "Obstacle";
         
-        private SelectedCellsHelper _helper;
-        
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
         {
-            _helper = new SelectedCellsHelper(selectedCells, grid);
+            var helper = new SelectedCellsHelper(selectedCells, grid);
             var layer = selectedCells.First().y;
             var rotatedPlacables = new List<PlacableData>();
             SetRandomSeed();
@@ -47,7 +45,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
             float[,] spawnProbability;
             if (_obstacleBrushSettings.UseNoiseMap)
             {
-                var noise = _obstacleBrushSettings.ObjectPlacementNoise.Generate(_helper.XWidth + 1, _helper.ZWidth + 1);
+                var noise = _obstacleBrushSettings.ObjectPlacementNoise.Generate(helper.XWidth + 1, helper.ZWidth + 1);
                 spawnProbability = noise;
             }
             else
@@ -56,10 +54,10 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
             }
             
             
-            foreach (var x in Enumerable.Range(_helper.MinX, _helper.XWidth).OrderBy(_ => UnityEngine.Random.value))
-            foreach (var z in Enumerable.Range(_helper.MinZ, _helper.ZWidth).OrderBy(_ => UnityEngine.Random.value))
+            foreach (var x in Enumerable.Range(helper.MinX, helper.XWidth).OrderBy(_ => UnityEngine.Random.value))
+            foreach (var z in Enumerable.Range(helper.MinZ, helper.ZWidth).OrderBy(_ => UnityEngine.Random.value))
             {
-                if (ZeroOneIntervalToPercent(spawnProbability[x - _helper.MinX, z - _helper.MinZ]) < _obstacleBrushSettings.ObjectPlacementThreshold) continue;
+                if (ZeroOneIntervalToPercent(spawnProbability[x - helper.MinX, z - helper.MinZ]) < _obstacleBrushSettings.ObjectPlacementThreshold) continue;
             
                 var shuffledPlacables = rotatedPlacables.GetRandomAmountAndShuffled();
                 

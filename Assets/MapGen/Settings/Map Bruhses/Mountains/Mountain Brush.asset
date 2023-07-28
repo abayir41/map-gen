@@ -15,4 +15,5 @@ MonoBehaviour:
   _supportMultipleCells: 1
   _brushAreas:
   - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
+  - {fileID: 11400000, guid: 06eaa21f823453142910eb7952e56baf, type: 2}
   _mountainBrushSettings: {fileID: 11400000, guid: 9512434b5d511114790664a734817dbe, type: 2}

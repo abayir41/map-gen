@@ -19,7 +19,16 @@ namespace MapGen.Map.Brushes
 
 
         public Brush CurrentBrush => _brushes[_brushIndex];
-        public BrushArea CurrentBrushArea => CurrentBrush.BrushAreas[_brushAreaIndex];
+        public BrushArea CurrentBrushArea
+        {
+            get
+            {
+                if (CurrentBrush.CurrentBrushArea == null)
+                    CurrentBrush.CurrentBrushArea = CurrentBrush.BrushAreas[_brushAreaIndex];
+                
+                return CurrentBrush.CurrentBrushArea;
+            }
+        }
 
         private int _brushIndex;
         private int _brushAreaIndex;
@@ -39,6 +48,8 @@ namespace MapGen.Map.Brushes
             {
                 _brushIndex = 0;
             }
+            
+            CurrentBrush.CurrentBrushArea = CurrentBrush.BrushAreas[_brushAreaIndex];
         }
 
         public void PreviousBrush()
@@ -49,6 +60,8 @@ namespace MapGen.Map.Brushes
             {
                 _brushIndex = _brushes.Count - 1;
             }
+            
+            CurrentBrush.CurrentBrushArea = CurrentBrush.BrushAreas[_brushAreaIndex];
         }
 
         public void NextBrushArea()
@@ -58,6 +71,8 @@ namespace MapGen.Map.Brushes
             {
                 _brushAreaIndex = 0;
             }
+            
+            CurrentBrush.CurrentBrushArea = CurrentBrush.BrushAreas[_brushAreaIndex];
         }
         
         public void PreviousBrushArea()
@@ -67,6 +82,8 @@ namespace MapGen.Map.Brushes
             {
                 _brushAreaIndex = CurrentBrush.BrushAreas.Count - 1;
             }
+            
+            CurrentBrush.CurrentBrushArea = CurrentBrush.BrushAreas[_brushAreaIndex];
         }
     }
 }

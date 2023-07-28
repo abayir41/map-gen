@@ -56,7 +56,7 @@ namespace MapGen.GridSystem
             {
                 foreach (var placableRequiredCell in requiredCells.CellPositions)
                 {
-                    var checkingCellPos = cellPos + placableRequiredCell.RotateVector(rotation);
+                    var checkingCellPos = cellPos + placableRequiredCell.RotateVector(rotation, placable.Origin);
 
                     if (bounds != null && !bounds.Contains(cellPos))
                     {
@@ -76,7 +76,7 @@ namespace MapGen.GridSystem
                 foreach (var placableShouldPlacedOnGroundGrid in shouldPlaceOnGroundGrid.CellPositions)
                 {
                     var checkingCellPos =
-                        cellPos + placableShouldPlacedOnGroundGrid.RotateVector(rotation);
+                        cellPos + placableShouldPlacedOnGroundGrid.RotateVector(rotation, placable.Origin);
 
                     if (bounds != null && !bounds.Contains(cellPos))
                     {
@@ -108,7 +108,7 @@ namespace MapGen.GridSystem
             {
                 foreach (var physicalCellPos in physicalVolume.CellPositions)
                 {
-                    var rotatedCellPos = originPos + physicalCellPos.RotateVector(rotation);
+                    var rotatedCellPos = originPos + physicalCellPos.RotateVector(rotation, placable.Origin);
                     
                     if (IsCellExist(rotatedCellPos, out var cell))
                     {
@@ -129,7 +129,7 @@ namespace MapGen.GridSystem
             {
                 foreach (var placableLockCellPos in lockGrid.CellPositions)
                 {
-                    var rotatedCellPos = originPos + placableLockCellPos.RotateVector(rotation);
+                    var rotatedCellPos = originPos + placableLockCellPos.RotateVector(rotation, placable.Origin);
 
                     if (IsCellExist(rotatedCellPos, out var cell))
                     {
@@ -148,7 +148,7 @@ namespace MapGen.GridSystem
             {
                 foreach (var placableNewGroundCellPos in newGroundGrid.CellPositions)
                 {
-                    var rotatedCellPos = originPos + placableNewGroundCellPos.RotateVector(rotation);
+                    var rotatedCellPos = originPos + placableNewGroundCellPos.RotateVector(rotation, placable.Origin);
                     
                     if (IsCellExist(rotatedCellPos, out var cell))
                     {

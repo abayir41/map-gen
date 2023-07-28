@@ -18,7 +18,7 @@ namespace MapGen.Map.Brushes.Mountains
         
         public override string BrushName => "Mountain";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
         {
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var yStartLevel = selectedCells.First().y;

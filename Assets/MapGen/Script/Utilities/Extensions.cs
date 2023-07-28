@@ -22,10 +22,10 @@ namespace MapGen.Utilities
                     yield return value;
         }
         
-        public static Vector3Int RotateVector(this Vector3Int vector3Int, int angle)
+        public static Vector3Int RotateVector(this Vector3Int vector3Int, int angle, Vector3 origin)
         {
             var rotation = Quaternion.AngleAxis(angle, Vector3.up);
-            var result = rotation * vector3Int;
+            var result = rotation * (vector3Int - origin);
             var resultAsVector3Int = new Vector3Int(Mathf.RoundToInt(result.x), Mathf.RoundToInt(result.y),
                 Mathf.RoundToInt(result.z));
 

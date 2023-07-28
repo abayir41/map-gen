@@ -49,7 +49,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6972893473416609647}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.48403668, g: 1, b: 0, a: 1}
+  _gizmoColor: {r: 1, g: 0.6607419, b: 0, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -231,7 +231,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 4092131975241059815}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 0.6634846, b: 1, a: 1}
+  _gizmoColor: {r: 0.16247416, g: 0, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -294,7 +294,6 @@ GameObject:
   - component: {fileID: 2015129484314678255}
   - component: {fileID: 8967608169036613168}
   - component: {fileID: 273106336240742448}
-  - component: {fileID: 1748721840343755511}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -310,7 +309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4459122231592827033}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.008045, y: 3.142104, z: 2.8886344}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -334,11 +333,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotatable: 0
   _rotationDegreeStep: 15
+  _origin: {x: 0, y: 0, z: 0}
   _grids:
   - {fileID: 6986085402506317540}
   - {fileID: 1341002912686874266}
   - {fileID: 1716233700385049251}
   _visualsParent: {fileID: 6561526526123900675}
+  DrawGizmo: 1
+  _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
+  _gizmoRadius: 0.25
 --- !u!54 &273106336240742448
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -355,19 +358,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1748721840343755511
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4459122231592827033}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5023119213762703789
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +438,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6445913481610533286}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 1, b: 0.5369997, a: 1}
+  _gizmoColor: {r: 0, g: 0.24972343, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 1, z: 0}

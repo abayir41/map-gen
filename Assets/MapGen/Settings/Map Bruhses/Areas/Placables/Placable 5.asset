@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3719d0b3cd7343a2a498be7ea0f2b4cd, type: 3}
+  m_Name: Placable 5
+  m_EditorClassIdentifier: 
+  _areaColor: {r: 0, g: 0.42073488, b: 1, a: 1}
+  _placable: {fileID: 4698296767136087353, guid: 25047d8934825c64dbe6bf80bdc0e807, type: 3}
+  _cellTypeToBeShown: 2

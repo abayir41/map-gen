@@ -10,7 +10,7 @@ namespace MapGen.Map.Brushes.Eraser
     {
         public override string BrushName => "Eraser";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
         {
             foreach (var selectedCell in selectedCells)
             {
