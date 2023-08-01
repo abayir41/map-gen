@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes.BrushAreas;
+using MapGen.Placables;
+using MapGen.Utilities;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
@@ -9,19 +12,105 @@ namespace MapGen.Map.Brushes
 {
     
     [CreateAssetMenu(fileName = "Obstacle Brush", menuName = "MapGen/Brushes/Obstacle/Brush", order = 0)]
-    public class PlacableSpawner : Brush
+    public class PlacableSpawner : SingleCellEditableBrush
     {
-        [SerializeField] private List<PlacableArea> _placableAreas;
-
-        public override List<BrushArea> BrushAreas => _placableAreas.ConvertAll(input => (BrushArea) input);
+        [SerializeField] private EndlessList<Placable> _placables;
+        [SerializeField] private float _placableGizmoRadius = 0.25f;
+        [SerializeField] private PlacableCellType _visualShownCellType;
+        [SerializeField] private int _rotationStep = 15;
+        
         public override string BrushName => "Placable";
         
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
+        private List<Vector3Int> _placableVisuals = new();
+        private Color _placableVisualColor = Color.green;
+        private Color _cursorColor = Color.yellow;
+        private int _rotation;
+        
+        public override void Update()
         {
-            var brushArea = (PlacableArea) CurrentBrushArea;
-            if (!WorldCreator.Instance.Grid.IsPlacableSuitable(startPoint, brushArea.Placable, 0)) return;
+            base.Update();
 
-            WorldCreator.Instance.SpawnObject(startPoint, brushArea.Placable, CellLayer.Obstacle, 0);
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                _placables.NextItem();   
+            }
+            
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                _placables.PreviousItem();
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                _rotation += _rotationStep;
+                
+                if (_rotation > 360)
+                {
+                    _rotation = 0;
+                }
+                else if (_rotation < 0)
+                {
+                    _rotation = 360;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                _rotation -= _rotationStep;
+
+                if (_rotation > 360)
+                {
+                    _rotation = 0;
+                }
+                else if (_rotation < 0)
+                {
+                    _rotation = 360;
+                }
+            }
+            
+            var grid = _placables.CurrentItem.Grids.FirstOrDefault(grid => grid.PlacableCellType == _visualShownCellType);
+            if (grid == null) return;
+            
+            _placableVisuals =
+                grid.CellPositions.ConvertAll(input => input.RotateVector(_rotation, _placables.CurrentItem.Origin));
+            
+            _placableVisuals = _placableVisuals.ConvertAll(input => input + HitPos);
+            
+            
+            if (WorldCreator.Grid.IsPlacableSuitable(HitPos, _placables.CurrentItem, _rotation))
+            {
+                _placableVisualColor = Color.green;
+            }
+            else
+            {
+                _placableVisualColor = Color.red;
+            }
+            
+        }
+
+        public override void OnDrawGizmos()
+        { 
+            base.OnDrawGizmos();
+            
+            
+            Gizmos.color = _cursorColor;
+            var cursor = WorldCreator.Grid.CellPositionToRealWorld(HitPos);
+            Gizmos.DrawWireCube(cursor, Vector3.one);
+            
+            Gizmos.color = _placableVisualColor;
+            foreach (var placableVisual in _placableVisuals)
+            {
+                var pos = WorldCreator.Grid.CellPositionToRealWorld(placableVisual);
+                Gizmos.DrawSphere(pos, _placableGizmoRadius);
+                Gizmos.DrawWireCube(pos, Vector3.one);
+            }
+        }
+
+        public override void Paint(Vector3Int startPoint, Grid grid)
+        {
+            if (!WorldCreator.Instance.Grid.IsPlacableSuitable(startPoint, _placables.CurrentItem, _rotation)) return;
+
+            WorldCreator.Instance.SpawnObject(startPoint, _placables.CurrentItem, CellLayer.Obstacle, _rotation);
         }
     }
 }

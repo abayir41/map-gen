@@ -12,15 +12,15 @@ namespace MapGen.Map.Brushes.TunnelBrush
 {
     
     [CreateAssetMenu(fileName = "Auto Tunnel Brush", menuName = "MapGen/Brushes/Tunnel/Auto Tunnel Brush", order = 0)]
-    public class AutoTunnelBrush: Brush
+    public class AutoTunnelBrush : MultipleCellEditableBrush
     {
         [SerializeField] private TunnelBrushSettings _tunnelBrushSettings;
         
         public override string BrushName => "Auto Tunnel";
 
         private TunnelBrushHelper _helper;
-        
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
+
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var layer = selectedCells.First().y;
             _helper = new TunnelBrushHelper(selectedCells, grid, _tunnelBrushSettings);
@@ -96,5 +96,6 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
             return result;
         }
+        
     }
 }

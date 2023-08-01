@@ -2,24 +2,28 @@
 using System.Linq;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
+using MapGen.Utilities;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes
 {
     [CreateAssetMenu(fileName = "Char Position Setter", menuName = "MapGen/Brushes/Char Position Setter", order = 0)]
-    public class CharPositionBrush : Brush
+    public class CharPositionBrush : SingleCellEditableBrush
     {
-        [SerializeField] private CharPositionSetterArea _charPositionSetterArea;
-
-        public override List<BrushArea> BrushAreas => new List<BrushArea>() { _charPositionSetterArea };
-
-
         public override string BrushName => "Char Pos Setter";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
+        public override void Paint(Vector3Int startPoint, Grid grid)
         {
-            FpsState.Instance.CharSpawnPos = selectedCells.First();
+            FpsState.Instance.CharSpawnPos = startPoint;
+        }
+        
+        public override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+            
+            var pos = WorldCreator.Grid.CellPositionToRealWorld(HitPos);
+            Gizmos.DrawWireCube(pos, Vector3.one);
         }
     }
 }

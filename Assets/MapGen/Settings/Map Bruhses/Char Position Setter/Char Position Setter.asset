@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3f333473344563a3608481baefe92b, type: 3}
   m_Name: Char Position Setter
   m_EditorClassIdentifier: 
-  _supportMultipleCells: 0
-  _brushAreas: []
-  _charPositionSetterArea: {fileID: 11400000, guid: a18c39ebca02861448c91c95d90e75b0, type: 2}
+  _gizmoRadius: 0.25
+  _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}

@@ -26,12 +26,6 @@ namespace MapGen.Map
             Instance = this;
             Grid = new Grid();
         }
-
-        public void PaintTheBrush(List<Vector3Int> selectedCells, Vector3Int startPoint)
-        {
-            BrushSelector.Instance.CurrentBrush.Paint(selectedCells, Grid, startPoint);
-
-        }
         
         private void DestroyPlacedPlacables(List<Vector3Int> selectedCells)
         {
@@ -92,7 +86,7 @@ namespace MapGen.Map
                 foreach (var physicalGridCellPosition in physicalGrid.CellPositions)
                 {
                     var worldPos = Grid.CellPositionToRealWorld(physicalGridCellPosition + realPos);
-                    var selectableGridCell = Instantiate(_selectableGridCell);
+                    var selectableGridCell = Instantiate(_selectableGridCell, _selectableGridCellParent);
                     selectableGridCell.transform.position = worldPos;
 
                     if (!Grid.IsCellExist(physicalGridCellPosition + realPos, out var cell))

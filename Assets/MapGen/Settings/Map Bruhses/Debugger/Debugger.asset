@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3719d0b3cd7343a2a498be7ea0f2b4cd, type: 3}
-  m_Name: Placable 5
+  m_Script: {fileID: 11500000, guid: 67864c3211524b9581f2e5b428c7410e, type: 3}
+  m_Name: Debugger
   m_EditorClassIdentifier: 
-  _areaColor: {r: 0, g: 0.42073488, b: 1, a: 1}
-  _placable: {fileID: 4698296767136087353, guid: 25047d8934825c64dbe6bf80bdc0e807, type: 3}
-  _cellTypeToBeShown: 2
+  _gizmoRadius: 0.25
+  _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}

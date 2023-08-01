@@ -21,6 +21,11 @@ namespace MapGen.Utilities
                 if (input.HasFlag(value))
                     yield return value;
         }
+
+        public static Vector3Int ToVector3Int(this Vector3 target)
+        {
+            return new Vector3Int(Mathf.RoundToInt(target.x), Mathf.RoundToInt(target.y), Mathf.RoundToInt(target.z));
+        }
         
         public static Vector3Int RotateVector(this Vector3Int vector3Int, int angle, Vector3 origin)
         {

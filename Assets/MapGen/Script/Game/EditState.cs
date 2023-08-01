@@ -4,6 +4,7 @@ using MapGen.GridSystem;
 using MapGen.Map;
 using MapGen.Map.Brushes;
 using MapGen.Map.Brushes.BrushAreas;
+using MapGen.Utilities;
 using UnityEngine;
 using Plugins.Editor;
 using TMPro;
@@ -13,6 +14,8 @@ namespace MapGen
 {
     public class EditState : State
     {
+        public static EditState Instance { get; private set; }
+        
         [Header("State Transition Required")]
         [SerializeField] private FpsState _fpsState;
         [SerializeField] private GameObject _camera;
@@ -29,78 +32,65 @@ namespace MapGen
         [SerializeField] private Camera sceneCamera;
         [SerializeField] private int _maxDistance;
         [SerializeField] private LayerMask _selectableGridMask;
+        [SerializeField] private EndlessList<Brush> _brushes;
 
         private static WorldCreator WorldCreator => WorldCreator.Instance;
         private GameManager GameManager => GameManager.Instance;
-        private BrushSelector BrushSelector => BrushSelector.Instance;
 
         
         private int _selectedAreYOffset;
-        private HashSet<Vector3Int> _selectedCells = new();
         private Plane _selectableCellsGround;
-        private List<Vector3Int> _currentlyLookingArea;
+
+
+        public int SelectedAreYOffset => _selectedAreYOffset;
 
         private void Awake()
         {
+            Instance = this;
             _selectableCellsGround = new Plane(WorldSettings.PlaneStartNormal, WorldSettings.PlaneStartHeight);
         }
 
-        private void Start()
-        {
-            yOffsetText.text = "Brush Y Offset: " + _selectedAreYOffset + " - Mouse Wheel";
-            brushName.text = "Brush: " + BrushSelector.CurrentBrush.BrushName + " - Q or E";
-            brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
-        }
-
         private void Update()
-        {
-            BrushOperations();
+        { 
             
-            if (!RayToGridCell(out var cellPos))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                _currentlyLookingArea = null;
-                return;
+                _brushes.PreviousItem();
             }
 
-            var startPoint = cellPos + Vector3Int.up * _selectedAreYOffset;
-            var currentlyLookingArea = BrushSelector.CurrentBrushArea.GetBrushArea(startPoint);
-            
-            _currentlyLookingArea = currentlyLookingArea;
-            
-            
-            if (Input.GetMouseButton(0) && BrushSelector.CurrentBrush.SupportMultipleCells && Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                foreach (var cellPosition in currentlyLookingArea)
-                {
-                    if (!_selectedCells.Contains(cellPosition))
-                    {
-                        _selectedCells.Add(cellPosition);
-                    }
-                }
+                _brushes.NextItem();
             }
-            else if (Input.GetMouseButton(0) && BrushSelector.CurrentBrush.SupportMultipleCells && Input.GetKey(KeyCode.LeftControl))
+            
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
-                foreach (var cellPosition in currentlyLookingArea)
-                {
-                    if (_selectedCells.Contains(cellPosition))
-                    {
-                        _selectedCells.Remove(cellPosition);
-                    }
-                }
+                GameManager.SwitchState(this, _fpsState);
             }
-            else if (Input.GetMouseButtonDown(0))
+            
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift)) // forward
             {
-                if (_selectedCells.Count == 0)
-                {
-                    WorldCreator.PaintTheBrush(_currentlyLookingArea, startPoint);
-                }
-                else
-                {
-                    WorldCreator.PaintTheBrush(_selectedCells.ToList(), startPoint);
-                }
-                
-                ResetSelectedArea();
+                _selectedAreYOffset++;
             }
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift)) // backwards
+            {
+                _selectedAreYOffset--;
+            }
+            
+            
+            yOffsetText.text = "Brush Y Offset: " + _selectedAreYOffset + " - Mouse Wheel";
+            brushName.text = "Brush: " + _brushes.CurrentItem.BrushName + " - Q or E";
+
+            if (_brushes.CurrentItem is MultipleCellEditableBrush multipleCellEditableBrush)
+            {
+                brushAreaName.text = "Area: " + multipleCellEditableBrush.BrushAreas.CurrentItem.name + " - SHIFT + Mouse Wheel";
+            }
+            else
+            {
+                brushAreaName.text = "";
+            }
+            
+            _brushes.CurrentItem.Update();
         }
         
         public bool RayToGridCell(out Vector3Int cellPos)
@@ -126,76 +116,9 @@ namespace MapGen
             cellPos = Vector3Int.zero;
             return false;
         }
-
-        private void BrushOperations()
-        {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
-            {
-                if (Input.GetKey(KeyCode.LeftControl) && BrushSelector.CurrentBrushArea is IIncreasableBrushArea increasableBrushArea)
-                {
-                    increasableBrushArea.IncreaseArea(1);
-                }
-                else if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    BrushSelector.NextBrushArea();
-                    brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
-                }
-                else
-                {
-                    _selectedAreYOffset++;
-                    yOffsetText.text = "Brush Y Offset: " + _selectedAreYOffset + " - Mouse Wheel";
-                }
-            }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
-            {
-                if (Input.GetKey(KeyCode.LeftControl) && BrushSelector.CurrentBrushArea is IIncreasableBrushArea increasableBrushArea)
-                {
-                    increasableBrushArea.DecreaseArea(1);
-                }
-                else if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    BrushSelector.PreviousBrushArea();
-                    brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
-                }
-                else
-                {
-                    _selectedAreYOffset--;
-                    yOffsetText.text = "Brush Y Offset: " + _selectedAreYOffset + " - Mouse Wheel";
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                GameManager.SwitchState(this, _fpsState);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                BrushSelector.PreviousBrush();
-                brushName.text = "Brush: " + BrushSelector.CurrentBrush.BrushName + " - Q or E";
-                brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
-                
-                if(!BrushSelector.CurrentBrush.SupportMultipleCells)
-                    ResetSelectedArea();
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                BrushSelector.NextBrush();
-                brushName.text = "Brush: " + BrushSelector.CurrentBrush.BrushName + " - Q or E";
-                brushAreaName.text = "Area: " + BrushSelector.CurrentBrushArea.name + " - SHIFT + Mouse Wheel";
-                
-                if(!BrushSelector.CurrentBrush.SupportMultipleCells)
-                    ResetSelectedArea();
-            }
-        }
         
-        private void ResetSelectedArea()
-        {
-            _selectedCells.Clear();
-        }
         
-        #region Brush Implementation
+        #region State Implementation
 
         public override void OnStateEnter()
         {
@@ -219,21 +142,7 @@ namespace MapGen
         {
             if(!_showGizmos) return;
 
-            Gizmos.color = Color.blue;
-            foreach (var selectedCell in _selectedCells)
-            {
-                Gizmos.DrawWireCube(selectedCell, WorldSettings.GridCellRealWorldSize);
-            }
-
-
-            if (_currentlyLookingArea != null)
-            {
-                Gizmos.color = BrushSelector.CurrentBrushArea.AreaColor;
-                foreach (var currentlyLookingCell in _currentlyLookingArea)
-                {
-                    Gizmos.DrawWireCube(currentlyLookingCell, WorldSettings.GridCellRealWorldSize);
-                }
-            }
+            _brushes.CurrentItem.OnDrawGizmos();
             
             Gizmos.color = Color.magenta;
             Gizmos.DrawCube(_fpsState.CharSpawnPos, WorldSettings.GridCellRealWorldSize);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapGen.Utilities;
 using UnityEngine;
 
 namespace MapGen.Placables
@@ -10,7 +11,7 @@ namespace MapGen.Placables
         public Vector3Int GridPos { get; private set; }
         
         [Header("Placable Properties")] 
-        [SerializeField] private bool _rotatable;
+        [SerializeField] private bool _rotatable = true;
         [Range(1,359)] [SerializeField] private int _rotationDegreeStep = 15;
         [SerializeField] private Vector3Int _origin;
         
@@ -42,6 +43,12 @@ namespace MapGen.Placables
             {
                 _visualsParent = possibleVisualParent;
                 Debug.Log("Automatically visual parent added");
+            }
+            
+            if (_visualsParent.localPosition.ToVector3Int() != _origin)
+            {
+                _visualsParent.localPosition = _origin;
+                Debug.Log("Visuals parent set to grid origin.");
             }
         }
 

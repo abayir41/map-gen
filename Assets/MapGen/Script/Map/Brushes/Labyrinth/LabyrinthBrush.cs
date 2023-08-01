@@ -8,7 +8,7 @@ using Grid = MapGen.GridSystem.Grid;
 namespace MapGen.Map.Brushes.Labyrinth
 {
     [CreateAssetMenu(fileName = "Labyrinth Brush", menuName = "MapGen/Brushes/Labyrinth/Brush", order = 0)]
-    public class LabyrinthBrush : Brush
+    public class LabyrinthBrush : MultipleCellEditableBrush
     {
         [SerializeField] private LabyrinthBrushSettings _labyrinthBrushSettings;
         [SerializeField] private GroundBrush.GroundBrush _groundBrush;
@@ -17,18 +17,18 @@ namespace MapGen.Map.Brushes.Labyrinth
         
         public override string BrushName => "Labyrinth";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var map = new RotationMap();
             var selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             
-            _groundBrush.Paint(selectedCells, grid, startPoint);
+            _groundBrush.Paint(selectedCells, grid);
             
             CreateLabyrinth(map, grid, selectedCellsHelper, out var probabilityMap);
 
             var obstaclesCells = selectedCells.ConvertAll(input =>
                 input + Vector3Int.up * LabyrinthBrushSettings.OBSTACLES_START_Y_LEVEL);
-            CreatObstacles(obstaclesCells, startPoint, grid, map, probabilityMap);
+            CreatObstacles(obstaclesCells, grid, map, probabilityMap);
         }
 
         private void CreateLabyrinth(RotationMap map, Grid grid, SelectedCellsHelper selectedCellsHelper, out float[,] obstacleProbabilityMap)
@@ -218,7 +218,7 @@ namespace MapGen.Map.Brushes.Labyrinth
             }
         }
 
-        private void CreatObstacles(List<Vector3Int> selectedCells, Vector3Int startPoint, Grid grid, RotationMap map, float[,] obstacleProbabilityMap)
+        private void CreatObstacles(List<Vector3Int> selectedCells, Grid grid, RotationMap map, float[,] obstacleProbabilityMap)
         {
             var oldBoolSetting = _obstaclesBrush.ObstacleBrushSettings.UseNoiseMap;
             _obstaclesBrush.ObstacleBrushSettings.UseNoiseMap = false;
@@ -227,7 +227,7 @@ namespace MapGen.Map.Brushes.Labyrinth
             var oldMap = _obstaclesBrush.ObstacleBrushSettings.RotationMap;
             _obstaclesBrush.ObstacleBrushSettings.RotationMap = map;
 
-            _obstaclesBrush.Paint(selectedCells, grid, startPoint);
+            _obstaclesBrush.Paint(selectedCells, grid);
 
             _obstaclesBrush.ObstacleBrushSettings.UseNoiseMap = oldBoolSetting;
             _obstaclesBrush.ObstacleBrushSettings.RotationMap = oldMap;

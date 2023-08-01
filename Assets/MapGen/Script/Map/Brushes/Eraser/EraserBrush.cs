@@ -6,11 +6,11 @@ using Grid = MapGen.GridSystem.Grid;
 namespace MapGen.Map.Brushes.Eraser
 { 
     [CreateAssetMenu(fileName = "Eraser", menuName = "MapGen/Brushes/Eraser", order = 0)]
-    public class EraserBrush : Brush
+    public class EraserBrush : MultipleCellEditableBrush
     {
         public override string BrushName => "Eraser";
-
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
+        
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             foreach (var selectedCell in selectedCells)
             {

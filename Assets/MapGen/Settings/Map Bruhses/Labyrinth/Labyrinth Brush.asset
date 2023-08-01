@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c4dad822264aa285558d0d039862e5, type: 3}
   m_Name: Labyrinth Brush
   m_EditorClassIdentifier: 
-  _supportMultipleCells: 1
+  _gizmoRadius: 0.25
+  _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
+  _selectedCellsColor: {r: 0, g: 0, b: 1, a: 1}
   _brushAreas:
-  - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
+    _items:
+    - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
+    - {fileID: 11400000, guid: cd7bfa6e919731e42908c88b04187578, type: 2}
   _labyrinthBrushSettings: {fileID: 11400000, guid: c9c4de9cbb053c2488a1219d5a36a84f, type: 2}
   _groundBrush: {fileID: 11400000, guid: f6f66414fd1feab4fa371d2d15157f8d, type: 2}
   _obstaclesBrush: {fileID: 11400000, guid: 891c41daab9bba34ea2e9afe5324de21, type: 2}

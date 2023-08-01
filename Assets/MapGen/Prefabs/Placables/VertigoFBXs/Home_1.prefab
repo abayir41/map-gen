@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a2410426954a69895125bd2b33c026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotatable: 0
+  _rotatable: 1
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
   _grids:
@@ -225,7 +225,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 2145875690938369635}
   DrawGizmo: 1
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.056901693, g: 1, b: 0, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.44687462, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -7, y: 0, z: -5}
@@ -1970,7 +1970,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 1599286136336041122}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.9915714, a: 1}
+  _gizmoColor: {r: 1, g: 0, b: 0.13111496, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -3, y: 0, z: -1}
@@ -2093,7 +2093,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6982520266948050823}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.2385807, a: 1}
+  _gizmoColor: {r: 0, g: 0.7908373, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -3, y: 0, z: -1}

@@ -8,7 +8,7 @@ namespace MapGen.GridSystem
 {
     public class Grid
     {
-        private Dictionary<Placable, PlacableGrids> ItemCellsDict { get; }
+        public Dictionary<Placable, PlacableGrids> ItemCellsDict { get; }
 
         private Dictionary<Vector3Int, GridCell> CachedCells { get; } = new();
 

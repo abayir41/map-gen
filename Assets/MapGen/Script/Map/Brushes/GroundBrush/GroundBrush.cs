@@ -11,13 +11,14 @@ namespace MapGen.Map.Brushes.GroundBrush
 {
     
     [CreateAssetMenu(fileName = "Ground Brush", menuName = "MapGen/Brushes/Ground/Ground Brush", order = 0)]
-    public class GroundBrush : Brush
+    public class GroundBrush : MultipleCellEditableBrush
     {
         [SerializeField] private GroundBrushSettings _groundBrushSettings;
 
 
         public override string BrushName => "Ground";
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
+
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             CreateGround(selectedCells, grid);
         }

@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290749219901703429}
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.25, y: -0.5, z: 0}
+  m_LocalPosition: {x: -4.75, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a2410426954a69895125bd2b33c026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotatable: 0
+  _rotatable: 1
   _rotationDegreeStep: 15
   _origin: {x: 5, y: 0, z: 0}
   _grids:
@@ -138,7 +138,7 @@ MonoBehaviour:
   - {fileID: 5324564219697716363}
   - {fileID: 9053397323330609498}
   _visualsParent: {fileID: 6057543008557849225}
-  DrawGizmo: 1
+  DrawGizmo: 0
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
   _gizmoRadius: 0.25
 --- !u!1 &3266611995274700224
@@ -167,7 +167,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3266611995274700224}
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: -1.5}
+  m_LocalPosition: {x: -5, y: -0.5, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -248,7 +248,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4101426304887115183}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -306,7 +306,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 1902394775525483658}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 0.3479519, b: 1, a: 1}
+  _gizmoColor: {r: 0.83834004, g: 1, b: 0, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 1}
@@ -417,7 +417,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6088892782059216207}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.8730717, a: 1}
+  _gizmoColor: {r: 0.796134, g: 0, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 1}
@@ -538,7 +538,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 7385748359518762493}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.7981912, b: 0, a: 1}
+  _gizmoColor: {r: 0, g: 0.56456757, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -2, y: 0, z: -5}

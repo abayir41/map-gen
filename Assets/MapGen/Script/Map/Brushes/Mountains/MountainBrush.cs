@@ -11,14 +11,14 @@ namespace MapGen.Map.Brushes.Mountains
 {
     
     [CreateAssetMenu(fileName = "Mountain Brush", menuName = "MapGen/Brushes/Mountains/Brush", order = 0)]
-    public class MountainBrush : Brush
+    public class MountainBrush : MultipleCellEditableBrush
     {
         [SerializeField] private MountainBrushSettings _mountainBrushSettings;
         private SelectedCellsHelper _selectedCellsHelper;
         
         public override string BrushName => "Mountain";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid, Vector3Int startPoint)
+        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var yStartLevel = selectedCells.First().y;

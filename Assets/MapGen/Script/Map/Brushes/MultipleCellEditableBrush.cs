@@ -1,0 +1,106 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using MapGen.Map.Brushes.BrushAreas;
+using MapGen.Utilities;
+using UnityEngine;
+using Grid = MapGen.GridSystem.Grid;
+
+namespace MapGen.Map.Brushes
+{
+    public abstract class MultipleCellEditableBrush : Brush
+    {
+        private const int INCREMENT_BRUSH_AREA = 1;
+        
+        [SerializeField] private Color _selectedCellsColor = Color.blue;
+        [SerializeField] private EndlessList<BrushArea> _brushAreas;
+        
+        public virtual EndlessList<BrushArea> BrushAreas => _brushAreas;
+        private HashSet<Vector3Int> SelectedCells { get; set; } = new();
+
+        public abstract void Paint(List<Vector3Int> selectedCells, Grid grid);
+
+        public override void Update()
+        {
+            base.Update();
+            
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
+            {
+                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas.CurrentItem is IIncreasableBrushArea increasableBrushArea)
+                {
+                    increasableBrushArea.IncreaseArea(INCREMENT_BRUSH_AREA);
+                }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    BrushAreas.NextItem();
+                }
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
+            {
+                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas.CurrentItem is IIncreasableBrushArea increasableBrushArea)
+                {
+                    increasableBrushArea.DecreaseArea(INCREMENT_BRUSH_AREA);
+                }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    BrushAreas.PreviousItem();
+                }
+            }
+            
+            if(!DidRayHit) return;
+
+            var currentlyLookingArea = BrushAreas.CurrentItem.GetBrushArea(HitPos);
+            VisualCells = currentlyLookingArea;
+            
+            if (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftShift))
+            {
+                foreach (var cellPosition in currentlyLookingArea)
+                {
+                    if (!SelectedCells.Contains(cellPosition))
+                    {
+                        SelectedCells.Add(cellPosition);
+                    }
+                }
+            }
+            else if (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftControl))
+            {
+                foreach (var cellPosition in currentlyLookingArea)
+                {
+                    if (SelectedCells.Contains(cellPosition))
+                    {
+                        SelectedCells.Remove(cellPosition);
+                    }
+                }
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                if (SelectedCells.Count == 0)
+                {
+                    Paint(currentlyLookingArea, WorldCreator.Grid);
+                }
+                else
+                {
+                    Paint(SelectedCells.ToList(), WorldCreator.Grid);
+                }
+                
+                ResetSelectedArea();
+            }
+        }
+
+        private void ResetSelectedArea()
+        {
+            SelectedCells.Clear();
+        }
+
+        public override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+            
+            Gizmos.color = _selectedCellsColor;
+            foreach (var selectedCell in SelectedCells)
+            {
+                var pos = WorldCreator.Grid.CellPositionToRealWorld(selectedCell);
+                Gizmos.DrawWireCube(pos, Vector3.one);
+            }
+        }
+    }
+}

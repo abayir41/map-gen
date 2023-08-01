@@ -12,16 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471b81616e649f7974af0e1d7cd750d, type: 3}
   m_Name: Obstacle Brush
   m_EditorClassIdentifier: 
-  _supportMultipleCells: 0
-  _brushAreas: []
-  _placableAreas:
-  - {fileID: 11400000, guid: 06eaa21f823453142910eb7952e56baf, type: 2}
-  - {fileID: 11400000, guid: df604408a17632345b028cc0c3360f44, type: 2}
-  - {fileID: 11400000, guid: a75030fddbb64e341b87e900fa5362a7, type: 2}
-  - {fileID: 11400000, guid: 5fc16caaf897ed24db41b98f3bdbf182, type: 2}
-  - {fileID: 11400000, guid: 3f0bea7a71a33c64c8753d979bbcdc2a, type: 2}
-  - {fileID: 11400000, guid: 5ef784443c9147144aa5247df0e8f7a0, type: 2}
-  - {fileID: 11400000, guid: 238c6002e5862f749a210586ede2c944, type: 2}
-  - {fileID: 11400000, guid: 04e64463334ed7440b518bff96b2279d, type: 2}
-  - {fileID: 11400000, guid: c28cde88f089eca44a341b271524f497, type: 2}
-  - {fileID: 11400000, guid: 5629e14b2d4cc78479e24499a76b4897, type: 2}
+  _gizmoRadius: 0.25
+  _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
+  _placables:
+    _items:
+    - {fileID: 8967608169036613168, guid: 06e75a09bdf2d3541b43e29e4286be60, type: 3}
+    - {fileID: 8967608169036613168, guid: ca2275aacca1e1247bd2530145d4a7fb, type: 3}
+    - {fileID: 3858007598822130187, guid: 252b63502f98cc643990cc31b8c80923, type: 3}
+    - {fileID: 6857646536276948154, guid: c7d13d9283a315f46a8280abf2f70d08, type: 3}
+    - {fileID: 3083667407928680683, guid: 6849ecd125a65de448126561c961a3ac, type: 3}
+    - {fileID: 3083667407928680683, guid: eca5ee02bef1e334dbaf04a731806314, type: 3}
+    - {fileID: 4698296767136087353, guid: 72a2b6e7d83f42e4aac6d3504926a868, type: 3}
+    - {fileID: 4698296767136087353, guid: 25047d8934825c64dbe6bf80bdc0e807, type: 3}
+    - {fileID: 8213404422655174283, guid: 44ba401f1f51c8e49b54d85d88821205, type: 3}
+    - {fileID: 4727080097559331581, guid: c9a4633f0fdc62f46b795bcae2ecf27d, type: 3}
+    - {fileID: 2683300341979957061, guid: 919c68a81bd5a93409da87f7635b7140, type: 3}
+  _placableGizmoRadius: 0.25
+  _visualShownCellType: 2
+  _rotationStep: 15
