@@ -27,6 +27,7 @@ namespace MapGen
         [SerializeField] private TextMeshProUGUI yOffsetText;
         [SerializeField] private TextMeshProUGUI brushName;
         [SerializeField] private TextMeshProUGUI brushAreaName;
+        [SerializeField] private TextMeshProUGUI placableDescription;
         
         [Header("Editing")]
         [SerializeField] private Camera sceneCamera;
@@ -56,11 +57,27 @@ namespace MapGen
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 _brushes.PreviousItem();
+                if (_brushes.CurrentItem is PlacableSpawner)
+                {
+                    placableDescription.text = "Left-Right Arrow to change placable, Up-Down Arrow to rotate";
+                }
+                else
+                {
+                    placableDescription.text = "";
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 _brushes.NextItem();
+                if (_brushes.CurrentItem is PlacableSpawner)
+                {
+                    placableDescription.text = "Left-Right Arrow to change placable, Up-Down Arrow to rotate";
+                }
+                else
+                {
+                    placableDescription.text = "";
+                }
             }
             
             if (Input.GetKeyDown(KeyCode.Tab))
