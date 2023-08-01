@@ -27,18 +27,7 @@ namespace MapGen.Map
             Instance = this;
             Grid = new Grid();
         }
-        
-        private void DestroyPlacedPlacables(List<Vector3Int> selectedCells)
-        {
-            foreach (var selectedCell in selectedCells)
-            {
-                if(Grid.IsCellExist(selectedCell, out var cell) && cell.Item != null)
-                {
-                    DestroyItem(cell.Item);
-                }
-            }
-        }
-        
+
         public void DestroyItem(Placable placable)
         {
             Grid.DeleteItem(placable);

@@ -8,6 +8,5 @@ namespace MapGen.Map
         public static readonly Vector3 PlaneStartHeight = new Vector3(0, 0, 0);
         public static readonly Vector3 PlaneStartNormal = Vector3.up;
         public static Vector3Int GridCellRealWorldSize = Vector3Int.one;
-        
     }
 }
