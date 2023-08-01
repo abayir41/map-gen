@@ -19,4 +19,19 @@ MonoBehaviour:
     _items:
     - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
     - {fileID: 11400000, guid: cd7bfa6e919731e42908c88b04187578, type: 2}
-  _obstacleBrushSettings: {fileID: 11400000, guid: c30978108e53bf74ab9ed39b9e4f4078, type: 2}
+  objectPlacementNoise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
+  randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
+  _useNoiseMap: 1
+  placables:
+  - {fileID: 3858007598822130187, guid: 252b63502f98cc643990cc31b8c80923, type: 3}
+  - {fileID: 6857646536276948154, guid: c7d13d9283a315f46a8280abf2f70d08, type: 3}
+  - {fileID: 3083667407928680683, guid: 6849ecd125a65de448126561c961a3ac, type: 3}
+  - {fileID: 3083667407928680683, guid: eca5ee02bef1e334dbaf04a731806314, type: 3}
+  - {fileID: 4698296767136087353, guid: 72a2b6e7d83f42e4aac6d3504926a868, type: 3}
+  - {fileID: 4698296767136087353, guid: 25047d8934825c64dbe6bf80bdc0e807, type: 3}
+  - {fileID: 8213404422655174283, guid: 44ba401f1f51c8e49b54d85d88821205, type: 3}
+  - {fileID: 4727080097559331581, guid: c9a4633f0fdc62f46b795bcae2ecf27d, type: 3}
+  - {fileID: 2683300341979957061, guid: 919c68a81bd5a93409da87f7635b7140, type: 3}
+  - {fileID: 8213404422655174283, guid: bb5e66dc965a6034e9a08a726473ea95, type: 3}
+  _maxObstacleRotation: 360
+  objectPlacementThreshold: 59.1

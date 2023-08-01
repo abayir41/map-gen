@@ -14,7 +14,17 @@ namespace MapGen.Map.Brushes.TunnelBrush
     [CreateAssetMenu(fileName = "Auto Tunnel Brush", menuName = "MapGen/Brushes/Tunnel/Auto Tunnel Brush", order = 0)]
     public class AutoTunnelBrush : MultipleCellEditableBrush
     {
-        [SerializeField] private TunnelBrushSettings _tunnelBrushSettings;
+        [Header("Tunnel")] 
+        [SerializeField] private float tunnelMinLength;
+        [SerializeField] private float tunnelAverageMinHeight;
+        [SerializeField] private float betweenTunnelMinSpace;
+        [SerializeField] private TunnelPlacable _tunnelBrush;
+
+        public TunnelPlacable TunnelBrush => _tunnelBrush;
+        public float TunnelMinLength => tunnelMinLength;
+        public float TunnelAverageMinHeight => tunnelAverageMinHeight;
+        public float BetweenTunnelMinSpace => betweenTunnelMinSpace;
+        
         
         public override string BrushName => "Auto Tunnel";
 
@@ -23,7 +33,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
         public override void Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var layer = selectedCells.First().y;
-            _helper = new TunnelBrushHelper(selectedCells, grid, _tunnelBrushSettings);
+            _helper = new TunnelBrushHelper(selectedCells, grid, this);
             MakeTunnels(layer, grid);
         }
         
@@ -70,14 +80,14 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
             foreach (var pathPoint in path)
             {
-                var tunnelDestroyGrids = _tunnelBrushSettings.TunnelBrush.Grids.Where(placableGrid =>
+                var tunnelDestroyGrids = TunnelBrush.Grids.Where(placableGrid =>
                     placableGrid.PlacableCellType == PlacableCellType.TunnelDestroy);
                 foreach (var tunnelDestroyGrid in tunnelDestroyGrids)
                 {
                     foreach (var tunnelBrushDestroyPoint in tunnelDestroyGrid.CellPositions)
                     {
                         var rotatedVector = pathPoint.CellPosition +
-                                            tunnelBrushDestroyPoint.RotateVector(rotationDegreeInt, _tunnelBrushSettings.TunnelBrush.Origin);
+                                            tunnelBrushDestroyPoint.RotateVector(rotationDegreeInt, TunnelBrush.Origin);
 
                         if (!grid.IsCellExist(rotatedVector, out var cell)) continue;
 
@@ -87,9 +97,9 @@ namespace MapGen.Map.Brushes.TunnelBrush
                     }
                 }
                 
-                if (grid.IsPlacableSuitable(pathPoint.CellPosition, _tunnelBrushSettings.TunnelBrush, rotationDegreeInt))
+                if (grid.IsPlacableSuitable(pathPoint.CellPosition, TunnelBrush, rotationDegreeInt))
                 {
-                    var placable = WorldCreator.Instance.SpawnObject(pathPoint.CellPosition, _tunnelBrushSettings.TunnelBrush, CellLayer.Obstacle, rotationDegreeInt);
+                    var placable = WorldCreator.Instance.SpawnObject(pathPoint.CellPosition, TunnelBrush, CellLayer.Obstacle, rotationDegreeInt);
                     result.Add(placable);
                 }
             }

@@ -22,6 +22,7 @@ namespace MapGen.Map.Brushes
         protected EditState EditState => EditState.Instance;
 
         protected bool DidRayHit { get; private set; }
+        protected Vector3Int HitPosOffsetted { get; private set; }
         protected Vector3Int HitPos { get; private set; }
 
         private void OnEnable()
@@ -34,7 +35,8 @@ namespace MapGen.Map.Brushes
             if (EditState.RayToGridCell(out var cellPos))
             {
                 DidRayHit = true;
-                HitPos = cellPos + Vector3Int.up * EditState.SelectedAreYOffset;
+                HitPos = cellPos;
+                HitPosOffsetted = cellPos + Vector3Int.up * EditState.SelectedAreYOffset;
             }
             else
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapGen.Placables;
 using UnityEngine;
 
 namespace MapGen.Utilities
@@ -35,6 +36,13 @@ namespace MapGen.Utilities
                 Mathf.RoundToInt(result.z));
 
             return resultAsVector3Int;
+        }
+
+        public static List<Vector3Int> TransformAccordingToSpawn(this PlacableGrid placableGrid, Placable placable, Vector3Int spawnPos, int rotation)
+        {
+            var result = placableGrid.CellPositions.ConvertAll(input => input.RotateVector(rotation, placable.Origin));
+            result = result.ConvertAll(input => input + spawnPos);
+            return result;
         }
     }
 }

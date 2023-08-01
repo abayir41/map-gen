@@ -22,7 +22,7 @@ namespace MapGen.Map.Brushes
         {
             base.OnDrawGizmos();
             
-            var pos = WorldCreator.Grid.CellPositionToRealWorld(HitPos);
+            var pos = WorldCreator.Grid.CellPositionToRealWorld(HitPosOffsetted);
             Gizmos.DrawWireCube(pos, Vector3.one);
         }
     }

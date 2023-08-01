@@ -12,9 +12,10 @@ namespace MapGen.Map.Brushes.TunnelBrush
     public class TunnelBrushHelper : SelectedCellsHelper
     {
         private readonly Grid _grid;
-        private readonly TunnelBrushSettings _mapBrushSettings;
+        private readonly AutoTunnelBrush _mapBrushSettings;
 
-        public TunnelBrushHelper(List<Vector3Int> cells, Grid grid, TunnelBrushSettings mapBrushSettings) : base(cells, grid)
+
+        public TunnelBrushHelper(List<Vector3Int> cells, Grid grid, AutoTunnelBrush mapBrushSettings) : base(cells, grid)
         {
             _grid = grid;
             _mapBrushSettings = mapBrushSettings;

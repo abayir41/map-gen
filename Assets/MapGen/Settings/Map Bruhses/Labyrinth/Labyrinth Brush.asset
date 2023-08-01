@@ -19,6 +19,12 @@ MonoBehaviour:
     _items:
     - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
     - {fileID: 11400000, guid: cd7bfa6e919731e42908c88b04187578, type: 2}
-  _labyrinthBrushSettings: {fileID: 11400000, guid: c9c4de9cbb053c2488a1219d5a36a84f, type: 2}
+  _randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
+  _wallThickness: 1
+  _wayThickness: 5
+  _wallHeight: 3
+  _mazeCubicGridPlacable: {fileID: 8967608169036613168, guid: ca2275aacca1e1247bd2530145d4a7fb, type: 3}
+  firstEdgeObstacleProbability: 0.918
+  secondEdgeObstacleProbability: 0.431
   _groundBrush: {fileID: 11400000, guid: f6f66414fd1feab4fa371d2d15157f8d, type: 2}
-  _obstaclesBrush: {fileID: 11400000, guid: 891c41daab9bba34ea2e9afe5324de21, type: 2}
+  _obstaclesBrush: {fileID: 11400000, guid: 7a481135b44898043b7f05ef2e9fb3d1, type: 2}

@@ -22,12 +22,13 @@ namespace MapGen.Map.Brushes.Debugger
                 _catchedPlacablePos.Clear();
                 return;
             }
-
+            
             if (!WorldCreator.Grid.IsCellExist(HitPos, out var cell))
             {
                 _catchedPlacablePos.Clear();
                 return;
             }
+            
 
             if (cell.Item == null)
             {

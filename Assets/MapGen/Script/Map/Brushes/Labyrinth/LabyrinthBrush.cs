@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using MapGen.GridSystem;
+using MapGen.Placables;
+using MapGen.Random;
 using Maze;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
@@ -10,10 +13,32 @@ namespace MapGen.Map.Brushes.Labyrinth
     [CreateAssetMenu(fileName = "Labyrinth Brush", menuName = "MapGen/Brushes/Labyrinth/Brush", order = 0)]
     public class LabyrinthBrush : MultipleCellEditableBrush
     {
-        [SerializeField] private LabyrinthBrushSettings _labyrinthBrushSettings;
+        [Header("Labyrinth Settings")]
+        [SerializeField] private RandomSettings _randomSettings;
+        [SerializeField] private int _wallThickness;
+        [SerializeField] private int _wayThickness;
+        [SerializeField] private int _wallHeight;
+        [SerializeField] private Placable _mazeCubicGridPlacable;
+        [SerializeField] [Range(0, 1)] private float firstEdgeObstacleProbability;
+        [SerializeField] [Range(0, 1)] private float secondEdgeObstacleProbability;
+
+        public const int WALL_ROTATION = 0;
+        public const int LABYRINTH_START_Y_LEVEL = 1;
+        public const int OBSTACLES_START_Y_LEVEL = 1;
+
+        public static int[] HorizontalDegrees { get; } = { 0, 180 };
+        public static int[] VerticalDegrees { get; } = { 90, 270 };
         [SerializeField] private GroundBrush.GroundBrush _groundBrush;
         [SerializeField] private ObstacleSpawner.ObstaclesBrush _obstaclesBrush;
 
+        
+        public Placable MazeCubicGridPlacable => _mazeCubicGridPlacable;
+        public RandomSettings RandomSettings => _randomSettings;
+        public int WallThickness => _wallThickness;
+        public int WayThickness => _wayThickness;
+        public int WallHeight => _wallHeight;
+        public float FirstEdgeObstacleProbability => firstEdgeObstacleProbability;
+        public float SecondEdgeObstacleProbability => secondEdgeObstacleProbability;
         
         public override string BrushName => "Labyrinth";
 
@@ -27,16 +52,16 @@ namespace MapGen.Map.Brushes.Labyrinth
             CreateLabyrinth(map, grid, selectedCellsHelper, out var probabilityMap);
 
             var obstaclesCells = selectedCells.ConvertAll(input =>
-                input + Vector3Int.up * LabyrinthBrushSettings.OBSTACLES_START_Y_LEVEL);
+                input + Vector3Int.up * OBSTACLES_START_Y_LEVEL);
             CreatObstacles(obstaclesCells, grid, map, probabilityMap);
         }
 
         private void CreateLabyrinth(RotationMap map, Grid grid, SelectedCellsHelper selectedCellsHelper, out float[,] obstacleProbabilityMap)
         {
-            var labyrinthPieceSize = _labyrinthBrushSettings.WallThickness + _labyrinthBrushSettings.WayThickness;
+            var labyrinthPieceSize = WallThickness + WayThickness;
             var labyrinthPieceAmount = new Vector2Int((selectedCellsHelper.XWidth - labyrinthPieceSize) / labyrinthPieceSize,
                 (selectedCellsHelper.ZWidth - labyrinthPieceSize) / labyrinthPieceSize);
-            var maze = MazeGenerator.Generate(labyrinthPieceAmount.x, labyrinthPieceAmount.y, _labyrinthBrushSettings.RandomSettings.GetSeed());
+            var maze = MazeGenerator.Generate(labyrinthPieceAmount.x, labyrinthPieceAmount.y, RandomSettings.GetSeed());
             obstacleProbabilityMap = new float[selectedCellsHelper.XWidth, selectedCellsHelper.ZWidth];
             
             for (int x = 0; x < labyrinthPieceAmount.x; x++)
@@ -44,11 +69,11 @@ namespace MapGen.Map.Brushes.Labyrinth
                 for (int z = 0; z < labyrinthPieceAmount.y; z++)
                 {
                     var startWorldCellPoint =
-                        new Vector2Int(selectedCellsHelper.MinX + x * (_labyrinthBrushSettings.WallThickness + _labyrinthBrushSettings.WayThickness),
-                            selectedCellsHelper.MinZ + z * (_labyrinthBrushSettings.WallThickness + _labyrinthBrushSettings.WayThickness));
+                        new Vector2Int(selectedCellsHelper.MinX + x * (WallThickness + WayThickness),
+                            selectedCellsHelper.MinZ + z * (WallThickness + WayThickness));
                     
-                    var labyrinthBrushHelper = new LabyrinthBrushMazeCellHelper(startWorldCellPoint, _labyrinthBrushSettings.WallThickness,
-                        _labyrinthBrushSettings.WayThickness, _labyrinthBrushSettings.WallHeight, LabyrinthBrushSettings.LABYRINTH_START_Y_LEVEL);
+                    var labyrinthBrushHelper = new LabyrinthBrushMazeCellHelper(startWorldCellPoint, WallThickness,
+                        WayThickness, WallHeight, LABYRINTH_START_Y_LEVEL);
                     
                     var cell = maze[x, z];
                     
@@ -78,58 +103,55 @@ namespace MapGen.Map.Brushes.Labyrinth
 
                     if (up)
                     {
-                        for (var way = 0; way < _labyrinthBrushSettings.WayThickness; way++)
+                        for (var way = 0; way < WayThickness; way++)
                         {
                             var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                              + Vector2Int.one * _labyrinthBrushSettings.WallThickness 
-                                              + new Vector2Int(way,_labyrinthBrushSettings.WayThickness - 1);
+                                              + Vector2Int.one * WallThickness 
+                                              + new Vector2Int(way,WayThickness - 1);
 
                             obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                _labyrinthBrushSettings.FirstEdgeObstacleProbability;
+                                FirstEdgeObstacleProbability;
                         }
                     }
                     
                     if (left)
                     {
-                        for (var way = 0; way < _labyrinthBrushSettings.WayThickness; way++)
+                        for (var way = 0; way < WayThickness; way++)
                         {
                             var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                           + Vector2Int.one * _labyrinthBrushSettings.WallThickness 
+                                           + Vector2Int.one * WallThickness 
                                            + new Vector2Int(0,way);
 
                             obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                _labyrinthBrushSettings.FirstEdgeObstacleProbability;
+                                FirstEdgeObstacleProbability;
                         }
                     }
 
                     if (right)
                     {
-                        for (var way = 0; way < _labyrinthBrushSettings.WayThickness; way++)
+                        for (var way = 0; way < WayThickness; way++)
                         {
                             var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                           + Vector2Int.one * _labyrinthBrushSettings.WallThickness 
-                                           + new Vector2Int(_labyrinthBrushSettings.WayThickness - 1,way);
+                                           + Vector2Int.one * WallThickness 
+                                           + new Vector2Int(WayThickness - 1,way);
 
                             obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                _labyrinthBrushSettings.FirstEdgeObstacleProbability;
+                                FirstEdgeObstacleProbability;
                         }
                     }
 
                     if (bottom)
                     {
-                        for (var way = 0; way < _labyrinthBrushSettings.WayThickness; way++)
+                        for (var way = 0; way < WayThickness; way++)
                         {
                             var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                           + Vector2Int.one * _labyrinthBrushSettings.WallThickness 
+                                           + Vector2Int.one * WallThickness 
                                            + new Vector2Int(way,0);
 
                             obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                _labyrinthBrushSettings.FirstEdgeObstacleProbability;
+                                FirstEdgeObstacleProbability;
                         }
                     }
-                    
-                    
-                    
                     
                     if (up)
                     {
@@ -198,20 +220,20 @@ namespace MapGen.Map.Brushes.Labyrinth
 
         private void SetRotationMap(RotationMap map, Vector2Int startWorldCellPoint, WallState mazeCell)
         {
-            for (var wayX = 0; wayX < _labyrinthBrushSettings.WayThickness; wayX++)
+            for (var wayX = 0; wayX < WayThickness; wayX++)
             {
-                for (var wayY = 0; wayY < _labyrinthBrushSettings.WayThickness; wayY++)
+                for (var wayY = 0; wayY < WayThickness; wayY++)
                 {
-                    var gridCellPos = startWorldCellPoint + Vector2Int.one * _labyrinthBrushSettings.WallThickness + new Vector2Int(wayX, wayY);
+                    var gridCellPos = startWorldCellPoint + Vector2Int.one * WallThickness + new Vector2Int(wayX, wayY);
 
                     if (!mazeCell.HasFlag(WallState.Left) && !mazeCell.HasFlag(WallState.Right))
                     {
-                        var rotCell = new RotationMapCell(LabyrinthBrushSettings.HorizontalDegrees);
+                        var rotCell = new RotationMapCell(HorizontalDegrees);
                         map.SetCell(gridCellPos, rotCell);
                     } 
                     else if (!mazeCell.HasFlag(WallState.Up) && !mazeCell.HasFlag(WallState.Down))
                     {
-                        var rotCell = new RotationMapCell(LabyrinthBrushSettings.VerticalDegrees);
+                        var rotCell = new RotationMapCell(VerticalDegrees);
                         map.SetCell(gridCellPos, rotCell);                            
                     }
                 }
@@ -220,17 +242,17 @@ namespace MapGen.Map.Brushes.Labyrinth
 
         private void CreatObstacles(List<Vector3Int> selectedCells, Grid grid, RotationMap map, float[,] obstacleProbabilityMap)
         {
-            var oldBoolSetting = _obstaclesBrush.ObstacleBrushSettings.UseNoiseMap;
-            _obstaclesBrush.ObstacleBrushSettings.UseNoiseMap = false;
-            _obstaclesBrush.ObstacleBrushSettings.ObjectPlacementProbability = obstacleProbabilityMap;
-            
-            var oldMap = _obstaclesBrush.ObstacleBrushSettings.RotationMap;
-            _obstaclesBrush.ObstacleBrushSettings.RotationMap = map;
+            var oldBoolSetting = _obstaclesBrush.UseNoiseMap;
+            _obstaclesBrush.UseNoiseMap = false;
+            _obstaclesBrush.ObjectPlacementProbability = obstacleProbabilityMap;
+
+            var oldMap = _obstaclesBrush.RotationMap;
+            _obstaclesBrush.RotationMap = map;
 
             _obstaclesBrush.Paint(selectedCells, grid);
 
-            _obstaclesBrush.ObstacleBrushSettings.UseNoiseMap = oldBoolSetting;
-            _obstaclesBrush.ObstacleBrushSettings.RotationMap = oldMap;
+            _obstaclesBrush.UseNoiseMap = oldBoolSetting;
+            _obstaclesBrush.RotationMap = oldMap;
         }
 
         private void OpenWall(LabyrinthBrushMazeCellHelper brushMazeCellHelper, MazeCubicPositions position, Grid grid)
@@ -241,7 +263,7 @@ namespace MapGen.Map.Brushes.Labyrinth
             {
                 if (grid.IsCellExist(pos, out var cell) && cell.CellState != CellState.CanBeFilled) continue;
 
-                WorldCreator.Instance.SpawnObject(pos, _labyrinthBrushSettings.MazeCubicGridPlacable, CellLayer.Ground, LabyrinthBrushSettings.WALL_ROTATION,position.ToString());
+                WorldCreator.Instance.SpawnObject(pos,MazeCubicGridPlacable, CellLayer.Ground, WALL_ROTATION,position.ToString());
             }
         }
     }

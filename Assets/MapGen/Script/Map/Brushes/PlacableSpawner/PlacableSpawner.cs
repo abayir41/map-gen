@@ -70,14 +70,11 @@ namespace MapGen.Map.Brushes
             
             var grid = _placables.CurrentItem.Grids.FirstOrDefault(grid => grid.PlacableCellType == _visualShownCellType);
             if (grid == null) return;
-            
-            _placableVisuals =
-                grid.CellPositions.ConvertAll(input => input.RotateVector(_rotation, _placables.CurrentItem.Origin));
-            
-            _placableVisuals = _placableVisuals.ConvertAll(input => input + HitPos);
+
+            _placableVisuals = grid.TransformAccordingToSpawn(_placables.CurrentItem, HitPosOffsetted, _rotation);
             
             
-            if (WorldCreator.Grid.IsPlacableSuitable(HitPos, _placables.CurrentItem, _rotation))
+            if (WorldCreator.Grid.IsPlacableSuitable(HitPosOffsetted, _placables.CurrentItem, _rotation))
             {
                 _placableVisualColor = Color.green;
             }
@@ -94,7 +91,7 @@ namespace MapGen.Map.Brushes
             
             
             Gizmos.color = _cursorColor;
-            var cursor = WorldCreator.Grid.CellPositionToRealWorld(HitPos);
+            var cursor = WorldCreator.Grid.CellPositionToRealWorld(HitPosOffsetted);
             Gizmos.DrawWireCube(cursor, Vector3.one);
             
             Gizmos.color = _placableVisualColor;

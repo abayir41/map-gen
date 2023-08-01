@@ -38,7 +38,7 @@ namespace MapGen
         private GameManager GameManager => GameManager.Instance;
 
         
-        private int _selectedAreYOffset;
+        private int _selectedAreYOffset = 1;
         private Plane _selectableCellsGround;
 
 

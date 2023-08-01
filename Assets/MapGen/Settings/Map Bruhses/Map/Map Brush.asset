@@ -19,8 +19,9 @@ MonoBehaviour:
     _items:
     - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
     - {fileID: 11400000, guid: cd7bfa6e919731e42908c88b04187578, type: 2}
-  _mapBrushSettings: {fileID: 11400000, guid: da5672087281f8d48a79907dab048ee9, type: 2}
   _groundBrush: {fileID: 11400000, guid: f6f66414fd1feab4fa371d2d15157f8d, type: 2}
   _obstaclesBrush: {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}
   _mountainBrush: {fileID: 11400000, guid: 238efa7900a3b1942bfb7200a9a2ea07, type: 2}
   _autoTunnelBrush: {fileID: 11400000, guid: 6bcc289907cd32b4ebc931840a0bee25, type: 2}
+  _mapParts: 15
+  randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}

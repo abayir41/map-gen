@@ -18,7 +18,7 @@ namespace MapGen.Map.Brushes
             
             if (Input.GetMouseButtonDown(0))
             {
-                Paint(HitPos, WorldCreator.Grid);
+                Paint(HitPosOffsetted, WorldCreator.Grid);
             }
         }
     }

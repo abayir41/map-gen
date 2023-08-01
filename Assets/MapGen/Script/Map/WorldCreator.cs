@@ -3,6 +3,7 @@ using System.Linq;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes;
 using MapGen.Placables;
+using MapGen.Utilities;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
@@ -83,15 +84,18 @@ namespace MapGen.Map
             
             if (physicalGrid != null)
             {
-                foreach (var physicalGridCellPosition in physicalGrid.CellPositions)
+                var transformedGrid = physicalGrid.CellPositions.ConvertAll(input => input.RotateVector(rotation, placable.Origin));
+                transformedGrid = transformedGrid.ConvertAll(input => input + pos);
+                
+                foreach (var physicalGridCellPosition in transformedGrid)
                 {
-                    var worldPos = Grid.CellPositionToRealWorld(physicalGridCellPosition + realPos);
+                    var worldPos = Grid.CellPositionToRealWorld(physicalGridCellPosition);
                     var selectableGridCell = Instantiate(_selectableGridCell, _selectableGridCellParent);
                     selectableGridCell.transform.position = worldPos;
 
-                    if (!Grid.IsCellExist(physicalGridCellPosition + realPos, out var cell))
+                    if (!Grid.IsCellExist(physicalGridCellPosition, out var cell))
                     {
-                        cell = Grid.CreateCell(physicalGridCellPosition + realPos);
+                        cell = Grid.CreateCell(physicalGridCellPosition);
                     }
 
                     selectableGridCell.BoundedCell = cell;

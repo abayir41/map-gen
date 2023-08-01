@@ -9,13 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a312713b4e14c688c28f094cea944bb, type: 3}
-  m_Name: Obstacles_just_mini
+  m_Script: {fileID: 11500000, guid: 9dee796132b743d99239bfdf58c3ae74, type: 3}
+  m_Name: Labyrinth Obstacles
   m_EditorClassIdentifier: 
+  _gizmoRadius: 0.25
+  _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
+  _selectedCellsColor: {r: 0, g: 0, b: 1, a: 1}
+  _brushAreas:
+    _items:
+    - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
+    - {fileID: 11400000, guid: cd7bfa6e919731e42908c88b04187578, type: 2}
   objectPlacementNoise: {fileID: 11400000, guid: 0c0afa6860521a54e800eeee7f0d3440, type: 2}
   randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
   _useNoiseMap: 1
   placables:
-  - {fileID: 8213404422655174283, guid: 44ba401f1f51c8e49b54d85d88821205, type: 3}
+  - {fileID: 4727080097559331581, guid: b60cb231fffde8f42b153bac590afd09, type: 3}
   _maxObstacleRotation: 360
-  objectPlacementThreshold: 42
+  objectPlacementThreshold: 59.1

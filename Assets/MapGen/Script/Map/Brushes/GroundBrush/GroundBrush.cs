@@ -13,9 +13,10 @@ namespace MapGen.Map.Brushes.GroundBrush
     [CreateAssetMenu(fileName = "Ground Brush", menuName = "MapGen/Brushes/Ground/Ground Brush", order = 0)]
     public class GroundBrush : MultipleCellEditableBrush
     {
-        [SerializeField] private GroundBrushSettings _groundBrushSettings;
-
-
+        private const int GROUND_ROTATION = 0;
+        [SerializeField] private Placable _ground;
+        [SerializeField] private CellLayer _cellLayer = CellLayer.Ground;
+        
         public override string BrushName => "Ground";
 
         public override void Paint(List<Vector3Int> selectedCells, Grid grid)
@@ -34,8 +35,8 @@ namespace MapGen.Map.Brushes.GroundBrush
                     if(cell.CellState != CellState.CanBeFilled) continue;
                 }
 
-                var placable = WorldCreator.Instance.SpawnObject(selectedCell, _groundBrushSettings.Ground,
-                    _groundBrushSettings.CellLayer, GroundBrushSettings.GROUND_ROTATION);
+                var placable = WorldCreator.Instance.SpawnObject(selectedCell, _ground,
+                    _cellLayer, GROUND_ROTATION);
                 result.Add(placable);
             }
 

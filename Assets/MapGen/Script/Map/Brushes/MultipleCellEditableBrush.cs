@@ -16,6 +16,8 @@ namespace MapGen.Map.Brushes
         
         public virtual EndlessList<BrushArea> BrushAreas => _brushAreas;
         private HashSet<Vector3Int> SelectedCells { get; set; } = new();
+        protected List<Vector3Int> CurrentlyLookingCells { get; private set; }
+
 
         public abstract void Paint(List<Vector3Int> selectedCells, Grid grid);
 
@@ -48,12 +50,12 @@ namespace MapGen.Map.Brushes
             
             if(!DidRayHit) return;
 
-            var currentlyLookingArea = BrushAreas.CurrentItem.GetBrushArea(HitPos);
-            VisualCells = currentlyLookingArea;
+            CurrentlyLookingCells = BrushAreas.CurrentItem.GetBrushArea(HitPosOffsetted);
+            VisualCells = CurrentlyLookingCells;
             
             if (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftShift))
             {
-                foreach (var cellPosition in currentlyLookingArea)
+                foreach (var cellPosition in CurrentlyLookingCells)
                 {
                     if (!SelectedCells.Contains(cellPosition))
                     {
@@ -63,7 +65,7 @@ namespace MapGen.Map.Brushes
             }
             else if (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftControl))
             {
-                foreach (var cellPosition in currentlyLookingArea)
+                foreach (var cellPosition in CurrentlyLookingCells)
                 {
                     if (SelectedCells.Contains(cellPosition))
                     {
@@ -75,7 +77,7 @@ namespace MapGen.Map.Brushes
             {
                 if (SelectedCells.Count == 0)
                 {
-                    Paint(currentlyLookingArea, WorldCreator.Grid);
+                    Paint(CurrentlyLookingCells, WorldCreator.Grid);
                 }
                 else
                 {

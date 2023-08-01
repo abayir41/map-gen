@@ -3,7 +3,9 @@ using System.Linq;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
+using MapGen.Random;
 using MapGen.Utilities;
+using UnityEditor;
 using UnityEngine;
 using Weaver;
 using Grid = MapGen.GridSystem.Grid;
@@ -14,10 +16,31 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
     [CreateAssetMenu(fileName = "Obstacle Brush", menuName = "MapGen/Brushes/Obstacles/Brush", order = 0)]
     public class ObstaclesBrush : MultipleCellEditableBrush
     {
-        [SerializeField] private ObstacleBrushSettings _obstacleBrushSettings;
-
+        [Header("Object Placement Probability Settings")]
+        [SerializeField] private Noise.Noise objectPlacementNoise;
+        [SerializeField] private RandomSettings randomSettings;
+        [SerializeField] private bool _useNoiseMap;
+        public float[,] ObjectPlacementProbability { get; set; }
+        public RotationMap RotationMap { get; set; }
         
-        public ObstacleBrushSettings ObstacleBrushSettings => _obstacleBrushSettings;
+        [Header("Obstacles")]
+        [SerializeField] private List<Placable> placables;
+        [SerializeField] private float _maxObstacleRotation;
+        [SerializeField] [Range(0,100)] private float objectPlacementThreshold;
+        
+        
+        public List<Placable> Placables => placables;
+        public float MaxObstacleRotation => _maxObstacleRotation;
+        public RandomSettings RandomSettings => randomSettings;
+        public Noise.Noise ObjectPlacementNoise => objectPlacementNoise;
+        public float ObjectPlacementThreshold => objectPlacementThreshold;
+
+        public bool UseNoiseMap
+        {
+            get => _useNoiseMap;
+            set => _useNoiseMap = value;
+        }
+        
         public override string BrushName => "Obstacle";
 
         public override void Paint(List<Vector3Int> selectedCells, Grid grid)
@@ -28,7 +51,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
             SetRandomSeed();
 
             
-            foreach (var placable in _obstacleBrushSettings.Placables)
+            foreach (var placable in Placables)
             {
                 if (!placable.Rotatable)
                 {
@@ -36,33 +59,32 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
                     continue;
                 }
                 
-                for (var i = 0; i < _obstacleBrushSettings.MaxObstacleRotation; i += placable.RotationDegreeStep)
+                for (var i = 0; i < MaxObstacleRotation; i += placable.RotationDegreeStep)
                 {
                     rotatedPlacables.Add(new PlacableData(placable, i));
                 }
             }
 
             float[,] spawnProbability;
-            if (_obstacleBrushSettings.UseNoiseMap)
+            if (UseNoiseMap)
             {
-                var noise = _obstacleBrushSettings.ObjectPlacementNoise.Generate(helper.XWidth + 1, helper.ZWidth + 1);
+                var noise = ObjectPlacementNoise.Generate(helper.XWidth + 1, helper.ZWidth + 1);
                 spawnProbability = noise;
             }
             else
             {
-                spawnProbability = _obstacleBrushSettings.ObjectPlacementProbability;
+                spawnProbability = ObjectPlacementProbability;
             }
             
             
             foreach (var x in Enumerable.Range(helper.MinX, helper.XWidth).OrderBy(_ => UnityEngine.Random.value))
             foreach (var z in Enumerable.Range(helper.MinZ, helper.ZWidth).OrderBy(_ => UnityEngine.Random.value))
             {
-                if (ZeroOneIntervalToPercent(spawnProbability[x - helper.MinX, z - helper.MinZ]) < _obstacleBrushSettings.ObjectPlacementThreshold) continue;
-            
+                if (ZeroOneIntervalToPercent(spawnProbability[x - helper.MinX, z - helper.MinZ]) < ObjectPlacementThreshold) continue;
+
                 var shuffledPlacables = rotatedPlacables.GetRandomAmountAndShuffled();
-                
                 var cellPos = new Vector3Int(x, layer, z);
-                
+
                 foreach (var data in shuffledPlacables)
                 {
                     if(!CanObstacleSpawnable(data, cellPos, grid)) continue;
@@ -77,9 +99,9 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         {
             var xzPos = new Vector2Int(cellPos.x, cellPos.z);
 
-            if (_obstacleBrushSettings.RotationMap != null)
+            if (RotationMap != null)
             {
-                if (!_obstacleBrushSettings.RotationMap.IsCellExist(xzPos, out var rotationMapCell)) return false;
+                if (!RotationMap.IsCellExist(xzPos, out var rotationMapCell)) return false;
                 if (!rotationMapCell.Rotations.Contains(data.Rotation))  return false;
             }
             
@@ -95,7 +117,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         
         private void SetRandomSeed()
         {
-            UnityEngine.Random.InitState(_obstacleBrushSettings.RandomSettings.GetSeed());
+            UnityEngine.Random.InitState(RandomSettings.GetSeed());
         }
     }
 }
