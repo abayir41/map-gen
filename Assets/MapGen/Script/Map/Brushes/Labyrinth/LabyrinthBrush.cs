@@ -109,8 +109,9 @@ namespace MapGen.Map.Brushes.Labyrinth
                                               + Vector2Int.one * WallThickness 
                                               + new Vector2Int(way,WayThickness - 1);
 
-                            obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                FirstEdgeObstacleProbability;
+
+                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                         }
                     }
                     
@@ -122,8 +123,8 @@ namespace MapGen.Map.Brushes.Labyrinth
                                            + Vector2Int.one * WallThickness 
                                            + new Vector2Int(0,way);
 
-                            obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                FirstEdgeObstacleProbability;
+                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                         }
                     }
 
@@ -135,8 +136,8 @@ namespace MapGen.Map.Brushes.Labyrinth
                                            + Vector2Int.one * WallThickness 
                                            + new Vector2Int(WayThickness - 1,way);
 
-                            obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                FirstEdgeObstacleProbability;
+                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                         }
                     }
 
@@ -148,8 +149,8 @@ namespace MapGen.Map.Brushes.Labyrinth
                                            + Vector2Int.one * WallThickness 
                                            + new Vector2Int(way,0);
 
-                            obstacleProbabilityMap[mazeCell.x, mazeCell.y] =
-                                FirstEdgeObstacleProbability;
+                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                         }
                     }
                     

@@ -24,5 +24,6 @@ MonoBehaviour:
   _useNoiseMap: 1
   placables:
   - {fileID: 4727080097559331581, guid: b60cb231fffde8f42b153bac590afd09, type: 3}
+  - {fileID: 8967608169036613168, guid: 594421575fe792f4b9d44fc26ff98881, type: 3}
   _maxObstacleRotation: 360
   objectPlacementThreshold: 59.1
