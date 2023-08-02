@@ -79,142 +79,183 @@ namespace MapGen.Map.Brushes.Labyrinth
                     
                     SetRotationMap(map, startWorldCellPoint, cell);
 
-                    WallState? leftBottomWallState = null;
-                    if (x > 0 && z > 0)
-                    {
-                        leftBottomWallState = maze[x - 1, z - 1];
-                    }
-                    WallState? bottomWallState = null;
-                    if (z > 0)
-                    {
-                        bottomWallState = maze[x, z - 1];
-                    }
-                    WallState? leftWallState = null;
-                    if (x > 0)
-                    {
-                        leftWallState = maze[x - 1, z];
-                    }
                     
-
                     var up = cell.HasFlag(WallState.Up);
                     var left = cell.HasFlag(WallState.Left);
                     var right = cell.HasFlag(WallState.Right);
                     var bottom = cell.HasFlag(WallState.Down);
 
-                    if (up)
+                    SetObstacleProbabilityMap(obstacleProbabilityMap, up, bottom, right, left, x, z, labyrinthPieceSize);
+                    LabyrinthProcess(grid, x, z, maze, up, bottom, left, right, labyrinthBrushHelper, labyrinthPieceAmount);
+                }
+            }
+        }
+
+        private void LabyrinthProcess(Grid grid, int x, int z, WallState[,] maze, bool up, bool bottom, bool left, bool right,
+            LabyrinthBrushMazeCellHelper labyrinthBrushHelper, Vector2Int labyrinthPieceAmount)
+        {
+            WallState? leftBottomWallState = null;
+            if (x > 0 && z > 0)
+            {
+                leftBottomWallState = maze[x - 1, z - 1];
+            }
+
+            WallState? bottomWallState = null;
+            if (z > 0)
+            {
+                bottomWallState = maze[x, z - 1];
+            }
+
+            WallState? leftWallState = null;
+            if (x > 0)
+            {
+                leftWallState = maze[x - 1, z];
+            }
+
+            if (up)
+            {
+                if (leftWallState == null || !leftWallState.HasFlag(WallState.Up))
+                {
+                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
+                }
+
+                OpenWall(labyrinthBrushHelper, MazeCubicPositions.Top, grid);
+                OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopRight, grid);
+            }
+
+            if (left)
+            {
+                if (!up && (leftWallState == null || !leftWallState.HasFlag(WallState.Up)))
+                {
+                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
+                }
+
+                if ((leftBottomWallState == null || !leftBottomWallState.HasFlag(WallState.Up)) &&
+                    (bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) &&
+                    (bottomWallState == null || !bottomWallState.HasFlag(WallState.Left)))
+                {
+                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
+                }
+
+                OpenWall(labyrinthBrushHelper, MazeCubicPositions.Left, grid);
+            }
+
+            if (x == labyrinthPieceAmount.x - 1)
+            {
+                if (right)
+                {
+                    if (!up)
                     {
-                        for (var way = 0; way < WayThickness; way++)
-                        {
-                            var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                              + Vector2Int.one * WallThickness 
-                                              + new Vector2Int(way,WayThickness - 1);
-
-
-                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
-                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
-                        }
-                    }
-                    
-                    if (left)
-                    {
-                        for (var way = 0; way < WayThickness; way++)
-                        {
-                            var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                           + Vector2Int.one * WallThickness 
-                                           + new Vector2Int(0,way);
-
-                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
-                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
-                        }
-                    }
-
-                    if (right)
-                    {
-                        for (var way = 0; way < WayThickness; way++)
-                        {
-                            var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                           + Vector2Int.one * WallThickness 
-                                           + new Vector2Int(WayThickness - 1,way);
-
-                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
-                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
-                        }
-                    }
-
-                    if (bottom)
-                    {
-                        for (var way = 0; way < WayThickness; way++)
-                        {
-                            var mazeCell = new Vector2Int(x , z) * labyrinthPieceSize 
-                                           + Vector2Int.one * WallThickness 
-                                           + new Vector2Int(way,0);
-
-                            if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
-                                obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
-                        }
-                    }
-                    
-                    if (up)
-                    {
-                        if (leftWallState == null || !leftWallState.HasFlag(WallState.Up))
-                        {
-                            OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
-                        }
-                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.Top, grid);
                         OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopRight, grid);
                     }
 
-                    if (left)
-                    {
-                        if (!up && (leftWallState == null || !leftWallState.HasFlag(WallState.Up)))
-                        {
-                            OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
-                        }
+                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.Right, grid);
 
-                        if ((leftBottomWallState == null || !leftBottomWallState.HasFlag(WallState.Up)) &&
-                            (bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) && 
-                            (bottomWallState == null || !bottomWallState.HasFlag(WallState.Left)))
-                        {
-                            OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
-                        }
-                        
-                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.Left, grid);
+                    if ((bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) &&
+                        (bottomWallState == null || !bottomWallState.HasFlag(WallState.Right)))
+                    {
+                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
+                    }
+                }
+            }
+
+            if (z == 0)
+            {
+                if (bottom)
+                {
+                    if (!right)
+                    {
+                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
                     }
 
-                    if (x == labyrinthPieceAmount.x - 1)
+                    if (!left && (leftWallState == null || !leftWallState.HasFlag(WallState.Down)))
                     {
-                        if (right)
-                        {
-                            if (!up)
-                            {
-                                OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopRight, grid);
-                            }
-                            OpenWall(labyrinthBrushHelper, MazeCubicPositions.Right, grid);
-
-                            if ((bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) && (bottomWallState == null || !bottomWallState.HasFlag(WallState.Right)))
-                            {
-                                OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
-                            }
-                        }
+                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
                     }
 
-                    if (z == 0)
-                    {
-                        if (bottom)
-                        {
-                            if (!right)
-                            {
-                                OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
-                            }
+                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.Bottom, grid);
+                }
+            }
+        }
 
-                            if (!left && (leftWallState == null || !leftWallState.HasFlag(WallState.Down)))
-                            {
-                                OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
-                            }
-                            
-                            OpenWall(labyrinthBrushHelper, MazeCubicPositions.Bottom, grid);
-                        }
-                    }
+        private void SetObstacleProbabilityMap(float[,] obstacleProbabilityMap, bool up, bool bottom, bool right, bool left,
+            int x, int z, int labyrinthPieceSize)
+        {
+            
+            if (up && bottom)
+            {
+                if (UnityEngine.Random.value < 0.5)
+                {
+                    up = false;
+                }
+                else
+                {
+                    bottom = false;
+                }
+            }
+
+            if (right && left)
+            {
+                if (UnityEngine.Random.value < 0.5)
+                {
+                    right = false;
+                }
+                else
+                {
+                    left = false;
+                }
+            }
+
+            if (up)
+            {
+                for (var way = 0; way < WayThickness; way++)
+                {
+                    var mazeCell = new Vector2Int(x, z) * labyrinthPieceSize
+                                   + Vector2Int.one * WallThickness
+                                   + new Vector2Int(way, WayThickness - 1);
+
+
+                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                        obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
+                }
+            }
+
+            if (left)
+            {
+                for (var way = 0; way < WayThickness; way++)
+                {
+                    var mazeCell = new Vector2Int(x, z) * labyrinthPieceSize
+                                   + Vector2Int.one * WallThickness
+                                   + new Vector2Int(0, way);
+
+                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                        obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
+                }
+            }
+
+            if (right)
+            {
+                for (var way = 0; way < WayThickness; way++)
+                {
+                    var mazeCell = new Vector2Int(x, z) * labyrinthPieceSize
+                                   + Vector2Int.one * WallThickness
+                                   + new Vector2Int(WayThickness - 1, way);
+
+                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                        obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
+                }
+            }
+
+            if (bottom)
+            {
+                for (var way = 0; way < WayThickness; way++)
+                {
+                    var mazeCell = new Vector2Int(x, z) * labyrinthPieceSize
+                                   + Vector2Int.one * WallThickness
+                                   + new Vector2Int(way, 0);
+
+                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                        obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                 }
             }
         }
