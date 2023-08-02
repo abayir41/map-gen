@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MapGen.Command;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Map.Brushes.NormalMap;
@@ -19,15 +20,16 @@ namespace MapGen.Map.Brushes.GroundBrush
         
         public override string BrushName => "Ground";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            CreateGround(selectedCells, grid);
+            return new CreateGroundCommand(WorldCreator.Instance, this, selectedCells, grid);
         }
         
         [MethodTimer]
-        private List<Placable> CreateGround(List<Vector3Int> selectedCells, Grid grid)
+        public List<SpawnData> CreateGround(List<Vector3Int> selectedCells, Grid grid)
         {
-            var result = new List<Placable>();
+            var data = new List<SpawnData>();
+            
             foreach (var selectedCell in selectedCells)
             {
                 if (grid.IsCellExist(selectedCell, out var cell)) 
@@ -35,12 +37,12 @@ namespace MapGen.Map.Brushes.GroundBrush
                     if(cell.CellState != CellState.CanBeFilled) continue;
                 }
 
-                var placable = WorldCreator.Instance.SpawnObject(selectedCell, _ground,
-                    _cellLayer, GROUND_ROTATION);
-                result.Add(placable);
+                var groundData = new SpawnData(selectedCell, _ground, GROUND_ROTATION, _cellLayer);
+                WorldCreator.Instance.SpawnObject(groundData);
+                data.Add(groundData);
             }
 
-            return result;
+            return data;
         }
     }
     

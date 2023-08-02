@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MapGen.GridSystem;
+﻿using MapGen.GridSystem;
 using MapGen.Map;
 using MapGen.Map.Brushes;
-using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Utilities;
 using UnityEngine;
 using Plugins.Editor;
 using TMPro;
+using UnityEditor;
 using UnityEngine.InputSystem;
 
 namespace MapGen

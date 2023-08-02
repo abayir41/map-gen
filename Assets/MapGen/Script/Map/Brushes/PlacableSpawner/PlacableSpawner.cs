@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapGen.Command;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
@@ -103,11 +104,19 @@ namespace MapGen.Map.Brushes
             }
         }
 
-        public override void Paint(Vector3Int startPoint, Grid grid)
+        public override ICommand GetPaintCommand(Vector3Int startPoint, Grid grid)
         {
-            if (!WorldCreator.Instance.Grid.IsPlacableSuitable(startPoint, _placables.CurrentItem, _rotation)) return;
+            return new PlacableSpawnerCommand(this, WorldCreator.Instance, startPoint, grid);
+        }
 
-            WorldCreator.Instance.SpawnObject(startPoint, _placables.CurrentItem, CellLayer.Obstacle, _rotation);
+        public SpawnData? Paint(Vector3Int startPoint, Grid grid)
+        {
+            if (!WorldCreator.Instance.Grid.IsPlacableSuitable(startPoint, _placables.CurrentItem, _rotation)) return null;
+
+            var data = new SpawnData(startPoint, _placables.CurrentItem, _rotation, CellLayer.Obstacle);
+            WorldCreator.Instance.SpawnObject(data);
+
+            return data;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MapGen.Map;
 using MapGen.Placables;
 using MapGen.Utilities;
@@ -102,6 +103,7 @@ namespace MapGen.GridSystem
         {
             var newGroundCells = new List<GridCell>();
             var physicalCells = new List<GridCell>();
+            var shouldPlacedOnGroundCells = new List<GridCell>();
             
             var physicalVolumes = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.PhysicalVolume);
             foreach (var physicalVolume in physicalVolumes)
@@ -163,8 +165,23 @@ namespace MapGen.GridSystem
                     }
                 } 
             }
+            
+            var shouldPlaceOnGround = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.ShouldPlaceOnGround);
+            foreach (var shouldPlaceOnGroundGrid in shouldPlaceOnGround)
+            {
+                foreach (var shouldPlaceOnGroundCell in shouldPlaceOnGroundGrid.CellPositions)
+                {
+                    var rotatedCellPos = originPos + shouldPlaceOnGroundCell.RotateVector(rotation, placable.Origin);
+                    if (!IsCellExist(rotatedCellPos, out var cell))
+                    {
+                        throw new Exception("Cell Should be exist");
+                    }
+                    
+                    shouldPlacedOnGroundCells.Add(cell);
+                }
+            }
 
-            var placableGrids = new PlacableGrids(physicalCells, newGroundCells);
+            var placableGrids = new PlacableGrids(physicalCells, newGroundCells, shouldPlacedOnGroundCells);
             ItemCellsDict.Add(placable, placableGrids);
         }
 
@@ -172,6 +189,7 @@ namespace MapGen.GridSystem
         {
             var physicalCells = ItemCellsDict[placable].PhysicalCells;
             var newGroundCells = ItemCellsDict[placable].NewGroundCells;
+            var shouldPlaceOnGroundCells = ItemCellsDict[placable].ShouldPlacedOnCells;
             
             foreach (var physicalCell in physicalCells)
             {
@@ -181,8 +199,15 @@ namespace MapGen.GridSystem
             
             foreach (var newGroundCell in newGroundCells)
             {
+                if(newGroundCell.Item != null) continue;
+                
                 newGroundCell.MakeCellEmpty();
                 newGroundCell.FreeTheCell();
+            }
+            
+            foreach (var shouldPlaceOnGroundCell in shouldPlaceOnGroundCells)
+            {
+                shouldPlaceOnGroundCell.MakeCellCanBeFilledGround();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using MapGen.Placables;
+﻿using MapGen.Map;
+using MapGen.Placables;
 using UnityEngine;
 
 namespace MapGen.GridSystem
@@ -19,17 +20,20 @@ namespace MapGen.GridSystem
         
         public void FreeTheCell()
         {
+            Item = null;
             CellState = CellState.CanBeFilled;
         }
         
         public void MakeCellCanBeFilledGround()
         {
+            Item = null;
             CellState = CellState.CanBeFilled;
             CellLayer = CellLayer.CanPlacableGround;
         }
 
         public void MakeCellEmpty()
         {
+            Item = null;
             CellLayer = CellLayer.Empty;
         }
 

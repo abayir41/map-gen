@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MapGen.Command;
 using MapGen.GridSystem;
 using MapGen.Placables;
 using MapGen.Random;
@@ -42,22 +43,35 @@ namespace MapGen.Map.Brushes.Labyrinth
         
         public override string BrushName => "Labyrinth";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
+        {
+            return new LabyrinthCommand(this, selectedCells, grid, WorldCreator.Instance);
+        }
+
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var map = new RotationMap();
             var selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
+            var result = new List<SpawnData>();
             
-            _groundBrush.Paint(selectedCells, grid);
+            var grounds = _groundBrush.CreateGround(selectedCells, grid);
             
-            CreateLabyrinth(map, grid, selectedCellsHelper, out var probabilityMap);
+            var labyrinth = CreateLabyrinth(map, grid, selectedCellsHelper, out var probabilityMap);
 
             var obstaclesCells = selectedCells.ConvertAll(input =>
                 input + Vector3Int.up * OBSTACLES_START_Y_LEVEL);
-            CreatObstacles(obstaclesCells, grid, map, probabilityMap);
+            var obstacles = CreatObstacles(obstaclesCells, grid, map, probabilityMap);
+
+            
+            result.AddRange(grounds);
+            result.AddRange(labyrinth);
+            result.AddRange(obstacles);
+            return result;
         }
 
-        private void CreateLabyrinth(RotationMap map, Grid grid, SelectedCellsHelper selectedCellsHelper, out float[,] obstacleProbabilityMap)
+        private List<SpawnData> CreateLabyrinth(RotationMap map, Grid grid, SelectedCellsHelper selectedCellsHelper, out float[,] obstacleProbabilityMap)
         {
+            var result = new List<SpawnData>();
             var labyrinthPieceSize = WallThickness + WayThickness;
             var labyrinthPieceAmount = new Vector2Int((selectedCellsHelper.XWidth - labyrinthPieceSize) / labyrinthPieceSize,
                 (selectedCellsHelper.ZWidth - labyrinthPieceSize) / labyrinthPieceSize);
@@ -86,14 +100,19 @@ namespace MapGen.Map.Brushes.Labyrinth
                     var bottom = cell.HasFlag(WallState.Down);
 
                     SetObstacleProbabilityMap(obstacleProbabilityMap, up, bottom, right, left, x, z, labyrinthPieceSize);
-                    LabyrinthProcess(grid, x, z, maze, up, bottom, left, right, labyrinthBrushHelper, labyrinthPieceAmount);
+                    var labyrinth = LabyrinthProcess(grid, x, z, maze, up, bottom, left, right, labyrinthBrushHelper, labyrinthPieceAmount);
+                    result.AddRange(labyrinth);
                 }
             }
+
+            return result;
         }
 
-        private void LabyrinthProcess(Grid grid, int x, int z, WallState[,] maze, bool up, bool bottom, bool left, bool right,
+        private List<SpawnData> LabyrinthProcess(Grid grid, int x, int z, WallState[,] maze, bool up, bool bottom, bool left, bool right,
             LabyrinthBrushMazeCellHelper labyrinthBrushHelper, Vector2Int labyrinthPieceAmount)
         {
+            var result = new List<SpawnData>();
+
             WallState? leftBottomWallState = null;
             if (x > 0 && z > 0)
             {
@@ -116,28 +135,35 @@ namespace MapGen.Map.Brushes.Labyrinth
             {
                 if (leftWallState == null || !leftWallState.HasFlag(WallState.Up))
                 {
-                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
+                    var topLeft = OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
+                    result.AddRange(topLeft);
                 }
 
-                OpenWall(labyrinthBrushHelper, MazeCubicPositions.Top, grid);
-                OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopRight, grid);
+                var top = OpenWall(labyrinthBrushHelper, MazeCubicPositions.Top, grid);
+                var topRight = OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopRight, grid);
+                
+                result.AddRange(top);
+                result.AddRange(topRight);
             }
 
             if (left)
             {
                 if (!up && (leftWallState == null || !leftWallState.HasFlag(WallState.Up)))
                 {
-                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
+                    var topLeft = OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopLeft, grid);
+                    result.AddRange(topLeft);
                 }
 
                 if ((leftBottomWallState == null || !leftBottomWallState.HasFlag(WallState.Up)) &&
                     (bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) &&
                     (bottomWallState == null || !bottomWallState.HasFlag(WallState.Left)))
                 {
-                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
+                    var bottomLeft = OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
+                    result.AddRange(bottomLeft);
                 }
 
-                OpenWall(labyrinthBrushHelper, MazeCubicPositions.Left, grid);
+                var leftData = OpenWall(labyrinthBrushHelper, MazeCubicPositions.Left, grid);
+                result.AddRange(leftData);
             }
 
             if (x == labyrinthPieceAmount.x - 1)
@@ -146,15 +172,18 @@ namespace MapGen.Map.Brushes.Labyrinth
                 {
                     if (!up)
                     {
-                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopRight, grid);
+                        var topRight = OpenWall(labyrinthBrushHelper, MazeCubicPositions.TopRight, grid);
+                        result.AddRange(topRight);
                     }
 
-                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.Right, grid);
-
+                    var rightData = OpenWall(labyrinthBrushHelper, MazeCubicPositions.Right, grid);
+                    result.AddRange(rightData);
+                    
                     if ((bottomWallState == null || !bottomWallState.HasFlag(WallState.Up)) &&
                         (bottomWallState == null || !bottomWallState.HasFlag(WallState.Right)))
                     {
-                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
+                        var bottomRight = OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
+                        result.AddRange(bottomRight);
                     }
                 }
             }
@@ -165,17 +194,22 @@ namespace MapGen.Map.Brushes.Labyrinth
                 {
                     if (!right)
                     {
-                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
+                        var bottomRight = OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomRight, grid);
+                        result.AddRange(bottomRight);
                     }
 
                     if (!left && (leftWallState == null || !leftWallState.HasFlag(WallState.Down)))
                     {
-                        OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
+                        var bottomLeft = OpenWall(labyrinthBrushHelper, MazeCubicPositions.BottomLeft, grid);
+                        result.AddRange(bottomLeft);
                     }
 
-                    OpenWall(labyrinthBrushHelper, MazeCubicPositions.Bottom, grid);
+                    var bottomData = OpenWall(labyrinthBrushHelper, MazeCubicPositions.Bottom, grid);
+                    result.AddRange(bottomData);
                 }
             }
+
+            return result;
         }
 
         private void SetObstacleProbabilityMap(float[,] obstacleProbabilityMap, bool up, bool bottom, bool right, bool left,
@@ -282,7 +316,7 @@ namespace MapGen.Map.Brushes.Labyrinth
             }
         }
 
-        private void CreatObstacles(List<Vector3Int> selectedCells, Grid grid, RotationMap map, float[,] obstacleProbabilityMap)
+        private List<SpawnData> CreatObstacles(List<Vector3Int> selectedCells, Grid grid, RotationMap map, float[,] obstacleProbabilityMap)
         {
             var oldBoolSetting = _obstaclesBrush.UseNoiseMap;
             _obstaclesBrush.UseNoiseMap = false;
@@ -291,22 +325,29 @@ namespace MapGen.Map.Brushes.Labyrinth
             var oldMap = _obstaclesBrush.RotationMap;
             _obstaclesBrush.RotationMap = map;
 
-            _obstaclesBrush.Paint(selectedCells, grid);
+            var data = _obstaclesBrush.Paint(selectedCells, grid);
 
             _obstaclesBrush.UseNoiseMap = oldBoolSetting;
             _obstaclesBrush.RotationMap = oldMap;
+
+            return data;
         }
 
-        private void OpenWall(LabyrinthBrushMazeCellHelper brushMazeCellHelper, MazeCubicPositions position, Grid grid)
+        private List<SpawnData> OpenWall(LabyrinthBrushMazeCellHelper brushMazeCellHelper, MazeCubicPositions position, Grid grid)
         {
+            var result = new List<SpawnData>();
             var positions = brushMazeCellHelper.PosVisualsDict[position];
             
             foreach (var pos in positions)
             {
                 if (grid.IsCellExist(pos, out var cell) && cell.CellState != CellState.CanBeFilled) continue;
 
-                WorldCreator.Instance.SpawnObject(pos,MazeCubicGridPlacable, CellLayer.Ground, WALL_ROTATION,position.ToString());
+                var data = new SpawnData(pos, MazeCubicGridPlacable, WALL_ROTATION, CellLayer.Ground, pos.ToString());
+                WorldCreator.Instance.SpawnObject(data);
+                result.Add(data);
             }
+
+            return result;
         }
     }
 }

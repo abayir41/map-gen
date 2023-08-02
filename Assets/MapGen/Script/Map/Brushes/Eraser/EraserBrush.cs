@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MapGen.Command;
 using MapGen.Map.Brushes.BrushAreas;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
@@ -57,7 +58,12 @@ namespace MapGen.Map.Brushes.Eraser
             }
         }
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
+        {
+            return new EraserCommand(WorldCreator.Instance, this, selectedCells, grid);
+        }
+
+        public void Erase(List<Vector3Int> selectedCells, Grid grid)
         {
             foreach (var selectedCell in selectedCells)
             {
@@ -66,6 +72,21 @@ namespace MapGen.Map.Brushes.Eraser
                     WorldCreator.Instance.DestroyItem(cell.Item);
                 }
             }
+        }
+
+        public List<SpawnData> GetSpawnData(List<Vector3Int> selectedCells, Grid grid)
+        {
+            var result = new List<SpawnData>();
+            foreach (var selectedCell in selectedCells)
+            {
+                if (grid.IsCellExist(selectedCell, out var cell) && cell.Item != null)
+                {
+                    var data = cell.Item.SpawnData;
+                    result.Add(data);
+                }
+            }
+
+            return result;
         }
     }
 }

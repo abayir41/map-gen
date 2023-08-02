@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.Command;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
@@ -43,8 +44,26 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         
         public override string BrushName => "Obstacle";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        private struct PlacableData
         {
+            public Placable Placable { get; }
+            public int Rotation { get; }
+        
+            public PlacableData(Placable placable, int rotation)
+            {
+                Placable = placable;
+                Rotation = rotation;
+            }
+        }
+        
+        public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
+        {
+            return new ObstaclesCommand(this, selectedCells, grid, WorldCreator.Instance);
+        }
+
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        {
+            var result = new List<SpawnData>();
             var helper = new SelectedCellsHelper(selectedCells, grid);
             var layer = selectedCells.First().y;
             var rotatedPlacables = new List<PlacableData>();
@@ -89,10 +108,14 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
                 {
                     if(!CanObstacleSpawnable(data, cellPos, grid)) continue;
 
-                    WorldCreator.Instance.SpawnObject(cellPos, data.Placable, CellLayer.Obstacle, data.Rotation);
+                    var spawnData = new SpawnData(cellPos, data.Placable, data.Rotation, CellLayer.Obstacle);
+                    WorldCreator.Instance.SpawnObject(spawnData);
+                    result.Add(spawnData);
                     break;
                 }
             }
+
+            return result;
         }
 
         private bool CanObstacleSpawnable(PlacableData data, Vector3Int cellPos, Grid grid)

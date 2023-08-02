@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MapGen.Command;
 using MapGen.Placables;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
@@ -39,9 +40,9 @@ namespace MapGen.Map.Brushes.Debugger
             _catchedPlacablePos = WorldCreator.Grid.ItemCellsDict[cell.Item].PhysicalCells.ConvertAll(input => input.CellPosition);
         }
 
-        public override void Paint(Vector3Int selectedCells, Grid grid)
+        public override ICommand GetPaintCommand(Vector3Int selectedCells, Grid grid)
         {
-            
+            return null;
         }
 
         public override void OnDrawGizmos()

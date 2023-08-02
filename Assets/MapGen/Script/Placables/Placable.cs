@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapGen.Map;
 using MapGen.Utilities;
 using UnityEngine;
 
@@ -8,7 +9,6 @@ namespace MapGen.Placables
 {
     public class Placable : MonoBehaviour
     {
-        public Vector3Int GridPos { get; private set; }
         
         [Header("Placable Properties")] 
         [SerializeField] private bool _rotatable = true;
@@ -24,14 +24,15 @@ namespace MapGen.Placables
         [SerializeField] private Color _gizmoColor = Color.red;
         [SerializeField] private float _gizmoRadius = 0.25f;
         
+        public SpawnData SpawnData { get; private set; }
         public int RotationDegreeStep => Mathf.Clamp(_rotationDegreeStep,1,360);
         public List<PlacableGrid> Grids => _grids;
         public bool Rotatable => _rotatable;
         public Vector3Int Origin => _origin;
 
-        public void InitializePlacable(Vector3Int gridPos)
+        public void InitializePlacable(SpawnData spawnData)
         {
-            GridPos = gridPos;
+            SpawnData = spawnData;
         }
 
         public void OnValidate()

@@ -24,7 +24,7 @@ MonoBehaviour:
   _wayThickness: 5
   _wallHeight: 3
   _mazeCubicGridPlacable: {fileID: 8967608169036613168, guid: ca2275aacca1e1247bd2530145d4a7fb, type: 3}
-  firstEdgeObstacleProbability: 0.431
+  firstEdgeObstacleProbability: 0.767
   secondEdgeObstacleProbability: 0.431
   _groundBrush: {fileID: 11400000, guid: f6f66414fd1feab4fa371d2d15157f8d, type: 2}
   _obstaclesBrush: {fileID: 11400000, guid: 7a481135b44898043b7f05ef2e9fb3d1, type: 2}

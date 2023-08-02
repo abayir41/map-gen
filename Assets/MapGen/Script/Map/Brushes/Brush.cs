@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MapGen.Command;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
 using MapGen.Utilities;
@@ -14,7 +15,6 @@ namespace MapGen.Map.Brushes
         [SerializeField] private float _gizmoRadius = 0.25f;
         [SerializeField] private Color _visualCellsColor = Color.green;
 
-        
         public abstract string BrushName { get; }
         protected List<Vector3Int> VisualCells { get; set; } = new();
         

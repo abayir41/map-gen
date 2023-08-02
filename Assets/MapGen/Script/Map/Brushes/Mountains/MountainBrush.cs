@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.Command;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Map.Brushes.NormalMap;
@@ -32,8 +33,14 @@ namespace MapGen.Map.Brushes.Mountains
         private SelectedCellsHelper _selectedCellsHelper;
         public override string BrushName => "Mountain";
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
+            return new MountainCommand(this, selectedCells, grid, WorldCreator.Instance);
+        }
+
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        {
+            var result = new List<SpawnData>();
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var yStartLevel = selectedCells.First().y;
             SetRandomSeed();
@@ -54,11 +61,15 @@ namespace MapGen.Map.Brushes.Mountains
                         if(cell.CellState != CellState.CanBeFilled) continue;
                     }
 
-                    WorldCreator.Instance.SpawnObject(targetPos, Ground, CellLayer.Ground, GROUND_ROTATION);
+                    var groundData = new SpawnData(targetPos, ground, GROUND_ROTATION, CellLayer.Ground);
+                    WorldCreator.Instance.SpawnObject(groundData);
+                    result.Add(groundData);
                 }
             }
+
+            return result;
         }
-        
+
         private float ZeroOneIntervalToPercent(float zeroOneInterval)
         {
             return zeroOneInterval * 100;

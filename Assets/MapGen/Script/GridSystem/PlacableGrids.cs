@@ -6,11 +6,13 @@ namespace MapGen.GridSystem
     {
         public List<GridCell> PhysicalCells { get; }
         public List<GridCell> NewGroundCells { get; }
-        
-        public PlacableGrids(List<GridCell> physicalCells, List<GridCell> newGroundCells)
+        public List<GridCell> ShouldPlacedOnCells { get; }
+
+        public PlacableGrids(List<GridCell> physicalCells, List<GridCell> newGroundCells, List<GridCell> shouldPlacedOnCells)
         {
             PhysicalCells = physicalCells;
             NewGroundCells = newGroundCells;
+            ShouldPlacedOnCells = shouldPlacedOnCells;
         }
     }
 }

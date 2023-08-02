@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.Command;
 using MapGen.GridSystem;
 using MapGen.Placables;
 using MapGen.TunnelSystem;
@@ -30,15 +31,20 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
         private TunnelBrushHelper _helper;
 
-        public override void Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
+        {
+            return new AutoTunnelCommand(this, selectedCells, grid, WorldCreator.Instance);
+        }
+
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var layer = selectedCells.First().y;
             _helper = new TunnelBrushHelper(selectedCells, grid, this);
-            MakeTunnels(layer, grid);
+            return MakeTunnels(layer, grid);
         }
         
         [MethodTimer]
-        private List<Placable> MakeTunnels(int layer, Grid grid)
+        private List<SpawnData> MakeTunnels(int layer, Grid grid)
         {
             var edgeTunnelGridCells = _helper.FindEdgeTunnelGridCells(layer);
             var groupedEdgeTunnelGridCells = _helper.GroupEdgeGroundTunnelGrid(edgeTunnelGridCells);
@@ -50,7 +56,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
             var orderedTunnels = heightFilteredTunnels.OrderByDescending(_helper.FindHeightAverageOfPath).ToList();
 
             var cachedPaths = new List<List<GridCell>>();
-            var result = new List<Placable>();
+            var result = new List<SpawnData>();
             foreach (var path in orderedTunnels)
             {
                 if (_helper.CanTunnelSpawnable(path, cachedPaths))
@@ -60,13 +66,12 @@ namespace MapGen.Map.Brushes.TunnelBrush
                     result.AddRange(placable);
                 }
             }
-            
 
             return result;
         }
         
         [MethodTimer]
-        private List<Placable> CreateTunnel(List<GridCell> path, Grid grid)
+        private List<SpawnData> CreateTunnel(List<GridCell> path, Grid grid)
         {
             var start = path.First();
             var end = path.Last();
@@ -76,7 +81,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
             rotationDegree *= -1;
             var rotationDegreeInt = Mathf.RoundToInt(rotationDegree);
 
-            var result = new List<Placable>();
+            var result = new List<SpawnData>();
 
             foreach (var pathPoint in path)
             {
@@ -99,8 +104,10 @@ namespace MapGen.Map.Brushes.TunnelBrush
                 
                 if (grid.IsPlacableSuitable(pathPoint.CellPosition, TunnelBrush, rotationDegreeInt))
                 {
-                    var placable = WorldCreator.Instance.SpawnObject(pathPoint.CellPosition, TunnelBrush, CellLayer.Obstacle, rotationDegreeInt);
-                    result.Add(placable);
+                    var data = new SpawnData(pathPoint.CellPosition, TunnelBrush, rotationDegreeInt,
+                        CellLayer.Obstacle); 
+                    WorldCreator.Instance.SpawnObject(data);
+                    result.Add(data);
                 }
             }
 

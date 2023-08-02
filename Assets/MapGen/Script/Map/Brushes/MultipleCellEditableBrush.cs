@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.Command;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Utilities;
 using UnityEngine;
@@ -18,8 +19,7 @@ namespace MapGen.Map.Brushes
         private HashSet<Vector3Int> SelectedCells { get; set; } = new();
         protected List<Vector3Int> CurrentlyLookingCells { get; private set; }
 
-
-        public abstract void Paint(List<Vector3Int> selectedCells, Grid grid);
+        public abstract ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid);
 
         public override void Update()
         {
@@ -77,11 +77,13 @@ namespace MapGen.Map.Brushes
             {
                 if (SelectedCells.Count == 0)
                 {
-                    Paint(CurrentlyLookingCells, WorldCreator.Grid);
+                    var command = GetPaintCommand(CurrentlyLookingCells, WorldCreator.Grid);
+                    CommandManager.Instance.RunCommand(command);
                 }
                 else
                 {
-                    Paint(SelectedCells.ToList(), WorldCreator.Grid);
+                    var command =  GetPaintCommand(SelectedCells.ToList(), WorldCreator.Grid);
+                    CommandManager.Instance.RunCommand(command);
                 }
                 
                 ResetSelectedArea();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.Command;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Utilities;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace MapGen.Map.Brushes
 {
     public abstract class SingleCellEditableBrush : Brush
     {
-        public abstract void Paint(Vector3Int selectedCells, Grid grid);
+        public abstract ICommand GetPaintCommand(Vector3Int selectedCells, Grid grid);
         public override void Update()
         {
             base.Update();
@@ -18,7 +19,8 @@ namespace MapGen.Map.Brushes
             
             if (Input.GetMouseButtonDown(0))
             {
-                Paint(HitPosOffsetted, WorldCreator.Grid);
+                var command = GetPaintCommand(HitPosOffsetted, WorldCreator.Grid);
+                CommandManager.Instance.RunCommand(command);
             }
         }
     }

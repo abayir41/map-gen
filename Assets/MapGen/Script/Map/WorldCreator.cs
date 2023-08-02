@@ -28,6 +28,23 @@ namespace MapGen.Map
             Grid = new Grid();
         }
 
+        public void DestroyByCellPoint(Vector3Int pos)
+        {
+            if (!Grid.IsCellExist(pos, out var cell))
+            {
+                Debug.Log("Cell Does not exist: " + pos);
+                return;
+            }
+
+            if (cell.Item == null)
+            {
+                Debug.Log("Cell item is null: " + pos);
+                return;
+            }
+            
+            DestroyItem(cell.Item);
+        }
+        
         public void DestroyItem(Placable placable)
         {
             Grid.DeleteItem(placable);
@@ -47,23 +64,23 @@ namespace MapGen.Map
             Destroy(item.gameObject);
         }
 
-        public Placable SpawnObject(Vector3Int pos, Placable placable, CellLayer cellLayer, int rotation, string objName = null)
+        public void SpawnObject(SpawnData data)
         {
-            var instantiatedPlacable = Instantiate(placable, _gridPrefabsParent);
-            instantiatedPlacable.InitializePlacable(pos);
+            var instantiatedPlacable = Instantiate(data.Prefab, _gridPrefabsParent);
+            instantiatedPlacable.InitializePlacable(data);
 
-            var realPos = pos - placable.Origin;
+            var realPos = data.SpawnPos - data.Prefab.Origin;
             instantiatedPlacable.transform.position = Grid.CellPositionToRealWorld(realPos);
 
-            if (objName != null)
-                instantiatedPlacable.name = objName;
+            if (data.ObjName != null)
+                instantiatedPlacable.name = data.ObjName;
                 
             if (instantiatedPlacable.Rotatable)
             {
-                instantiatedPlacable.Rotate(rotation);
+                instantiatedPlacable.Rotate(data.Rotation);
             }
             
-            Grid.AddItem(instantiatedPlacable, pos, rotation, cellLayer);
+            Grid.AddItem(instantiatedPlacable, data.SpawnPos, data.Rotation, data.CellLayer);
             var physicalGrid =
                 instantiatedPlacable.Grids.FirstOrDefault(grid =>
                     grid.PlacableCellType == PlacableCellType.PhysicalVolume);
@@ -73,8 +90,8 @@ namespace MapGen.Map
             
             if (physicalGrid != null)
             {
-                var transformedGrid = physicalGrid.CellPositions.ConvertAll(input => input.RotateVector(rotation, placable.Origin));
-                transformedGrid = transformedGrid.ConvertAll(input => input + pos);
+                var transformedGrid = physicalGrid.CellPositions.ConvertAll(input => input.RotateVector(data.Rotation, data.Prefab.Origin));
+                transformedGrid = transformedGrid.ConvertAll(input => input + data.SpawnPos);
                 
                 foreach (var physicalGridCellPosition in transformedGrid)
                 {
@@ -93,8 +110,6 @@ namespace MapGen.Map
                     _placablePhysicals[instantiatedPlacable].Add(selectableGridCell);
                 }
             }
-            
-            return instantiatedPlacable;
         }
     }
 }

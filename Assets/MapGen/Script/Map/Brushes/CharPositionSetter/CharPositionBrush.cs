@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MapGen.Command;
 using MapGen.Map.Brushes.BrushAreas;
 using MapGen.Placables;
 using MapGen.Utilities;
@@ -12,8 +13,15 @@ namespace MapGen.Map.Brushes
     public class CharPositionBrush : SingleCellEditableBrush
     {
         public override string BrushName => "Char Pos Setter";
+        public Vector3 CharSpawnPos => FpsState.Instance.CharSpawnPos; 
+        
+        
+        public override ICommand GetPaintCommand(Vector3Int startPoint, Grid grid)
+        {
+            return new CharPositionPaintCommand(this, grid, FpsState.Instance.CharSpawnPos.ToVector3Int(), startPoint);
+        }
 
-        public override void Paint(Vector3Int startPoint, Grid grid)
+        public void Paint(Vector3Int startPoint, Grid grid)
         {
             FpsState.Instance.CharSpawnPos = startPoint;
         }
