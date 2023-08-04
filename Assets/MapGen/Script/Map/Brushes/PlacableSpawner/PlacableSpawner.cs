@@ -32,45 +32,49 @@ namespace MapGen.Map.Brushes
         public override void Update()
         {
             base.Update();
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                _placables.NextItem();   
-            }
             
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
             {
-                _placables.PreviousItem();
-            }
 
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                _rotation += _rotationStep;
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    _placables.NextItem();
+                }
+                else
+                {
+                    _rotation += _rotationStep;
                 
-                if (_rotation > 360)
-                {
-                    _rotation = 0;
-                }
-                else if (_rotation < 0)
-                {
-                    _rotation = 360;
+                    if (_rotation > 360)
+                    {
+                        _rotation = 0;
+                    }
+                    else if (_rotation < 0)
+                    {
+                        _rotation = 360;
+                    }
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.DownArrow))
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
             {
-                _rotation -= _rotationStep;
-
-                if (_rotation > 360)
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    _rotation = 0;
+                    _placables.PreviousItem();
                 }
-                else if (_rotation < 0)
+                else
                 {
-                    _rotation = 360;
+                    _rotation -= _rotationStep;
+
+                    if (_rotation > 360)
+                    {
+                        _rotation = 0;
+                    }
+                    else if (_rotation < 0)
+                    {
+                        _rotation = 360;
+                    }
                 }
             }
-            
+
             var grid = _placables.CurrentItem.Grids.FirstOrDefault(grid => grid.PlacableCellType == _visualShownCellType);
             if (grid == null) return;
 

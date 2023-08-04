@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 451480137}
   - component: {fileID: 451480136}
   m_Layer: 5
-  m_Name: Brush Area (2)
+  m_Name: WASD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 456288236}
   - component: {fileID: 456288235}
   m_Layer: 5
-  m_Name: Brush Area (1)
+  m_Name: Increase area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -446,7 +446,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Increase Brush Size with CTRL + Mouse Wheel
+  m_text: Increase Brush Size with MOUSE WHEEL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -796,7 +796,7 @@ GameObject:
   - component: {fileID: 670497336}
   - component: {fileID: 670497335}
   m_Layer: 5
-  m_Name: Brush Area (3)
+  m_Name: Tab to change
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -842,7 +842,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tab to change game mode
+  m_text: TAB to change game mode
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1330,7 +1330,7 @@ GameObject:
   - component: {fileID: 1423720917}
   - component: {fileID: 1423720916}
   m_Layer: 5
-  m_Name: Brush Area (4)
+  m_Name: Placable Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1785,6 +1785,10 @@ MonoBehaviour:
   _gridPrefabsParent: {fileID: 293857008}
   _selectableGridCellParent: {fileID: 1984068250}
   _selectableGridCell: {fileID: 2222524241330915079, guid: 837cdc2eeca2bd046912faa38f205e76, type: 3}
+  _drawGizmosLayer: 0
+  _drawGizmosState: 0
+  _cellLayer: 0
+  _cellState: 0
 --- !u!224 &1975725732 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 597308369130767402, guid: 2f7f3dde7ae722a4aafffe20691ad702, type: 3}

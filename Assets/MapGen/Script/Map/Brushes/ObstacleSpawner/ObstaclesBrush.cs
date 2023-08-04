@@ -42,7 +42,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
             set => _useNoiseMap = value;
         }
         
-        public override string BrushName => "Obstacle";
+        public override string BrushName => "Obstacle Forest";
         protected override int HitBrushHeight => 1;
 
         private struct PlacableData

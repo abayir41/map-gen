@@ -55,7 +55,7 @@ namespace MapGen
                 _brushes.PreviousItem();
                 if (_brushes.CurrentItem is PlacableSpawner)
                 {
-                    placableDescription.text = "Left-Right Arrow to change placable, Up-Down Arrow to rotate";
+                    placableDescription.text = "MOUSE WHEEL to Rotate, SHIFT + MOUSE WHEEL to change placable";
                 }
                 else
                 {
@@ -68,7 +68,7 @@ namespace MapGen
                 _brushes.NextItem();
                 if (_brushes.CurrentItem is PlacableSpawner)
                 {
-                    placableDescription.text = "Left-Right Arrow to change placable, Up-Down Arrow to rotate";
+                    placableDescription.text = "MOUSE WHEEL to Rotate, SHIFT + MOUSE WHEEL to change placable";
                 }
                 else
                 {
