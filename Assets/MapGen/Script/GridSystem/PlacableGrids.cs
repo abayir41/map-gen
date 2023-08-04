@@ -1,18 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using MapGen.Placables;
 
 namespace MapGen.GridSystem
 {
     public class PlacableGrids
     {
-        public List<GridCell> PhysicalCells { get; }
-        public List<GridCell> NewGroundCells { get; }
-        public List<GridCell> ShouldPlacedOnCells { get; }
+        public Dictionary<PlacableCellType, List<GridCell>> Cells { get; private set; } = new();
 
-        public PlacableGrids(List<GridCell> physicalCells, List<GridCell> newGroundCells, List<GridCell> shouldPlacedOnCells)
+        public PlacableGrids()
         {
-            PhysicalCells = physicalCells;
-            NewGroundCells = newGroundCells;
-            ShouldPlacedOnCells = shouldPlacedOnCells;
+            foreach (PlacableCellType cellType in Enum.GetValues(typeof(PlacableCellType)))
+            {
+                Cells.Add(cellType, new List<GridCell>());
+            }
+        }
+        
+        public void Add(PlacableCellType cellType, GridCell cell)
+        {
+            Cells[cellType].Add(cell);
         }
     }
 }

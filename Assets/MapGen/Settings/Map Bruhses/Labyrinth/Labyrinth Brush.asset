@@ -15,10 +15,7 @@ MonoBehaviour:
   _gizmoRadius: 0.25
   _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
   _selectedCellsColor: {r: 0, g: 0, b: 1, a: 1}
-  _brushAreas:
-    _items:
-    - {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
-    - {fileID: 11400000, guid: cd7bfa6e919731e42908c88b04187578, type: 2}
+  _brushAreas: {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
   _randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}
   _wallThickness: 1
   _wayThickness: 5

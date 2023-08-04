@@ -19,14 +19,14 @@ namespace MapGen.Map.Brushes.GroundBrush
         [SerializeField] private CellLayer _cellLayer = CellLayer.Ground;
         
         public override string BrushName => "Ground";
+        protected override int HitBrushHeight => 1;
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new CreateGroundCommand(WorldCreator.Instance, this, selectedCells, grid);
+            return new MultipleCellEditCommand(WorldCreator.Instance, this, selectedCells, grid);
         }
         
-        [MethodTimer]
-        public List<SpawnData> CreateGround(List<Vector3Int> selectedCells, Grid grid)
+        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var data = new List<SpawnData>();
             

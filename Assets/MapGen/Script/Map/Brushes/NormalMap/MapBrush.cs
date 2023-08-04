@@ -16,6 +16,7 @@ namespace MapGen.Map.Brushes.NormalMap
         [SerializeField] private ObstacleSpawner.ObstaclesBrush _obstaclesBrush;
         [SerializeField] private MountainBrush _mountainBrush;
         [SerializeField] private AutoTunnelBrush _autoTunnelBrush;
+        
         [Header("Map Settings")]
         [SerializeField] private MapParts _mapParts;
         
@@ -30,16 +31,17 @@ namespace MapGen.Map.Brushes.NormalMap
         public RandomSettings RandomSettings => randomSettings;
 
         public override string BrushName => "Map";
+        protected override int HitBrushHeight => 1;
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MapCommand(this, selectedCells, grid, WorldCreator.Instance);
+            return new MultipleCellEditCommand(WorldCreator.Instance,this, selectedCells, grid);
         }
         
         public List<SpawnData> GenerateMap(List<Vector3Int> selectedCells, Grid grid)
         {
             SetRandomSeed();
-            return Generate(selectedCells, grid);
+            return Paint(selectedCells, grid);
         }
 
         private void SetRandomSeed()
@@ -47,13 +49,13 @@ namespace MapGen.Map.Brushes.NormalMap
             UnityEngine.Random.InitState(RandomSettings.GetSeed());
         }
 
-        private List<SpawnData> Generate(List<Vector3Int> selectedCells, Grid grid)
+        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var result = new List<SpawnData>();
             
             if (MapParts.HasFlag(MapParts.Ground))
             {
-                var ground = _groundBrush.CreateGround(selectedCells, grid);
+                var ground = _groundBrush.Paint(selectedCells, grid);
                 result.AddRange(ground);
             }
 

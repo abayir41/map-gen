@@ -11,6 +11,7 @@ namespace MapGen.Map.Brushes
     public abstract class SingleCellEditableBrush : Brush
     {
         public abstract ICommand GetPaintCommand(Vector3Int selectedCells, Grid grid);
+        
         public override void Update()
         {
             base.Update();

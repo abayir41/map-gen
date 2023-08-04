@@ -12,10 +12,13 @@ namespace MapGen.Map.Brushes
     [CreateAssetMenu(fileName = "Char Position Setter", menuName = "MapGen/Brushes/Char Position Setter", order = 0)]
     public class CharPositionBrush : SingleCellEditableBrush
     {
+        public const int CHAR_HEIGHT = 5;
+        
         public override string BrushName => "Char Pos Setter";
-        public Vector3 CharSpawnPos => FpsState.Instance.CharSpawnPos; 
-        
-        
+        protected override int HitBrushHeight => CHAR_HEIGHT;
+        public Vector3 CharSpawnPos => FpsState.Instance.CharSpawnPos;
+
+
         public override ICommand GetPaintCommand(Vector3Int startPoint, Grid grid)
         {
             return new CharPositionPaintCommand(this, grid, FpsState.Instance.CharSpawnPos.ToVector3Int(), startPoint);

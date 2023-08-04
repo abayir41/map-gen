@@ -4,6 +4,7 @@ using MapGen.Map;
 using MapGen.Placables;
 using MapGen.Utilities;
 using UnityEngine;
+using Weaver;
 
 namespace MapGen.GridSystem
 {
@@ -11,7 +12,7 @@ namespace MapGen.GridSystem
     {
         public Dictionary<Placable, PlacableGrids> ItemCellsDict { get; }
 
-        private Dictionary<Vector3Int, GridCell> CachedCells { get; } = new();
+        public Dictionary<Vector3Int, GridCell> CachedCells { get; } = new();
 
         public Grid()
         {
@@ -101,10 +102,8 @@ namespace MapGen.GridSystem
 
         public void AddItem(Placable placable, Vector3Int originPos, int rotation, CellLayer cellLayer)
         {
-            var newGroundCells = new List<GridCell>();
-            var physicalCells = new List<GridCell>();
-            var shouldPlacedOnGroundCells = new List<GridCell>();
-            
+            var placableGrids = new PlacableGrids();
+
             var physicalVolumes = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.PhysicalVolume);
             foreach (var physicalVolume in physicalVolumes)
             {
@@ -115,13 +114,13 @@ namespace MapGen.GridSystem
                     if (IsCellExist(rotatedCellPos, out var cell))
                     {
                         cell.FillCell(placable, cellLayer);
-                        physicalCells.Add(cell);
+                        placableGrids.Add(PlacableCellType.PhysicalVolume, cell);
                     }
                     else
                     {
                         var newCell = CreateCell(rotatedCellPos);
                         newCell.FillCell(placable, cellLayer);
-                        physicalCells.Add(newCell);
+                        placableGrids.Add(PlacableCellType.PhysicalVolume, newCell);
                     }
                 }
             }
@@ -155,41 +154,24 @@ namespace MapGen.GridSystem
                     if (IsCellExist(rotatedCellPos, out var cell))
                     {
                         cell.MakeCellCanBeFilledGround();
-                        newGroundCells.Add(cell);
+                        placableGrids.Add(PlacableCellType.NewGround, cell);
                     }
                     else
                     {
                         var newCell = CreateCell(rotatedCellPos);
                         newCell.MakeCellCanBeFilledGround();
-                        newGroundCells.Add(newCell);
+                        placableGrids.Add(PlacableCellType.NewGround, newCell);
                     }
                 } 
             }
-            
-            var shouldPlaceOnGround = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.ShouldPlaceOnGround);
-            foreach (var shouldPlaceOnGroundGrid in shouldPlaceOnGround)
-            {
-                foreach (var shouldPlaceOnGroundCell in shouldPlaceOnGroundGrid.CellPositions)
-                {
-                    var rotatedCellPos = originPos + shouldPlaceOnGroundCell.RotateVector(rotation, placable.Origin);
-                    if (!IsCellExist(rotatedCellPos, out var cell))
-                    {
-                        throw new Exception("Cell Should be exist");
-                    }
-                    
-                    shouldPlacedOnGroundCells.Add(cell);
-                }
-            }
 
-            var placableGrids = new PlacableGrids(physicalCells, newGroundCells, shouldPlacedOnGroundCells);
             ItemCellsDict.Add(placable, placableGrids);
         }
 
         public void DeleteItem(Placable placable)
         {
-            var physicalCells = ItemCellsDict[placable].PhysicalCells;
-            var newGroundCells = ItemCellsDict[placable].NewGroundCells;
-            var shouldPlaceOnGroundCells = ItemCellsDict[placable].ShouldPlacedOnCells;
+            var physicalCells = ItemCellsDict[placable].Cells[PlacableCellType.PhysicalVolume];
+            var newGroundCells = ItemCellsDict[placable].Cells[PlacableCellType.NewGround];
             
             foreach (var physicalCell in physicalCells)
             {
@@ -204,10 +186,23 @@ namespace MapGen.GridSystem
                 newGroundCell.MakeCellEmpty();
                 newGroundCell.FreeTheCell();
             }
-            
-            foreach (var shouldPlaceOnGroundCell in shouldPlaceOnGroundCells)
+
+            ItemCellsDict.Remove(placable);
+        }
+
+        public void RegenerateShouldPlaceOnGrounds()
+        {
+            foreach (var (placable, placableGrids) in ItemCellsDict)
             {
-                shouldPlaceOnGroundCell.MakeCellCanBeFilledGround();
+                foreach (var placableGridsShouldPlacedOnCell in placableGrids.Cells[PlacableCellType.NewGround])
+                {
+                    if (placableGridsShouldPlacedOnCell.Item != null)
+                    {
+                        continue;
+                    }
+                    
+                    placableGridsShouldPlacedOnCell.MakeCellCanBeFilledGround();
+                }
             }
         }
     }

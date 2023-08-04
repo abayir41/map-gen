@@ -43,6 +43,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         }
         
         public override string BrushName => "Obstacle";
+        protected override int HitBrushHeight => 1;
 
         private struct PlacableData
         {
@@ -58,10 +59,10 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new ObstaclesCommand(this, selectedCells, grid, WorldCreator.Instance);
+            return new MultipleCellEditCommand(WorldCreator.Instance,this, selectedCells, grid);
         }
 
-        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var result = new List<SpawnData>();
             var helper = new SelectedCellsHelper(selectedCells, grid);

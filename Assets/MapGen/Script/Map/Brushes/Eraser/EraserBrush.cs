@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MapGen.Command;
 using MapGen.Map.Brushes.BrushAreas;
+using MapGen.Placables;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
@@ -11,7 +12,8 @@ namespace MapGen.Map.Brushes.Eraser
     public class EraserBrush : MultipleCellEditableBrush
     {
         public override string BrushName => "Eraser";
-        
+        protected override int HitBrushHeight => 0;
+
         private List<Vector3Int> _catchedPlacablePos = new();
         private Color _placableDebugColor = Color.red;
         private float _radius = 0.25f;
@@ -41,7 +43,7 @@ namespace MapGen.Map.Brushes.Eraser
                     continue;
                 }
 
-                _catchedPlacablePos.AddRange(WorldCreator.Grid.ItemCellsDict[cell.Item].PhysicalCells.ConvertAll(input => input.CellPosition));
+                _catchedPlacablePos.AddRange(WorldCreator.Grid.ItemCellsDict[cell.Item].Cells[PlacableCellType.PhysicalVolume].ConvertAll(input => input.CellPosition));
             }
         }
 
@@ -63,7 +65,7 @@ namespace MapGen.Map.Brushes.Eraser
             return new EraserCommand(WorldCreator.Instance, this, selectedCells, grid);
         }
 
-        public void Erase(List<Vector3Int> selectedCells, Grid grid)
+        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             foreach (var selectedCell in selectedCells)
             {
@@ -72,6 +74,8 @@ namespace MapGen.Map.Brushes.Eraser
                     WorldCreator.Instance.DestroyItem(cell.Item);
                 }
             }
+
+            return new List<SpawnData>();
         }
 
         public List<SpawnData> GetSpawnData(List<Vector3Int> selectedCells, Grid grid)

@@ -13,13 +13,14 @@ namespace MapGen.Map.Brushes
         private const int INCREMENT_BRUSH_AREA = 1;
         
         [SerializeField] private Color _selectedCellsColor = Color.blue;
-        [SerializeField] private EndlessList<BrushArea> _brushAreas;
+        [SerializeField] private BrushArea _brushAreas;
         
-        public virtual EndlessList<BrushArea> BrushAreas => _brushAreas;
+        public BrushArea BrushAreas => _brushAreas;
         private HashSet<Vector3Int> SelectedCells { get; set; } = new();
         protected List<Vector3Int> CurrentlyLookingCells { get; private set; }
 
         public abstract ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid);
+        public abstract List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid);
 
         public override void Update()
         {
@@ -27,30 +28,22 @@ namespace MapGen.Map.Brushes
             
             if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
             {
-                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas.CurrentItem is IIncreasableBrushArea increasableBrushArea)
+                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas is IIncreasableBrushArea increasableBrushArea)
                 {
                     increasableBrushArea.IncreaseArea(INCREMENT_BRUSH_AREA);
-                }
-                else if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    BrushAreas.NextItem();
                 }
             }
             else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
             {
-                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas.CurrentItem is IIncreasableBrushArea increasableBrushArea)
+                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas is IIncreasableBrushArea increasableBrushArea)
                 {
                     increasableBrushArea.DecreaseArea(INCREMENT_BRUSH_AREA);
-                }
-                else if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    BrushAreas.PreviousItem();
                 }
             }
             
             if(!DidRayHit) return;
 
-            CurrentlyLookingCells = BrushAreas.CurrentItem.GetBrushArea(HitPosOffsetted);
+            CurrentlyLookingCells = BrushAreas.GetBrushArea(HitPosOffsetted);
             VisualCells = CurrentlyLookingCells;
             
             if (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftShift))

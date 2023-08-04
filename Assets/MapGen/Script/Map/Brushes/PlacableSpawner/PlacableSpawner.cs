@@ -21,7 +21,8 @@ namespace MapGen.Map.Brushes
         [SerializeField] private int _rotationStep = 15;
         
         public override string BrushName => "Placable";
-        
+        protected override int HitBrushHeight => 1;
+
         private List<Vector3Int> _placableVisuals = new();
         private Color _placableVisualColor = Color.green;
         private Color _cursorColor = Color.yellow;

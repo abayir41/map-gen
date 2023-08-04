@@ -11,7 +11,8 @@ namespace MapGen.Map.Brushes.Debugger
     public class DebuggerBrush : SingleCellEditableBrush
     {
         public override string BrushName => "Debugger";
-        
+        protected override int HitBrushHeight => 0;
+
         private List<Vector3Int> _catchedPlacablePos = new();
         private Color _placableDebugColor = Color.green;
         public override void Update()
@@ -37,7 +38,7 @@ namespace MapGen.Map.Brushes.Debugger
                 return;
             }
 
-            _catchedPlacablePos = WorldCreator.Grid.ItemCellsDict[cell.Item].PhysicalCells.ConvertAll(input => input.CellPosition);
+            _catchedPlacablePos = WorldCreator.Grid.ItemCellsDict[cell.Item].Cells[PlacableCellType.PhysicalVolume].ConvertAll(input => input.CellPosition);
         }
 
         public override ICommand GetPaintCommand(Vector3Int selectedCells, Grid grid)

@@ -42,19 +42,20 @@ namespace MapGen.Map.Brushes.Labyrinth
         public float SecondEdgeObstacleProbability => secondEdgeObstacleProbability;
         
         public override string BrushName => "Labyrinth";
+        protected override int HitBrushHeight => 1;
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new LabyrinthCommand(this, selectedCells, grid, WorldCreator.Instance);
+            return new MultipleCellEditCommand(WorldCreator.Instance, this, selectedCells, grid);
         }
 
-        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var map = new RotationMap();
             var selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var result = new List<SpawnData>();
             
-            var grounds = _groundBrush.CreateGround(selectedCells, grid);
+            var grounds = _groundBrush.Paint(selectedCells, grid);
             
             var labyrinth = CreateLabyrinth(map, grid, selectedCellsHelper, out var probabilityMap);
 

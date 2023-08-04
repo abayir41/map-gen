@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MapGen.GridSystem;
 using MapGen.Map.Brushes;
@@ -17,7 +18,13 @@ namespace MapGen.Map
         [SerializeField] private Transform _gridPrefabsParent;
         [SerializeField] private Transform _selectableGridCellParent;
         [SerializeField] private SelectableGridCell _selectableGridCell;
-
+        
+        [Header("Gizmos")]
+        [SerializeField] private bool _drawGizmosLayer;
+        [SerializeField] private bool _drawGizmosState;
+        [SerializeField] private CellLayer _cellLayer;
+        [SerializeField] private CellState _cellState;
+        
         private Dictionary<Placable, HashSet<SelectableGridCell>> _placablePhysicals = new(); 
 
         public Grid Grid { get; private set; }
@@ -108,6 +115,35 @@ namespace MapGen.Map
                     selectableGridCell.BoundedPlacable = instantiatedPlacable;
                     
                     _placablePhysicals[instantiatedPlacable].Add(selectableGridCell);
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_drawGizmosLayer)
+            {
+                Gizmos.color = Color.blue;
+                foreach (var (pos, gridCell) in Grid.CachedCells)
+                {
+                    if (gridCell.CellLayer == _cellLayer)
+                    {
+                        var realPos = Grid.CellPositionToRealWorld(pos);
+                        Gizmos.DrawWireCube(realPos, Vector3.one);
+                    }
+                }
+            }
+
+            if (_drawGizmosState)
+            {
+                Gizmos.color = Color.magenta;
+                foreach (var (pos, gridCell) in Grid.CachedCells)
+                {
+                    if (gridCell.CellState == _cellState)
+                    {
+                        var realPos = Grid.CellPositionToRealWorld(pos);
+                        Gizmos.DrawWireCube(realPos, Vector3.one);
+                    }
                 }
             }
         }

@@ -22,9 +22,7 @@ namespace MapGen
         
         [Header("Visual Debug")]
         [SerializeField] private bool _showGizmos;
-        [SerializeField] private TextMeshProUGUI yOffsetText;
         [SerializeField] private TextMeshProUGUI brushName;
-        [SerializeField] private TextMeshProUGUI brushAreaName;
         [SerializeField] private TextMeshProUGUI placableDescription;
         
         [Header("Editing")]
@@ -37,7 +35,7 @@ namespace MapGen
         private GameManager GameManager => GameManager.Instance;
 
         
-        private int _selectedAreYOffset = 1;
+        private int _selectedAreYOffset;
         private Plane _selectableCellsGround;
 
 
@@ -91,20 +89,9 @@ namespace MapGen
             {
                 _selectedAreYOffset--;
             }
-            
-            
-            yOffsetText.text = "Brush Y Offset: " + _selectedAreYOffset + " - Mouse Wheel";
+
             brushName.text = "Brush: " + _brushes.CurrentItem.BrushName + " - Q or E";
 
-            if (_brushes.CurrentItem is MultipleCellEditableBrush multipleCellEditableBrush)
-            {
-                brushAreaName.text = "Area: " + multipleCellEditableBrush.BrushAreas.CurrentItem.name + " - SHIFT + Mouse Wheel";
-            }
-            else
-            {
-                brushAreaName.text = "";
-            }
-            
             _brushes.CurrentItem.Update();
         }
         

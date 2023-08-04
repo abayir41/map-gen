@@ -5,16 +5,16 @@ using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes
 {
-    public class CreateGroundCommand : ICommand
+    public class MultipleCellEditCommand : ICommand
     {
         private readonly WorldCreator _worldCreator;
-        private readonly GroundBrush.GroundBrush _groundBrush;
+        private readonly MultipleCellEditableBrush _groundBrush;
         private readonly List<Vector3Int> _selectedCells;
         private readonly Grid _grid;
         private List<SpawnData> _data;
 
 
-        public CreateGroundCommand(WorldCreator worldCreator, GroundBrush.GroundBrush groundBrush, List<Vector3Int> selectedCells, Grid grid)
+        public MultipleCellEditCommand(WorldCreator worldCreator, MultipleCellEditableBrush groundBrush, List<Vector3Int> selectedCells, Grid grid)
         {
             _worldCreator = worldCreator;
             _groundBrush = groundBrush;
@@ -24,7 +24,7 @@ namespace MapGen.Map.Brushes
         
         public void Execute()
         {
-            _data = _groundBrush.CreateGround(_selectedCells, _grid);
+            _data = _groundBrush.Paint(_selectedCells, _grid);
         }
 
         public void Undo()
@@ -33,6 +33,8 @@ namespace MapGen.Map.Brushes
             {
                 _worldCreator.DestroyByCellPoint(spawnData.SpawnPos);
             }
+            
+            _worldCreator.Grid.RegenerateShouldPlaceOnGrounds();
         }
     }
 }

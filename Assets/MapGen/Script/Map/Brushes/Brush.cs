@@ -16,6 +16,7 @@ namespace MapGen.Map.Brushes
         [SerializeField] private Color _visualCellsColor = Color.green;
 
         public abstract string BrushName { get; }
+        protected abstract int HitBrushHeight { get; }
         protected List<Vector3Int> VisualCells { get; set; } = new();
         
         protected WorldCreator WorldCreator => WorldCreator.Instance;
@@ -36,7 +37,7 @@ namespace MapGen.Map.Brushes
             {
                 DidRayHit = true;
                 HitPos = cellPos;
-                HitPosOffsetted = cellPos + Vector3Int.up * EditState.SelectedAreYOffset;
+                HitPosOffsetted = cellPos + Vector3Int.up * (EditState.SelectedAreYOffset + HitBrushHeight);
             }
             else
             {

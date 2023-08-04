@@ -32,13 +32,14 @@ namespace MapGen.Map.Brushes.Mountains
         
         private SelectedCellsHelper _selectedCellsHelper;
         public override string BrushName => "Mountain";
+        protected override int HitBrushHeight => 1;
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MountainCommand(this, selectedCells, grid, WorldCreator.Instance);
+            return new MultipleCellEditCommand(WorldCreator.Instance,this, selectedCells, grid);
         }
 
-        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var result = new List<SpawnData>();
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
