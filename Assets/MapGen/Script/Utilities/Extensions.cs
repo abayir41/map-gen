@@ -37,6 +37,14 @@ namespace MapGen.Utilities
 
             return resultAsVector3Int;
         }
+        
+        public static Vector3 RotateVector(this Vector3 vector3, int angle, Vector3 origin)
+        {
+            var rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            var result = rotation * (vector3 - origin);
+
+            return result;
+        }
 
         public static List<Vector3Int> TransformAccordingToSpawn(this PlacableGrid placableGrid, Placable placable, Vector3Int spawnPos, int rotation)
         {

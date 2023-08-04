@@ -25,6 +25,7 @@ namespace MapGen.Map.Brushes
 
         private List<Vector3Int> _placableVisuals = new();
         private Color _placableVisualColor = Color.green;
+        private Color _placableEdgeColor = Color.blue;
         private Color _cursorColor = Color.yellow;
         private int _rotation;
         
@@ -96,13 +97,35 @@ namespace MapGen.Map.Brushes
             var cursor = WorldCreator.Grid.CellPositionToRealWorld(HitPosOffsetted);
             Gizmos.DrawWireCube(cursor, Vector3.one);
             
+            
+            Gizmos.color = _placableEdgeColor;
+            var filters = _placables.CurrentItem.GetComponentsInChildren<MeshFilter>();
+            foreach (var filter in filters)
+            {
+                var mesh = filter.sharedMesh;
+                var transform = filter.transform;
+                var pos = transform.position;
+                var rotatedPos = pos.RotateVector(_rotation, transform.parent.position);
+                Gizmos.DrawMesh(mesh, -1, rotatedPos + cursor, Quaternion.AngleAxis(_rotation, Vector3.up));
+            }
+            
             Gizmos.color = _placableVisualColor;
             foreach (var placableVisual in _placableVisuals)
             {
+                var left = placableVisual + Vector3Int.left;
+                var right = placableVisual + Vector3Int.right;
+                var top = placableVisual + Vector3Int.up;
+                var bottom = placableVisual + Vector3Int.down;
+                
+                
+                
+                if(_placableVisuals.Contains(left) && _placableVisuals.Contains(right) && _placableVisuals.Contains(bottom) && _placableVisuals.Contains(top)) continue;
+                
                 var pos = WorldCreator.Grid.CellPositionToRealWorld(placableVisual);
-                Gizmos.DrawSphere(pos, _placableGizmoRadius);
                 Gizmos.DrawWireCube(pos, Vector3.one);
             }
+            
+           
         }
 
         public override ICommand GetPaintCommand(Vector3Int startPoint, Grid grid)
