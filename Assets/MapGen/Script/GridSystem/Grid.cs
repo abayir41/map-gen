@@ -111,17 +111,13 @@ namespace MapGen.GridSystem
                 {
                     var rotatedCellPos = originPos + physicalCellPos.RotateVector(rotation, placable.Origin);
                     
-                    if (IsCellExist(rotatedCellPos, out var cell))
+                    if (!IsCellExist(rotatedCellPos, out var cell))
                     {
-                        cell.FillCell(placable, cellLayer);
-                        placableGrids.Add(PlacableCellType.PhysicalVolume, cell);
+                        cell = CreateCell(rotatedCellPos);
                     }
-                    else
-                    {
-                        var newCell = CreateCell(rotatedCellPos);
-                        newCell.FillCell(placable, cellLayer);
-                        placableGrids.Add(PlacableCellType.PhysicalVolume, newCell);
-                    }
+                    
+                    cell.FillCell(placable, cellLayer);
+                    placableGrids.Add(PlacableCellType.PhysicalVolume, cell);
                 }
             }
 
@@ -132,15 +128,13 @@ namespace MapGen.GridSystem
                 {
                     var rotatedCellPos = originPos + placableLockCellPos.RotateVector(rotation, placable.Origin);
 
-                    if (IsCellExist(rotatedCellPos, out var cell))
+                    if (!IsCellExist(rotatedCellPos, out var cell))
                     {
-                        cell.LockCell();
+                        cell = CreateCell(rotatedCellPos);
                     }
-                    else
-                    {
-                        var newCell = CreateCell(rotatedCellPos);
-                        newCell.LockCell();
-                    }
+                    
+                    cell.LockCell();
+
                 }
             }
 
@@ -151,16 +145,15 @@ namespace MapGen.GridSystem
                 {
                     var rotatedCellPos = originPos + placableNewGroundCellPos.RotateVector(rotation, placable.Origin);
                     
-                    if (IsCellExist(rotatedCellPos, out var cell))
+                    if (!IsCellExist(rotatedCellPos, out var cell))
+                    {
+                        cell = CreateCell(rotatedCellPos);
+                    }
+
+                    if (cell.Item == null)
                     {
                         cell.MakeCellCanBeFilledGround();
                         placableGrids.Add(PlacableCellType.NewGround, cell);
-                    }
-                    else
-                    {
-                        var newCell = CreateCell(rotatedCellPos);
-                        newCell.MakeCellCanBeFilledGround();
-                        placableGrids.Add(PlacableCellType.NewGround, newCell);
                     }
                 } 
             }
@@ -181,10 +174,11 @@ namespace MapGen.GridSystem
             
             foreach (var newGroundCell in newGroundCells)
             {
-                if(newGroundCell.Item != null) continue;
-                
-                newGroundCell.MakeCellEmpty();
-                newGroundCell.FreeTheCell();
+                if (newGroundCell.Item == null)
+                {
+                    newGroundCell.MakeCellEmpty();
+                    newGroundCell.FreeTheCell();;
+                }
             }
 
             ItemCellsDict.Remove(placable);

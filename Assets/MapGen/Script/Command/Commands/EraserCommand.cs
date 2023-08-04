@@ -24,8 +24,7 @@ namespace MapGen.Map.Brushes
         
         public void Execute()
         {
-            _cachedPlacables = _brush.GetSpawnData(_selectedCells, _grid);
-            _brush.Paint(_selectedCells, _grid);
+            _cachedPlacables = _brush.Paint(_selectedCells, _grid);
             _worldCreator.Grid.RegenerateShouldPlaceOnGrounds();
         }
 

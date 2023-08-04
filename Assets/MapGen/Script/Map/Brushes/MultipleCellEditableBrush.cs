@@ -28,14 +28,14 @@ namespace MapGen.Map.Brushes
             
             if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
             {
-                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas is IIncreasableBrushArea increasableBrushArea)
+                if (BrushAreas is IIncreasableBrushArea increasableBrushArea)
                 {
                     increasableBrushArea.IncreaseArea(INCREMENT_BRUSH_AREA);
                 }
             }
             else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
             {
-                if (Input.GetKey(KeyCode.LeftControl) && BrushAreas is IIncreasableBrushArea increasableBrushArea)
+                if (BrushAreas is IIncreasableBrushArea increasableBrushArea)
                 {
                     increasableBrushArea.DecreaseArea(INCREMENT_BRUSH_AREA);
                 }

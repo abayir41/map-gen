@@ -67,19 +67,6 @@ namespace MapGen.Map.Brushes.Eraser
 
         public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
-            foreach (var selectedCell in selectedCells)
-            {
-                if (grid.IsCellExist(selectedCell, out var cell) && cell.Item != null)
-                {
-                    WorldCreator.Instance.DestroyItem(cell.Item);
-                }
-            }
-
-            return new List<SpawnData>();
-        }
-
-        public List<SpawnData> GetSpawnData(List<Vector3Int> selectedCells, Grid grid)
-        {
             var result = new List<SpawnData>();
             foreach (var selectedCell in selectedCells)
             {
@@ -87,6 +74,7 @@ namespace MapGen.Map.Brushes.Eraser
                 {
                     var data = cell.Item.SpawnData;
                     result.Add(data);
+                    WorldCreator.Instance.DestroyItem(cell.Item);
                 }
             }
 

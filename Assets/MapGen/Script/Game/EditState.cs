@@ -81,11 +81,11 @@ namespace MapGen
                 GameManager.SwitchState(this, _fpsState);
             }
             
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift)) // forward
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f && Input.GetKey(KeyCode.LeftControl)) // forward
             {
                 _selectedAreYOffset++;
             }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0f && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift)) // backwards
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f && Input.GetKey(KeyCode.LeftControl)) // backwards
             {
                 _selectedAreYOffset--;
             }
