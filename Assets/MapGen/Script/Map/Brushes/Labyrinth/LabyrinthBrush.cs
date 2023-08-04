@@ -74,8 +74,8 @@ namespace MapGen.Map.Brushes.Labyrinth
         {
             var result = new List<SpawnData>();
             var labyrinthPieceSize = WallThickness + WayThickness;
-            var labyrinthPieceAmount = new Vector2Int((selectedCellsHelper.XWidth - labyrinthPieceSize) / labyrinthPieceSize,
-                (selectedCellsHelper.ZWidth - labyrinthPieceSize) / labyrinthPieceSize);
+            var labyrinthPieceAmount = new Vector2Int((selectedCellsHelper.XWidth - WallThickness) / labyrinthPieceSize,
+                (selectedCellsHelper.ZWidth - WallThickness) / labyrinthPieceSize);
             var maze = MazeGenerator.Generate(labyrinthPieceAmount.x, labyrinthPieceAmount.y, RandomSettings.GetSeed());
             obstacleProbabilityMap = new float[selectedCellsHelper.XWidth, selectedCellsHelper.ZWidth];
             
