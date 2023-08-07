@@ -13,7 +13,7 @@ namespace MapGen.Map.Brushes.Mountains
 {
     
     [CreateAssetMenu(fileName = "Mountain Brush", menuName = "MapGen/Brushes/Mountains/Brush", order = 0)]
-    public class MountainBrush : MultipleCellEditableBrush
+    public class MountainBrush : MultipleCellEditableBrush, IRandomBrush
     {
         public const int GROUND_ROTATION = 0;
 

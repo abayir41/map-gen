@@ -15,7 +15,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
 {
     
     [CreateAssetMenu(fileName = "Obstacle Brush", menuName = "MapGen/Brushes/Obstacles/Brush", order = 0)]
-    public class ObstaclesBrush : MultipleCellEditableBrush
+    public class ObstaclesBrush : MultipleCellEditableBrush, IRandomBrush
     {
         [Header("Object Placement Probability Settings")]
         [SerializeField] private Noise.Noise objectPlacementNoise;

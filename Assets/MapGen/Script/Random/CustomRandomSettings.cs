@@ -6,6 +6,11 @@ namespace MapGen.Random
     public class CustomRandomSettings : RandomSettings
     {
         [SerializeField] private int seed;
+
+        public void SetSeed(int seedInt)
+        {
+            seed = seedInt;
+        }
         
         public override int GetSeed() => seed;
     }

@@ -21,5 +21,5 @@ MonoBehaviour:
   _obstaclesBrush: {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}
   _mountainBrush: {fileID: 11400000, guid: 238efa7900a3b1942bfb7200a9a2ea07, type: 2}
   _autoTunnelBrush: {fileID: 11400000, guid: 6bcc289907cd32b4ebc931840a0bee25, type: 2}
-  _mapParts: 15
+  _mapParts: 11
   randomSettings: {fileID: 11400000, guid: a0fd1e093e91304419ec4f947261940f, type: 2}

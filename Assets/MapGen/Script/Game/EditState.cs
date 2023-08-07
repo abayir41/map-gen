@@ -3,6 +3,7 @@ using MapGen.GridSystem;
 using MapGen.Map;
 using MapGen.Map.Brushes;
 using MapGen.Map.Brushes.BrushAreas;
+using MapGen.Random;
 using MapGen.Utilities;
 using UnityEngine;
 using Plugins.Editor;
@@ -34,6 +35,8 @@ namespace MapGen
         [SerializeField] private TextMeshProUGUI currentPlacable;
         [SerializeField] private GameObject rotationParent;
         [SerializeField] private TextMeshProUGUI currentRotation;
+        [SerializeField] private GameObject seedParent;
+        [SerializeField] private TextMeshProUGUI currentSeed;
         
         [Header("Editing")]
         [SerializeField] private Camera sceneCamera;
@@ -89,6 +92,16 @@ namespace MapGen
             {
                 placableParent.SetActive(false);
                 rotationParent.SetActive(false);
+            }
+
+            if (_brushes.CurrentItem is IRandomBrush randomBrush && randomBrush.RandomSettings is CustomRandomSettings customRandomSettings)
+            {
+                seedParent.SetActive(true);
+                currentSeed.text = customRandomSettings.GetSeed().ToString();
+            }
+            else
+            {
+                seedParent.SetActive(false);
             }
             
             if (Input.GetKeyDown(KeyCode.Q))
@@ -174,6 +187,22 @@ namespace MapGen
         {
             var spawner = _brushes.CurrentItem as PlacableSpawner;
             spawner.PreviousPlacable();
+        }
+
+        public void NextSeed()
+        {
+            var brush = _brushes.CurrentItem as IRandomBrush;
+            var customBrush = brush.RandomSettings as CustomRandomSettings;
+            var currentSeed = customBrush.GetSeed();
+            customBrush.SetSeed(currentSeed + 1);
+        }
+
+        public void PreviousSeed()
+        {
+            var brush = _brushes.CurrentItem as IRandomBrush;
+            var customBrush = brush.RandomSettings as CustomRandomSettings;
+            var currentSeed = customBrush.GetSeed();
+            customBrush.SetSeed(currentSeed - 1);
         }
         
         public bool RayToGridCell(out Vector3Int cellPos)

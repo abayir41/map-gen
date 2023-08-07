@@ -10,7 +10,7 @@ using Grid = MapGen.GridSystem.Grid;
 namespace MapGen.Map.Brushes.NormalMap
 {
     [CreateAssetMenu(fileName = "Map Brush", menuName = "MapGen/Brushes/Normal Map/Brush", order = 0)]
-    public class MapBrush : MultipleCellEditableBrush
+    public class MapBrush : MultipleCellEditableBrush, IRandomBrush
     {
         [SerializeField] private GroundBrush.GroundBrush _groundBrush;
         [SerializeField] private ObstacleSpawner.ObstaclesBrush _obstaclesBrush;

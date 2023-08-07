@@ -12,7 +12,7 @@ using Grid = MapGen.GridSystem.Grid;
 namespace MapGen.Map.Brushes.Labyrinth
 {
     [CreateAssetMenu(fileName = "Labyrinth Brush", menuName = "MapGen/Brushes/Labyrinth/Brush", order = 0)]
-    public class LabyrinthBrush : MultipleCellEditableBrush
+    public class LabyrinthBrush : MultipleCellEditableBrush, IRandomBrush
     {
         [Header("Labyrinth Settings")]
         [SerializeField] private RandomSettings _randomSettings;
