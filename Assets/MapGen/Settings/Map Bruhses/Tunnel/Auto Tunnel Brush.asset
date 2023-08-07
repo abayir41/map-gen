@@ -17,7 +17,7 @@ MonoBehaviour:
   _brushIcon: {fileID: 21300000, guid: 5a0f612115881dd4e9f86d1fc4846d00, type: 3}
   _selectedCellsColor: {r: 0, g: 0, b: 1, a: 1}
   _brushAreas: {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
-  tunnelMinLength: 40
-  tunnelAverageMinHeight: 10
+  tunnelMinLength: 19.39
+  tunnelAverageMinHeight: 3
   betweenTunnelMinSpace: 100
   _tunnelBrush: {fileID: 4574748764192346455, guid: cc79e7757c3cc8d42b90fb60e8a64611, type: 3}

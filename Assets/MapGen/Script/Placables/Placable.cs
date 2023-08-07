@@ -30,7 +30,7 @@ namespace MapGen.Placables
         public bool Rotatable => _rotatable;
         public Vector3Int Origin => _origin;
 
-        public void InitializePlacable(SpawnData spawnData)
+        public virtual void InitializePlacable(SpawnData spawnData)
         {
             SpawnData = spawnData;
         }
