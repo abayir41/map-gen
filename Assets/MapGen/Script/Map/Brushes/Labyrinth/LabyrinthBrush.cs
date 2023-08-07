@@ -20,8 +20,8 @@ namespace MapGen.Map.Brushes.Labyrinth
         [SerializeField] private int _wayThickness;
         [SerializeField] private int _wallHeight;
         [SerializeField] private Placable _mazeCubicGridPlacable;
+        [SerializeField] private bool _openExits;
         [SerializeField] [Range(0, 1)] private float firstEdgeObstacleProbability;
-        [SerializeField] [Range(0, 1)] private float secondEdgeObstacleProbability;
 
         public const int WALL_ROTATION = 0;
         public const int LABYRINTH_START_Y_LEVEL = 1;
@@ -39,7 +39,6 @@ namespace MapGen.Map.Brushes.Labyrinth
         public int WayThickness => _wayThickness;
         public int WallHeight => _wallHeight;
         public float FirstEdgeObstacleProbability => firstEdgeObstacleProbability;
-        public float SecondEdgeObstacleProbability => secondEdgeObstacleProbability;
         
         public override string BrushName => "Labyrinth";
         protected override int HitBrushHeight => 1;
@@ -51,6 +50,7 @@ namespace MapGen.Map.Brushes.Labyrinth
 
         public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
+            UnityEngine.Random.InitState(RandomSettings.GetSeed());
             var map = new RotationMap();
             var selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var result = new List<SpawnData>();
@@ -77,6 +77,11 @@ namespace MapGen.Map.Brushes.Labyrinth
             var labyrinthPieceAmount = new Vector2Int((selectedCellsHelper.XWidth - WallThickness) / labyrinthPieceSize,
                 (selectedCellsHelper.ZWidth - WallThickness) / labyrinthPieceSize);
             var maze = MazeGenerator.Generate(labyrinthPieceAmount.x, labyrinthPieceAmount.y, RandomSettings.GetSeed());
+
+            if (_openExits)
+            {
+                OpenExits(maze);
+            }
             obstacleProbabilityMap = new float[selectedCellsHelper.XWidth, selectedCellsHelper.ZWidth];
             
             for (int x = 0; x < labyrinthPieceAmount.x; x++)
@@ -107,6 +112,12 @@ namespace MapGen.Map.Brushes.Labyrinth
             }
 
             return result;
+        }
+
+        private void OpenExits(WallState[,] maze)
+        {
+            maze[0, UnityEngine.Random.Range(0, maze.GetLength(1))] &= ~WallState.Left; // Remove left wall of leftmost cell
+            maze[maze.GetLength(0)-1, UnityEngine.Random.Range(0, maze.GetLength(1))] &= ~WallState.Right; // Remove right wall of rightmost cell
         }
 
         private List<SpawnData> LabyrinthProcess(Grid grid, int x, int z, WallState[,] maze, bool up, bool bottom, bool left, bool right,

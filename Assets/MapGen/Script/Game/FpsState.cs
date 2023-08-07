@@ -13,7 +13,8 @@ namespace MapGen
         
         [SerializeField] private EditState _editState;
         [SerializeField] private FpsChar _fpsController;
-
+        [SerializeField] private GameObject _fpsCanvas;
+        
         public Vector3 CharSpawnPos;
         
         private GameManager GameManager => GameManager.Instance;
@@ -40,11 +41,13 @@ namespace MapGen
         {
             _fpsController.gameObject.SetActive(true);
             _fpsController.SetPos(CharSpawnPos);
+            _fpsCanvas.SetActive(true);
         }
 
         public override void OnStateExit()
         {
             _fpsController.gameObject.SetActive(false);
+            _fpsCanvas.SetActive(false);
         }
     }
 }

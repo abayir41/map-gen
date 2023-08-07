@@ -14,14 +14,14 @@ namespace MapGen.Map.Brushes
     {
         [SerializeField] private float _gizmoRadius = 0.25f;
         [SerializeField] private Color _visualCellsColor = Color.green;
+        [SerializeField] private Sprite _brushIcon;
 
+        public Sprite BrushIcon => _brushIcon;
         public abstract string BrushName { get; }
         protected abstract int HitBrushHeight { get; }
         protected List<Vector3Int> VisualCells { get; set; } = new();
-        
         protected WorldCreator WorldCreator => WorldCreator.Instance;
         protected EditState EditState => EditState.Instance;
-
         protected bool DidRayHit { get; private set; }
         protected Vector3Int HitPosOffsetted { get; private set; }
         protected Vector3Int HitPos { get; private set; }

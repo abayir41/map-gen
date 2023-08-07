@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gizmoRadius: 0.25
   _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
+  _brushIcon: {fileID: 21300000, guid: 648abcfb13f71e448802930bdcde9e0c, type: 3}

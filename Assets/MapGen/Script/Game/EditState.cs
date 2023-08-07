@@ -1,4 +1,5 @@
-﻿using MapGen.GridSystem;
+﻿using System;
+using MapGen.GridSystem;
 using MapGen.Map;
 using MapGen.Map.Brushes;
 using MapGen.Utilities;
@@ -7,6 +8,7 @@ using Plugins.Editor;
 using TMPro;
 using UnityEditor;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace MapGen
 {
@@ -24,6 +26,7 @@ namespace MapGen
         [SerializeField] private bool _showGizmos;
         [SerializeField] private TextMeshProUGUI brushName;
         [SerializeField] private TextMeshProUGUI placableDescription;
+        [SerializeField] private Image _brushIcon; 
         
         [Header("Editing")]
         [SerializeField] private Camera sceneCamera;
@@ -47,6 +50,20 @@ namespace MapGen
             _selectableCellsGround = new Plane(WorldSettings.PlaneStartNormal, WorldSettings.PlaneStartHeight);
         }
 
+        private void Start()
+        {
+            brushName.text = "Brush: " + _brushes.CurrentItem.BrushName + " - Q or E";
+            _brushIcon.sprite = _brushes.CurrentItem.BrushIcon;
+            if (_brushes.CurrentItem is PlacableSpawner)
+            {
+                placableDescription.text = "MOUSE WHEEL to Rotate, SHIFT + MOUSE WHEEL to change placable";
+            }
+            else
+            {
+                placableDescription.text = "";
+            }
+        }
+
         private void Update()
         { 
             
@@ -61,6 +78,9 @@ namespace MapGen
                 {
                     placableDescription.text = "";
                 }
+                
+                brushName.text = "Brush: " + _brushes.CurrentItem.BrushName + " - Q or E";
+                _brushIcon.sprite = _brushes.CurrentItem.BrushIcon;
             }
 
             if (Input.GetKeyDown(KeyCode.E))
@@ -74,6 +94,9 @@ namespace MapGen
                 {
                     placableDescription.text = "";
                 }
+                
+                brushName.text = "Brush: " + _brushes.CurrentItem.BrushName + " - Q or E";
+                _brushIcon.sprite = _brushes.CurrentItem.BrushIcon;
             }
             
             if (Input.GetKeyDown(KeyCode.Tab))
@@ -90,7 +113,6 @@ namespace MapGen
                 _selectedAreYOffset--;
             }
 
-            brushName.text = "Brush: " + _brushes.CurrentItem.BrushName + " - Q or E";
 
             _brushes.CurrentItem.Update();
         }
