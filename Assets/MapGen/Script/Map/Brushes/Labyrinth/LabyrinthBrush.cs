@@ -21,7 +21,7 @@ namespace MapGen.Map.Brushes.Labyrinth
         [SerializeField] private int _wallHeight;
         [SerializeField] private Placable _mazeCubicGridPlacable;
         [SerializeField] private bool _openExits;
-        [SerializeField] [Range(0, 1)] private float firstEdgeObstacleProbability;
+        [SerializeField] [Range(0, 1)] private float obstacleProbability;
 
         public const int WALL_ROTATION = 0;
         public const int LABYRINTH_START_Y_LEVEL = 1;
@@ -38,7 +38,7 @@ namespace MapGen.Map.Brushes.Labyrinth
         public int WallThickness => _wallThickness;
         public int WayThickness => _wayThickness;
         public int WallHeight => _wallHeight;
-        public float FirstEdgeObstacleProbability => firstEdgeObstacleProbability;
+        public float ObstacleProbability => obstacleProbability;
         
         public override string BrushName => "Labyrinth";
         protected override int HitBrushHeight => 1;
@@ -93,7 +93,7 @@ namespace MapGen.Map.Brushes.Labyrinth
                             selectedCellsHelper.MinZ + z * (WallThickness + WayThickness));
                     
                     var labyrinthBrushHelper = new LabyrinthBrushMazeCellHelper(startWorldCellPoint, WallThickness,
-                        WayThickness, WallHeight, LABYRINTH_START_Y_LEVEL);
+                        WayThickness, WallHeight, LABYRINTH_START_Y_LEVEL + selectedCellsHelper.MinY);
                     
                     var cell = maze[x, z];
                     
@@ -261,7 +261,7 @@ namespace MapGen.Map.Brushes.Labyrinth
                                    + new Vector2Int(way, WayThickness - 1);
 
 
-                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                    if (UnityEngine.Random.value < ObstacleProbability)
                         obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                 }
             }
@@ -274,7 +274,7 @@ namespace MapGen.Map.Brushes.Labyrinth
                                    + Vector2Int.one * WallThickness
                                    + new Vector2Int(0, way);
 
-                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                    if (UnityEngine.Random.value < ObstacleProbability)
                         obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                 }
             }
@@ -287,7 +287,7 @@ namespace MapGen.Map.Brushes.Labyrinth
                                    + Vector2Int.one * WallThickness
                                    + new Vector2Int(WayThickness - 1, way);
 
-                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                    if (UnityEngine.Random.value < ObstacleProbability)
                         obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                 }
             }
@@ -300,7 +300,7 @@ namespace MapGen.Map.Brushes.Labyrinth
                                    + Vector2Int.one * WallThickness
                                    + new Vector2Int(way, 0);
 
-                    if (UnityEngine.Random.value < FirstEdgeObstacleProbability)
+                    if (UnityEngine.Random.value < ObstacleProbability)
                         obstacleProbabilityMap[mazeCell.x, mazeCell.y] = 1;
                 }
             }

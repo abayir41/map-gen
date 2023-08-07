@@ -9,7 +9,7 @@ namespace MapGen.Map.Brushes.Labyrinth
         public Dictionary<MazeCubicPositions, HashSet<Vector3Int>> PosVisualsDict { get; }
         private Vector2Int _startPoint;
 
-        public LabyrinthBrushMazeCellHelper(Vector2Int startPoint, int wallThickness, int wayThickness, int wallHeight, int yOffset)
+        public LabyrinthBrushMazeCellHelper(Vector2Int startPoint, int wallThickness, int wayThickness, int wallHeight, int yStartLevel)
         {
             _startPoint = startPoint;
             PosVisualsDict = new Dictionary<MazeCubicPositions, HashSet<Vector3Int>>();
@@ -23,7 +23,7 @@ namespace MapGen.Map.Brushes.Labyrinth
             {
                 for (var z = 0; z < wallThickness + wayThickness + wallThickness; z++)
                 {
-                    for (var y = yOffset; y < wallHeight + yOffset; y++)
+                    for (var y = yStartLevel; y < wallHeight + yStartLevel; y++)
                     {
                         var position = FindMazeCubicPositionCorrespondingToPosition(new Vector2Int(x, z), wallThickness, wayThickness);
                         PosVisualsDict[position].Add(new Vector3Int(startPoint.x + x, y, startPoint.y + z));
