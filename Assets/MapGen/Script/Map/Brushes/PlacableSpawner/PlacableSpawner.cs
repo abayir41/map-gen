@@ -16,12 +16,13 @@ namespace MapGen.Map.Brushes
     public class PlacableSpawner : SingleCellEditableBrush
     {
         [SerializeField] private EndlessList<Placable> _placables;
-        [SerializeField] private float _placableGizmoRadius = 0.25f;
         [SerializeField] private PlacableCellType _visualShownCellType;
         [SerializeField] private int _rotationStep = 15;
         
         public override string BrushName => "Placable";
         protected override int HitBrushHeight => 1;
+        public int Rotation => _rotation;
+        public string CurrentPlacableName => _placables.CurrentItem.Name;
 
         private List<Vector3Int> _placableVisuals = new();
         private Color _placableVisualColor = Color.green;
@@ -38,40 +39,22 @@ namespace MapGen.Map.Brushes
 
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    _placables.NextItem();
+                    NextPlacable();
                 }
                 else
                 {
-                    _rotation += _rotationStep;
-                
-                    if (_rotation > 360)
-                    {
-                        _rotation = 0;
-                    }
-                    else if (_rotation < 0)
-                    {
-                        _rotation = 360;
-                    }
+                    NextRotatePlacable();
                 }
             }
             else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backwards
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    _placables.PreviousItem();
+                    PreviousPlacable();
                 }
                 else
                 {
-                    _rotation -= _rotationStep;
-
-                    if (_rotation > 360)
-                    {
-                        _rotation = 0;
-                    }
-                    else if (_rotation < 0)
-                    {
-                        _rotation = 360;
-                    }
+                    PreviousRotatePlacable();
                 }
             }
 
@@ -90,6 +73,44 @@ namespace MapGen.Map.Brushes
                 _placableVisualColor = Color.red;
             }
             
+        }
+        
+        public void NextRotatePlacable()
+        {
+            _rotation += _rotationStep;
+                
+            if (_rotation > 360)
+            {
+                _rotation = 0;
+            }
+            else if (_rotation < 0)
+            {
+                _rotation = 360;
+            }
+        }
+
+        public void PreviousRotatePlacable()
+        {
+            _rotation -= _rotationStep;
+
+            if (_rotation > 360)
+            {
+                _rotation = 0;
+            }
+            else if (_rotation < 0)
+            {
+                _rotation = 360;
+            }
+        }
+
+        public void NextPlacable()
+        {
+            _placables.NextItem();
+        }
+
+        public void PreviousPlacable()
+        {
+            _placables.PreviousItem();
         }
 
         public override void OnDrawGizmos()

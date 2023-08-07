@@ -168,6 +168,7 @@ MonoBehaviour:
   _rotatable: 1
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
+  _name: House Red
   _grids:
   - {fileID: 994927315674758160}
   - {fileID: 2711235397648342801}
@@ -225,7 +226,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 2145875690938369635}
   DrawGizmo: 1
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 1, b: 0.44687462, a: 1}
+  _gizmoColor: {r: 1, g: 0, b: 0.92639065, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -7, y: 0, z: -5}
@@ -1970,7 +1971,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 1599286136336041122}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.13111496, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.54871845, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -3, y: 0, z: -1}
@@ -2093,7 +2094,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6982520266948050823}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 0.7908373, b: 1, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.8640404, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -3, y: 0, z: -1}

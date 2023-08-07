@@ -6,13 +6,12 @@ namespace MapGen.Noise
     [CreateAssetMenu(fileName = "Cellular Noise", menuName = "MapGen/Noise/Cellular", order = 0)]
     public class CellularNoise : Noise
     {
-        [SerializeField] private RandomSettings randomSettings;
         [SerializeField] private float noiseScale;
         [SerializeField] private Vector2 noiseOffset;
         
-        public override float[,] Generate(int width, int height)
+        public override float[,] Generate(int width, int height, int seed)
         {
-            var fast = new FastNoiseLite(randomSettings.GetSeed());
+            var fast = new FastNoiseLite(seed);
             fast.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
             
             var noiseMap = new float[width, height];

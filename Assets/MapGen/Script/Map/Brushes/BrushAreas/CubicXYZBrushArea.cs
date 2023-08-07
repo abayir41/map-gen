@@ -8,6 +8,7 @@ namespace MapGen.Map.Brushes.BrushAreas
     public class CubicXYZBrushArea : BrushArea, IIncreasableBrushArea
     {
         [SerializeField] private Vector3Int _brushSize;
+        public int BrushSize => _brushSize.x;
 
         public override List<Vector3Int> GetBrushArea(Vector3Int startPoint)
         {
@@ -49,7 +50,7 @@ namespace MapGen.Map.Brushes.BrushAreas
             
             return result;
         }
-
+        
         public void IncreaseArea(int amount)
         {
             _brushSize += Vector3Int.one * amount;

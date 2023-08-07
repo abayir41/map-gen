@@ -88,7 +88,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
             float[,] spawnProbability;
             if (UseNoiseMap)
             {
-                var noise = ObjectPlacementNoise.Generate(helper.XWidth + 1, helper.ZWidth + 1);
+                var noise = ObjectPlacementNoise.Generate(helper.XWidth + 1, helper.ZWidth + 1, RandomSettings.GetSeed());
                 spawnProbability = noise;
             }
             else

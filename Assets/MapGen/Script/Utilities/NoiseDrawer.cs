@@ -10,11 +10,6 @@ namespace MapGen.Utilities
         [SerializeField] private RectTransform textureRect;
         [SerializeField] private Noise.Noise noise;
         [SerializeField] private Vector2Int size;
-        
-        private void Update()
-        {
-            SetNoiseTexture(noise.Generate(size.x, size.y), size.x, size.y);
-        }
 
         private void SetNoiseTexture(float[,] noisee, int width, int height)
         {

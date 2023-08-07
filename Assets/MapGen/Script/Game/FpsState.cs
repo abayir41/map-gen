@@ -33,8 +33,13 @@ namespace MapGen
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                GameManager.SwitchState(this, _editState);
+                SwitchToEdit();
             }
+        }
+
+        public void SwitchToEdit()
+        {
+            GameManager.SwitchState(this, _editState);
         }
 
         public override void OnStateEnter()

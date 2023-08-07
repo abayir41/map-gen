@@ -133,12 +133,13 @@ MonoBehaviour:
   _rotatable: 1
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
+  _name: Wall Beton 2
   _grids:
   - {fileID: 88778077780945168}
   - {fileID: 5324564219697716363}
   - {fileID: 9053397323330609498}
   _visualsParent: {fileID: 6057543008557849225}
-  DrawGizmo: 0
+  DrawGizmo: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
   _gizmoRadius: 0.25
 --- !u!1 &3266611995274700224
@@ -306,7 +307,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 1902394775525483658}
   DrawGizmo: 1
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.118070126, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.37217045, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 1}
@@ -417,7 +418,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6088892782059216207}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.4805274, a: 1}
+  _gizmoColor: {r: 0.04175234, g: 0, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 1}
@@ -538,7 +539,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 7385748359518762493}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.8462248, g: 0, b: 1, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.5644498, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -2, y: 0, z: -5}

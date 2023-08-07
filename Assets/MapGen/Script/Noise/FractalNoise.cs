@@ -7,7 +7,6 @@ namespace MapGen.Noise
     [CreateAssetMenu(fileName = "Fractal", menuName = "MapGen/Noise/Fractal", order = 0)]
     public class FractalNoise : Noise
     {
-        [SerializeField] private RandomSettings randomSettings;
         [SerializeField] private float noiseScale;
         [SerializeField] private Vector2 noiseOffset;
         [SerializeField] private FastNoiseLite.FractalType fractalType;
@@ -18,9 +17,9 @@ namespace MapGen.Noise
         [SerializeField] private float pingPongStrength;
         [SerializeField] private FastNoiseLite.NoiseType noiseType;
         
-        public override float[,] Generate(int width, int height)
+        public override float[,] Generate(int width, int height, int seed)
         {
-            var fast = new FastNoiseLite(randomSettings.GetSeed());
+            var fast = new FastNoiseLite(seed);
             
             fast.SetNoiseType(noiseType);
             fast.SetFractalType(fractalType);

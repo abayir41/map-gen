@@ -83,7 +83,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 3217079478421005574}
   DrawGizmo: 1
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 1, b: 0.09628606, a: 1}
+  _gizmoColor: {r: 0.3897524, g: 0, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 1}
@@ -192,7 +192,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 1634574122399294083}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.888209, b: 0, a: 1}
+  _gizmoColor: {r: 1, g: 0, b: 0.20075369, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -2, y: 0, z: -4}
@@ -304,7 +304,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 989452606486170209}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 1, b: 0.5087762, a: 1}
+  _gizmoColor: {r: 0, g: 0.8147955, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 1}
@@ -661,6 +661,7 @@ MonoBehaviour:
   _rotatable: 1
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
+  _name: Mini Barrier 2
   _grids:
   - {fileID: 7172799759334205834}
   - {fileID: 8812667260358454266}

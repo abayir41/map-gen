@@ -8,7 +8,9 @@ namespace MapGen.Map.Brushes.BrushAreas
     public class CubicPlainXYBrushArea : BrushArea, IIncreasableBrushArea
     {
         [SerializeField] private Vector2Int _brushSize;
-
+        public int BrushSize => _brushSize.x;
+        
+        
         public override List<Vector3Int> GetBrushArea(Vector3Int startPoint)
         {
             var minX = -_brushSize.x / 2;

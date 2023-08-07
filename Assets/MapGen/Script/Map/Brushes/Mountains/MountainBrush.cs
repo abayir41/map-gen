@@ -27,7 +27,6 @@ namespace MapGen.Map.Brushes.Mountains
         public Noise.Noise MountainPlacementNoise => _mountainPlacementNoise;
         public float GroundHeightFactor => groundHeightFactor;
         public float GroundMoveDownFactor => groundMoveDownFactor;
-        public Placable Ground => ground;
         
         
         private SelectedCellsHelper _selectedCellsHelper;
@@ -45,7 +44,7 @@ namespace MapGen.Map.Brushes.Mountains
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var yStartLevel = selectedCells.First().y;
             SetRandomSeed();
-            var mountains = MountainPlacementNoise.Generate(_selectedCellsHelper.XWidth + 1, _selectedCellsHelper.ZWidth + 1);
+            var mountains = MountainPlacementNoise.Generate(_selectedCellsHelper.XWidth + 1, _selectedCellsHelper.ZWidth + 1, RandomSettings.GetSeed());
 
             foreach (var selectedPos in selectedCells)
             {

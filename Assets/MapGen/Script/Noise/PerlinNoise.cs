@@ -8,15 +8,15 @@ namespace MapGen.Noise
         [SerializeField] private float noiseScale;
         [SerializeField] private Vector2 noiseOffset;
         
-        public override float[,] Generate(int width, int height)
+        public override float[,] Generate(int width, int height, int seed)
         {
             var noiseMap = new float[width, height];
             for (var x = 0; x < width; x++)
             {
                 for (var y = 0; y < height; y++)
                 {
-                    var samplePosX = x * noiseScale + noiseOffset.x;
-                    var samplePosY = y * noiseScale + noiseOffset.y;
+                    var samplePosX = x * noiseScale + noiseOffset.x + seed * 10000;
+                    var samplePosY = y * noiseScale + noiseOffset.y + seed * 10000;
 
                     noiseMap[x, y] = Mathf.PerlinNoise(samplePosX, samplePosY);
                 }

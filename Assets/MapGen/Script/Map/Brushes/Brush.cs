@@ -41,6 +41,7 @@ namespace MapGen.Map.Brushes
             }
             else
             {
+                DidRayHit = false;
                 VisualCells.Clear();
             }
         }

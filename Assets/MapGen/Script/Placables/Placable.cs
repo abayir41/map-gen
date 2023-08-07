@@ -14,7 +14,8 @@ namespace MapGen.Placables
         [SerializeField] private bool _rotatable = true;
         [Range(1,359)] [SerializeField] private int _rotationDegreeStep = 15;
         [SerializeField] private Vector3Int _origin;
-        
+        [SerializeField] private string _name;
+
         [Header("Grid Properties")] 
         [SerializeField] protected List<PlacableGrid> _grids;
         [SerializeField] protected Transform _visualsParent;
@@ -23,7 +24,9 @@ namespace MapGen.Placables
         [SerializeField] public bool DrawGizmo;
         [SerializeField] private Color _gizmoColor = Color.red;
         [SerializeField] private float _gizmoRadius = 0.25f;
-        
+
+
+        public string Name => _name;
         public SpawnData SpawnData { get; private set; }
         public int RotationDegreeStep => Mathf.Clamp(_rotationDegreeStep,1,360);
         public List<PlacableGrid> Grids => _grids;
