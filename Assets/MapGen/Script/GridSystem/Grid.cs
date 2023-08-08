@@ -11,12 +11,14 @@ namespace MapGen.GridSystem
     public class Grid
     {
         public Dictionary<Placable, PlacableGrids> ItemCellsDict { get; }
+        public Dictionary<Placable, GridCell> ItemOriginsDict { get; }
 
         public Dictionary<Vector3Int, GridCell> CachedCells { get; } = new();
 
         public Grid()
         {
             ItemCellsDict = new Dictionary<Placable, PlacableGrids>();
+            ItemOriginsDict = new Dictionary<Placable, GridCell>();
         }
 
         public GridCell GetCell(Vector3Int cellPosition)
@@ -104,6 +106,14 @@ namespace MapGen.GridSystem
         {
             var placableGrids = new PlacableGrids();
 
+            if(!IsCellExist(originPos, out var originCell))
+            {
+                originCell = CreateCell(originPos);
+            }
+
+            originCell.OriginatedItems.Add(placable);
+            ItemOriginsDict.Add(placable, originCell);
+            
             var physicalVolumes = placable.Grids.FindAll(grid => grid.PlacableCellType == PlacableCellType.PhysicalVolume);
             foreach (var physicalVolume in physicalVolumes)
             {
@@ -165,6 +175,11 @@ namespace MapGen.GridSystem
         {
             var physicalCells = ItemCellsDict[placable].Cells[PlacableCellType.PhysicalVolume];
             var newGroundCells = ItemCellsDict[placable].Cells[PlacableCellType.NewGround];
+
+            if (ItemOriginsDict.ContainsKey(placable))
+            {
+                ItemOriginsDict[placable].OriginatedItems.Remove(placable);
+            }
             
             foreach (var physicalCell in physicalCells)
             {

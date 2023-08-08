@@ -29,7 +29,7 @@ namespace MapGen.Map.Brushes
         {
             if(!_data.HasValue) return;
             
-            _creator.DestroyByCellPoint(_data.Value.SpawnPos);
+            _creator.DestroyByData(_data.Value);
         }
     }
 }

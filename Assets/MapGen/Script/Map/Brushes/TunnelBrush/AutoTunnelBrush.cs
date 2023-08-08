@@ -37,7 +37,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
             return new AutoTunnelCommand(WorldCreator.Instance, this, selectedCells, grid);
         }
 
-        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public TunnelPaintData Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var layer = selectedCells.First().y;
             _helper = new TunnelBrushHelper(selectedCells, grid, this);
@@ -45,26 +45,27 @@ namespace MapGen.Map.Brushes.TunnelBrush
         }
         
         [MethodTimer]
-        private List<SpawnData> MakeTunnels(int layer, Grid grid)
+        private TunnelPaintData MakeTunnels(int layer, Grid grid)
         {
             var edgeTunnelGridCells = _helper.FindEdgeTunnelGridCells(layer);
             var groupedEdgeTunnelGridCells = _helper.GroupEdgeGroundTunnelGrid(edgeTunnelGridCells);
             var tunnelPaths = _helper.FindAllEdgeToEdgePathsFromGroups(groupedEdgeTunnelGridCells); 
             
-            if (tunnelPaths.Count == 0) return null;
+            if (tunnelPaths.Count == 0) return new TunnelPaintData(new List<SpawnData>(), new List<SpawnData>());
             
             var heightFilteredTunnels = _helper.FilterByHeight(tunnelPaths);
             var orderedTunnels = heightFilteredTunnels.OrderByDescending(_helper.FindHeightAverageOfPath).ToList();
 
             var cachedPaths = new List<List<GridCell>>();
-            var result = new List<SpawnData>();
+            var result = new TunnelPaintData(new List<SpawnData>(), new List<SpawnData>());
             foreach (var path in orderedTunnels)
             {
                 if (_helper.CanTunnelSpawnable(path, cachedPaths))
                 {
                     var placable = CreateTunnel(path, grid);
                     cachedPaths.Add(path);
-                    result.AddRange(placable);
+                    result.NewSpawnedObjects.AddRange(placable.NewSpawnedObjects);
+                    result.DestroyedObjects.AddRange(placable.DestroyedObjects);
                 }
             }
 
@@ -72,7 +73,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
         }
         
         [MethodTimer]
-        private List<SpawnData> CreateTunnel(List<GridCell> path, Grid grid)
+        private TunnelPaintData CreateTunnel(List<GridCell> path, Grid grid)
         {
             var start = path.First();
             var end = path.Last();
@@ -82,7 +83,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
             rotationDegree *= -1;
             var rotationDegreeInt = Mathf.RoundToInt(rotationDegree);
 
-            var result = new List<SpawnData>();
+            var result = new TunnelPaintData(new List<SpawnData>(), new List<SpawnData>());
 
             foreach (var pathPoint in path)
             {
@@ -99,6 +100,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
                         if (cell.Item is null or TunnelPlacable) continue;
 
+                        result.DestroyedObjects.Add(cell.Item.SpawnData);
                         WorldCreator.Instance.DestroyItem(cell.Item);
                     }
                 }
@@ -108,7 +110,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
                     var data = new SpawnData(pathPoint.CellPosition, TunnelBrush, rotationDegreeInt,
                         CellLayer.Obstacle); 
                     WorldCreator.Instance.SpawnObject(data);
-                    result.Add(data);
+                    result.NewSpawnedObjects.Add(data);
                 }
             }
 

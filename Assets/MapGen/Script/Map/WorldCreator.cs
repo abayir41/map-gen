@@ -25,31 +25,37 @@ namespace MapGen.Map
         [SerializeField] private CellLayer _cellLayer;
         [SerializeField] private CellState _cellState;
         
-        private Dictionary<Placable, HashSet<SelectableGridCell>> _placablePhysicals = new(); 
+        private Dictionary<Placable, HashSet<SelectableGridCell>> _placablePhysicals = new();
 
-        public Grid Grid { get; private set; }
+        public Grid Grid { get; private set; } = new Grid();
 
         private void Awake()
         {
             Instance = this;
-            Grid = new Grid();
         }
 
-        public void DestroyByCellPoint(Vector3Int pos)
+        public void DestroyByData(SpawnData data)
         {
-            if (!Grid.IsCellExist(pos, out var cell))
+            if (!Grid.IsCellExist(data.SpawnPos, out var cell))
             {
-                Debug.Log("Cell Does not exist: " + pos);
+                Debug.Log("Cell Does not exist: " + data.SpawnPos);
                 return;
             }
 
-            if (cell.Item == null)
+            if (cell.Item != null && cell.Item.SpawnData.Equals(data))
             {
-                Debug.Log("Cell item is null: " + pos);
+                DestroyItem(cell.Item);
+                return;
+            }
+
+            var originated = cell.OriginatedItems.FirstOrDefault(placable => placable.SpawnData.Equals(data));
+            if (originated != default)
+            {
+                DestroyItem(originated);
                 return;
             }
             
-            DestroyItem(cell.Item);
+            Debug.LogWarning("Item is not found: " + data.SpawnPos);
         }
         
         public void DestroyItem(Placable placable)
@@ -71,7 +77,7 @@ namespace MapGen.Map
             Destroy(item.gameObject);
         }
 
-        public void SpawnObject(SpawnData data)
+        public Placable SpawnObject(SpawnData data)
         {
             var instantiatedPlacable = Instantiate(data.Prefab, _gridPrefabsParent);
             instantiatedPlacable.InitializePlacable(data);
@@ -117,6 +123,8 @@ namespace MapGen.Map
                     _placablePhysicals[instantiatedPlacable].Add(selectableGridCell);
                 }
             }
+
+            return instantiatedPlacable;
         }
 
         private void OnDrawGizmos()

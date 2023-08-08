@@ -36,7 +36,7 @@ namespace MapGen.Map.Brushes
         {
             foreach (var spawnData in _data)
             {
-                _worldCreator.DestroyByCellPoint(spawnData.SpawnPos);
+                _worldCreator.DestroyByData(spawnData);
             }
             
             _groundCommand?.Undo();

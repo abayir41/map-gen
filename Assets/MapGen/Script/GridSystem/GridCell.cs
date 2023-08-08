@@ -1,4 +1,5 @@
-﻿using MapGen.Map;
+﻿using System.Collections.Generic;
+using MapGen.Map;
 using MapGen.Placables;
 using UnityEngine;
 
@@ -11,7 +12,8 @@ namespace MapGen.GridSystem
         public CellState CellState { get; private set; }
         public CellLayer CellLayer { get; private set; }
         public Placable Item { get; private set; }
-        
+        public List<Placable> OriginatedItems { get; } = new();
+
         public GridCell(Vector3Int cellPosition, Vector3 worldPosition)
         {
             CellPosition = cellPosition;

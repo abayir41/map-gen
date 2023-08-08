@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MapGen.Command;
+using MapGen.Placables;
 using UnityEngine;
 using Grid = MapGen.GridSystem.Grid;
 
@@ -28,7 +29,7 @@ namespace MapGen.Map.Brushes
         {
             foreach (var spawnData in _data)
             {
-                _worldCreator.DestroyByCellPoint(spawnData.SpawnPos);
+                _worldCreator.DestroyByData(spawnData);
             }
             
             _worldCreator.Grid.RegenerateShouldPlaceOnGrounds();
