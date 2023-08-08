@@ -35,55 +35,39 @@ namespace MapGen.Map.Brushes.NormalMap
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MultipleCellEditCommand(WorldCreator.Instance,this, selectedCells, grid);
-        }
-        
-        public List<SpawnData> GenerateMap(List<Vector3Int> selectedCells, Grid grid)
-        {
-            SetRandomSeed();
-            return Paint(selectedCells, grid);
-        }
+            var seed = randomSettings.GetSeed();
+            ICommand ground = null;
+            ICommand mountains = null;
+            ICommand tunnels = null;
+            ICommand obstacles = null;
 
-        private void SetRandomSeed()
-        {
-            UnityEngine.Random.InitState(RandomSettings.GetSeed());
-        }
-
-        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
-        {
-            var result = new List<SpawnData>();
-            
             if (MapParts.HasFlag(MapParts.Ground))
             {
-                var ground = _groundBrush.Paint(selectedCells, grid);
-                result.AddRange(ground);
+                ground = _groundBrush.GetPaintCommand(selectedCells, grid);
             }
 
             if (MapParts.HasFlag(MapParts.Mountains))
             {
                 var offsetedCells =
                     selectedCells.ConvertAll(pos => pos + Vector3Int.up * MOUNTAINS_LEVEL);
-                var mountain = _mountainBrush.Paint(offsetedCells, grid);
-                result.AddRange(mountain);
+                mountains = _mountainBrush.GetPaintCommand(offsetedCells, grid, seed);
             }
 
             if (MapParts.HasFlag(MapParts.Tunnels))
             {
                 var offsetedCells =
                     selectedCells.ConvertAll(pos => pos + Vector3Int.up * TUNNEL_LEVEL);
-                var tunnels = _autoTunnelBrush.Paint(offsetedCells, grid);
-                result.AddRange(tunnels);
+                tunnels = _autoTunnelBrush.GetPaintCommand(offsetedCells, grid);
             }
 
             if (MapParts.HasFlag(MapParts.Obstacles))
             {
                 var offsetedCells =
                     selectedCells.ConvertAll(pos => pos + Vector3Int.up * OBSTACLES_LEVEL);
-                var obstacles = _obstaclesBrush.Paint(offsetedCells, grid);
-                result.AddRange(obstacles);
+                obstacles = _obstaclesBrush.GetPaintCommand(offsetedCells, grid, seed);
             }
-
-            return result;
+            
+            return new MapCommand(ground, mountains, tunnels, obstacles);
         }
     }
 }

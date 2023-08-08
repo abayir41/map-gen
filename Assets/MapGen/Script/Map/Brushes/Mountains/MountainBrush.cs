@@ -35,16 +35,21 @@ namespace MapGen.Map.Brushes.Mountains
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MultipleCellEditCommand(WorldCreator.Instance,this, selectedCells, grid);
+            return new MountainsCommand(WorldCreator.Instance,this, selectedCells, grid, randomSettings.GetSeed());
+        }
+        
+        public ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid, int seed)
+        {
+            return new MountainsCommand(WorldCreator.Instance,this, selectedCells, grid, seed);
         }
 
-        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid, int seed)
         {
             var result = new List<SpawnData>();
             _selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var yStartLevel = selectedCells.First().y;
-            SetRandomSeed();
-            var mountains = MountainPlacementNoise.Generate(_selectedCellsHelper.XWidth + 1, _selectedCellsHelper.ZWidth + 1, RandomSettings.GetSeed());
+            SetRandomSeed(seed);
+            var mountains = MountainPlacementNoise.Generate(_selectedCellsHelper.XWidth + 1, _selectedCellsHelper.ZWidth + 1, seed);
 
             foreach (var selectedPos in selectedCells)
             {
@@ -75,9 +80,9 @@ namespace MapGen.Map.Brushes.Mountains
             return zeroOneInterval * 100;
         }
         
-        private void SetRandomSeed()
+        private void SetRandomSeed(int seed)
         {
-            UnityEngine.Random.InitState(RandomSettings.GetSeed());
+            UnityEngine.Random.InitState(seed);
         }
     }
 }

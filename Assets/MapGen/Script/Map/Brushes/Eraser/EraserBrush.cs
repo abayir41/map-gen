@@ -65,7 +65,7 @@ namespace MapGen.Map.Brushes.Eraser
             return new EraserCommand(WorldCreator.Instance, this, selectedCells, grid);
         }
 
-        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid, int seed = 0)
         {
             var result = new List<SpawnData>();
             foreach (var selectedCell in selectedCells)

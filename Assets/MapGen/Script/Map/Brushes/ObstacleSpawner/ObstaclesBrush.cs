@@ -59,16 +59,21 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
         
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MultipleCellEditCommand(WorldCreator.Instance,this, selectedCells, grid);
+            return new ObstaclesCommand(WorldCreator.Instance,this, selectedCells, grid, randomSettings.GetSeed());
+        }
+        
+        public ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid, int seed)
+        {
+            return new ObstaclesCommand(WorldCreator.Instance,this, selectedCells, grid, seed);
         }
 
-        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid, int seed)
         {
             var result = new List<SpawnData>();
             var helper = new SelectedCellsHelper(selectedCells, grid);
             var layer = selectedCells.First().y;
             var rotatedPlacables = new List<PlacableData>();
-            SetRandomSeed();
+            SetRandomSeed(seed);
 
             
             foreach (var placable in Placables)
@@ -88,7 +93,7 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
             float[,] spawnProbability;
             if (UseNoiseMap)
             {
-                var noise = ObjectPlacementNoise.Generate(helper.XWidth + 1, helper.ZWidth + 1, RandomSettings.GetSeed());
+                var noise = ObjectPlacementNoise.Generate(helper.XWidth + 1, helper.ZWidth + 1, seed);
                 spawnProbability = noise;
             }
             else
@@ -139,9 +144,9 @@ namespace MapGen.Map.Brushes.ObstacleSpawner
             return zeroOneInterval * 100;
         }
         
-        private void SetRandomSeed()
+        private void SetRandomSeed(int seed)
         {
-            UnityEngine.Random.InitState(RandomSettings.GetSeed());
+            UnityEngine.Random.InitState(seed);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace MapGen.Map.Brushes
         protected List<Vector3Int> CurrentlyLookingCells { get; private set; }
 
         public abstract ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid);
-        public abstract List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid);
+        
 
         public override void Update()
         {

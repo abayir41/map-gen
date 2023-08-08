@@ -34,10 +34,10 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MultipleCellEditCommand(WorldCreator.Instance, this, selectedCells, grid);
+            return new AutoTunnelCommand(WorldCreator.Instance, this, selectedCells, grid);
         }
 
-        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var layer = selectedCells.First().y;
             _helper = new TunnelBrushHelper(selectedCells, grid, this);

@@ -45,38 +45,41 @@ namespace MapGen.Map.Brushes.Labyrinth
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MultipleCellEditCommand(WorldCreator.Instance, this, selectedCells, grid);
+            var grounds = _groundBrush.GetPaintCommand(selectedCells, grid);
+            
+            return new LabyrinthCommand(this, grounds, WorldCreator.Instance, selectedCells, grid, _randomSettings.GetSeed());
         }
 
-        public override List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid)
+        public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid, int seed)
         {
-            UnityEngine.Random.InitState(RandomSettings.GetSeed());
             var map = new RotationMap();
             var selectedCellsHelper = new SelectedCellsHelper(selectedCells, grid);
             var result = new List<SpawnData>();
             
-            var grounds = _groundBrush.Paint(selectedCells, grid);
-            
-            var labyrinth = CreateLabyrinth(map, grid, selectedCellsHelper, out var probabilityMap);
+            var labyrinth = CreateLabyrinth(map, grid, selectedCellsHelper, out var probabilityMap, seed);
 
             var obstaclesCells = selectedCells.ConvertAll(input =>
                 input + Vector3Int.up * OBSTACLES_START_Y_LEVEL);
-            var obstacles = CreatObstacles(obstaclesCells, grid, map, probabilityMap);
+            var obstacles = CreatObstacles(obstaclesCells, grid, map, probabilityMap, seed);
 
-            
-            result.AddRange(grounds);
             result.AddRange(labyrinth);
             result.AddRange(obstacles);
             return result;
         }
 
-        private List<SpawnData> CreateLabyrinth(RotationMap map, Grid grid, SelectedCellsHelper selectedCellsHelper, out float[,] obstacleProbabilityMap)
+        private void SetRandomSeed(int seed)
         {
+            UnityEngine.Random.InitState(seed);
+        }
+
+        private List<SpawnData> CreateLabyrinth(RotationMap map, Grid grid, SelectedCellsHelper selectedCellsHelper, out float[,] obstacleProbabilityMap, int seed)
+        {
+            SetRandomSeed(seed);
             var result = new List<SpawnData>();
             var labyrinthPieceSize = WallThickness + WayThickness;
             var labyrinthPieceAmount = new Vector2Int((selectedCellsHelper.XWidth - WallThickness) / labyrinthPieceSize,
                 (selectedCellsHelper.ZWidth - WallThickness) / labyrinthPieceSize);
-            var maze = MazeGenerator.Generate(labyrinthPieceAmount.x, labyrinthPieceAmount.y, RandomSettings.GetSeed());
+            var maze = MazeGenerator.Generate(labyrinthPieceAmount.x, labyrinthPieceAmount.y, seed);
 
             if (_openExits)
             {
@@ -328,7 +331,7 @@ namespace MapGen.Map.Brushes.Labyrinth
             }
         }
 
-        private List<SpawnData> CreatObstacles(List<Vector3Int> selectedCells, Grid grid, RotationMap map, float[,] obstacleProbabilityMap)
+        private List<SpawnData> CreatObstacles(List<Vector3Int> selectedCells, Grid grid, RotationMap map, float[,] obstacleProbabilityMap, int seed)
         {
             var oldBoolSetting = _obstaclesBrush.UseNoiseMap;
             _obstaclesBrush.UseNoiseMap = false;
@@ -337,7 +340,7 @@ namespace MapGen.Map.Brushes.Labyrinth
             var oldMap = _obstaclesBrush.RotationMap;
             _obstaclesBrush.RotationMap = map;
 
-            var data = _obstaclesBrush.Paint(selectedCells, grid);
+            var data = _obstaclesBrush.Paint(selectedCells, grid, seed);
 
             _obstaclesBrush.UseNoiseMap = oldBoolSetting;
             _obstaclesBrush.RotationMap = oldMap;
