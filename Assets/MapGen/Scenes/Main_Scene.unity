@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 41350098}
   - component: {fileID: 41350097}
   m_Layer: 5
-  m_Name: Next Brush
+  m_Name: Next Brush Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 91380064}
   - component: {fileID: 91380063}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Brush Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -873,7 +873,7 @@ GameObject:
   - component: {fileID: 332934956}
   - component: {fileID: 332934955}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Size Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: 393912996}
   - component: {fileID: 393912995}
   m_Layer: 5
-  m_Name: Next Brush
+  m_Name: Next Rotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1323,7 +1323,7 @@ GameObject:
   - component: {fileID: 439750903}
   - component: {fileID: 439750902}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Placable Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1456,7 +1456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 445769532}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Undo Redo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1497,7 +1497,7 @@ GameObject:
   - component: {fileID: 445948316}
   - component: {fileID: 445948315}
   m_Layer: 5
-  m_Name: "Previ\u0131us Brush"
+  m_Name: "Previ\u0131us Brush Area"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1630,7 +1630,7 @@ GameObject:
   - component: {fileID: 451480137}
   - component: {fileID: 451480136}
   m_Layer: 5
-  m_Name: WASD
+  m_Name: WASD Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1907,7 +1907,7 @@ GameObject:
   - component: {fileID: 503945120}
   - component: {fileID: 503945119}
   m_Layer: 5
-  m_Name: "Previ\u0131us Brush"
+  m_Name: Previous Rotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2158,7 +2158,7 @@ GameObject:
   - component: {fileID: 650670423}
   - component: {fileID: 650670422}
   m_Layer: 5
-  m_Name: "Previ\u0131us Brush"
+  m_Name: Previous Brush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2297,7 +2297,7 @@ GameObject:
   - component: {fileID: 687498929}
   - component: {fileID: 687498928}
   m_Layer: 5
-  m_Name: "Previ\u0131us Brush"
+  m_Name: Previous Seed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2891,7 +2891,7 @@ GameObject:
   - component: {fileID: 743439650}
   - component: {fileID: 743439649}
   m_Layer: 5
-  m_Name: Next Brush
+  m_Name: Next Placable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3072,7 +3072,7 @@ GameObject:
   - component: {fileID: 765423487}
   - component: {fileID: 765423486}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Size Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3207,7 +3207,7 @@ GameObject:
   - component: {fileID: 766511656}
   - component: {fileID: 766511655}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Rotation Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3423,7 +3423,7 @@ GameObject:
   - component: {fileID: 842258491}
   - component: {fileID: 842258490}
   m_Layer: 5
-  m_Name: Next Brush
+  m_Name: Next Seed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4168,7 +4168,7 @@ GameObject:
   - component: {fileID: 1179623536}
   - component: {fileID: 1179623535}
   m_Layer: 5
-  m_Name: "Previ\u0131us Brush"
+  m_Name: Previous Placable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4921,7 +4921,7 @@ GameObject:
   - component: {fileID: 1379357275}
   - component: {fileID: 1379357274}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Undo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5189,7 +5189,7 @@ GameObject:
   - component: {fileID: 1429582687}
   - component: {fileID: 1429582686}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Seed Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5460,7 +5460,7 @@ GameObject:
   - component: {fileID: 1633473148}
   - component: {fileID: 1633473147}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Redo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5594,7 +5594,7 @@ GameObject:
   - component: {fileID: 1643571880}
   - component: {fileID: 1643571879}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Switch To Edit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5911,7 +5911,7 @@ GameObject:
   - component: {fileID: 1729787054}
   - component: {fileID: 1729787053}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Rotation Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6309,7 +6309,7 @@ GameObject:
   - component: {fileID: 1800715316}
   - component: {fileID: 1800715315}
   m_Layer: 5
-  m_Name: Icon
+  m_Name: Brush Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6522,7 +6522,7 @@ GameObject:
   - component: {fileID: 1867249243}
   - component: {fileID: 1867249242}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Seed Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6785,7 +6785,7 @@ GameObject:
   - component: {fileID: 2098649419}
   - component: {fileID: 2098649418}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Placable Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
