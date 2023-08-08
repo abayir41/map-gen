@@ -25,8 +25,6 @@ namespace MapGen.Map.Brushes.TunnelBrush
         public float TunnelMinLength => tunnelMinLength;
         public float TunnelAverageMinHeight => tunnelAverageMinHeight;
         public float BetweenTunnelMinSpace => betweenTunnelMinSpace;
-        
-        
         public override string BrushName => "Auto Tunnel";
         protected override int HitBrushHeight => 1;
 
@@ -34,7 +32,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new AutoTunnelCommand(WorldCreator.Instance, this, selectedCells, grid);
+            return new AutoTunnelCommand(WorldCreator.Instance, this, new List<Vector3Int>(selectedCells), grid);
         }
 
         public TunnelPaintData Paint(List<Vector3Int> selectedCells, Grid grid)

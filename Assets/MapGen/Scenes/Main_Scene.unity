@@ -3588,6 +3588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727ca79f3760467ea81a3afdb79c44ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _undoButton: {fileID: 1379357274}
+  _redoButton: {fileID: 1633473147}
 --- !u!1 &860783297
 GameObject:
   m_ObjectHideFlags: 0
@@ -4991,19 +4993,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1379357275}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 850814692}
-        m_TargetAssemblyTypeName: MapGen.Command.CommandManager, Assembly-CSharp
-        m_MethodName: UndoCommand
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1379357275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5530,19 +5520,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1633473148}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 850814692}
-        m_TargetAssemblyTypeName: MapGen.Command.CommandManager, Assembly-CSharp
-        m_MethodName: RedoCommand
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1633473148
 MonoBehaviour:
   m_ObjectHideFlags: 0

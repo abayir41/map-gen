@@ -62,7 +62,7 @@ namespace MapGen.Map.Brushes.Eraser
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new EraserCommand(WorldCreator.Instance, this, selectedCells, grid);
+            return new EraserCommand(WorldCreator.Instance, this, new List<Vector3Int>(selectedCells), grid);
         }
 
         public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid, int seed = 0)

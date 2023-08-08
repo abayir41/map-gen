@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MapGen.Command
 {
     public class CommandManager : MonoBehaviour
     {
         public static CommandManager Instance { get; private set; }
+
+        [SerializeField] private Button _undoButton;
+        [SerializeField] private Button _redoButton;
         
         private readonly List<ICommand> commandList = new List<ICommand>();
         private int _index;
@@ -14,6 +18,9 @@ namespace MapGen.Command
         private void Awake()
         {
             Instance = this;
+            
+            _undoButton.onClick.AddListener(UndoCommand);
+            _redoButton.onClick.AddListener(RedoCommand);
         }
 
         private void Update()

@@ -35,12 +35,12 @@ namespace MapGen.Map.Brushes.Mountains
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
-            return new MountainsCommand(WorldCreator.Instance,this, selectedCells, grid, randomSettings.GetSeed());
+            return new MountainsCommand(WorldCreator.Instance,this, new List<Vector3Int>(selectedCells), grid, randomSettings.GetSeed());
         }
         
         public ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid, int seed)
         {
-            return new MountainsCommand(WorldCreator.Instance,this, selectedCells, grid, seed);
+            return new MountainsCommand(WorldCreator.Instance,this, new List<Vector3Int>(selectedCells), grid, seed);
         }
 
         public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid, int seed)

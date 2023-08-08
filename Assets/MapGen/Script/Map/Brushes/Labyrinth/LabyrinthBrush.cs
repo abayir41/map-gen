@@ -47,7 +47,7 @@ namespace MapGen.Map.Brushes.Labyrinth
         {
             var grounds = _groundBrush.GetPaintCommand(selectedCells, grid);
             
-            return new LabyrinthCommand(this, grounds, WorldCreator.Instance, selectedCells, grid, _randomSettings.GetSeed());
+            return new LabyrinthCommand(this, grounds, WorldCreator.Instance, new List<Vector3Int>(selectedCells), grid, _randomSettings.GetSeed());
         }
 
         public List<SpawnData> Paint(List<Vector3Int> selectedCells, Grid grid, int seed)
