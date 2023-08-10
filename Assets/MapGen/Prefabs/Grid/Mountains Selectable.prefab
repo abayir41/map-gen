@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2222524241330915077}
   - component: {fileID: 2222524241330915079}
   - component: {fileID: 2222524241330915076}
-  m_Layer: 8
-  m_Name: Map Selectable Cell
+  m_Layer: 10
+  m_Name: Mountains Selectable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

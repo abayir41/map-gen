@@ -80,7 +80,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 1207511622553275451}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.11493254, g: 0, b: 1, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.2579341, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 4, z: 3}
@@ -175,7 +175,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 1669521222652289077}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 0.71200275, b: 1, a: 1}
+  _gizmoColor: {r: 0.90056324, g: 0, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: -3}
@@ -310,6 +310,8 @@ MonoBehaviour:
   _rotatable: 1
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
+  _name: Tunnel
+  _selectableGridCell: {fileID: 2222524241330915079, guid: 87128a5bf8792aa45b73cf2de50b1ec4, type: 3}
   _grids:
   - {fileID: 5028272266756451088}
   - {fileID: 4553120300037077320}
@@ -369,7 +371,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6460284358996524184}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.005071164, b: 0, a: 1}
+  _gizmoColor: {r: 0.34778118, g: 1, b: 0, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -2, y: 0, z: -3}

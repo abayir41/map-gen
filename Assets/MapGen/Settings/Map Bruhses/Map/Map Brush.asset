@@ -15,6 +15,9 @@ MonoBehaviour:
   _gizmoRadius: 0.25
   _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
   _brushIcon: {fileID: 21300000, guid: d93343d935dbe9b40a7ba939832e377e, type: 3}
+  _acceptedLayerMask:
+    serializedVersion: 2
+    m_Bits: 1792
   _selectedCellsColor: {r: 0, g: 0, b: 1, a: 1}
   _brushAreas: {fileID: 11400000, guid: 7a1133c073da6a94e990bab760141411, type: 2}
   _groundBrush: {fileID: 11400000, guid: f6f66414fd1feab4fa371d2d15157f8d, type: 2}

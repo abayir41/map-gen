@@ -132,7 +132,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 2649068725732953403}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.8751316, g: 0, b: 1, a: 1}
+  _gizmoColor: {r: 0, g: 0.8560653, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -198,7 +198,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 7663144661369600359}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.712746, b: 0, a: 1}
+  _gizmoColor: {r: 0, g: 0.94182634, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -468,7 +468,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 7146614868979591604}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.74736226, b: 0, a: 1}
+  _gizmoColor: {r: 1, g: 0, b: 0.52881527, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -576,6 +576,7 @@ MonoBehaviour:
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
   _name: Maze Obstacle
+  _selectableGridCell: {fileID: 2222524241330915079, guid: 87128a5bf8792aa45b73cf2de50b1ec4, type: 3}
   _grids:
   - {fileID: 1341002912686874266}
   - {fileID: 1716233700385049251}

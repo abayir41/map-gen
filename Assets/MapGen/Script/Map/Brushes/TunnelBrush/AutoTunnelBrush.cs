@@ -66,6 +66,8 @@ namespace MapGen.Map.Brushes.TunnelBrush
                     result.DestroyedObjects.AddRange(placable.DestroyedObjects);
                 }
             }
+            
+            WorldCreator.Grid.RegenerateShouldPlaceOnGrounds();
 
             return result;
         }

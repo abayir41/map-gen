@@ -49,7 +49,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 8395904798826644859}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0, g: 1, b: 0.4215231, a: 1}
+  _gizmoColor: {r: 0.35045624, g: 1, b: 0, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -3, y: 0, z: -1}
@@ -172,7 +172,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 8052945382946637992}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.82273245, g: 1, b: 0, a: 1}
+  _gizmoColor: {r: 0.8094034, g: 0, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -3, y: 0, z: -1}
@@ -575,7 +575,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 5105498893116566499}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.6178131, a: 1}
+  _gizmoColor: {r: 0.69494843, g: 1, b: 0, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: -7, y: 0, z: -5}
@@ -2258,6 +2258,7 @@ MonoBehaviour:
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
   _name: House Blue
+  _selectableGridCell: {fileID: 2222524241330915079, guid: 87128a5bf8792aa45b73cf2de50b1ec4, type: 3}
   _grids:
   - {fileID: 4688647932903820709}
   - {fileID: 810486308798654947}

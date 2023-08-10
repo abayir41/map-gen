@@ -15,6 +15,9 @@ MonoBehaviour:
   _gizmoRadius: 0.25
   _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
   _brushIcon: {fileID: 21300000, guid: 5138001adc755bf4cad299ecf6d8a721, type: 3}
+  _acceptedLayerMask:
+    serializedVersion: 2
+    m_Bits: 1792
   _placables:
     _items:
     - {fileID: 8967608169036613168, guid: 06e75a09bdf2d3541b43e29e4286be60, type: 3}
@@ -28,6 +31,5 @@ MonoBehaviour:
     - {fileID: 8213404422655174283, guid: 44ba401f1f51c8e49b54d85d88821205, type: 3}
     - {fileID: 4727080097559331581, guid: c9a4633f0fdc62f46b795bcae2ecf27d, type: 3}
     - {fileID: 2683300341979957061, guid: 919c68a81bd5a93409da87f7635b7140, type: 3}
-  _placableGizmoRadius: 0.25
   _visualShownCellType: 2
   _rotationStep: 15

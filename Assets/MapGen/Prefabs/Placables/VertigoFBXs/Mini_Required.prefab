@@ -146,7 +146,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 4718538674244621063}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.97146034, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.04781103, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -227,7 +227,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 4928444946475510025}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.9043225, g: 1, b: 0, a: 1}
+  _gizmoColor: {r: 0, g: 0.08455086, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -300,6 +300,7 @@ MonoBehaviour:
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 1}
   _name: Wall Red White
+  _selectableGridCell: {fileID: 2222524241330915079, guid: 87128a5bf8792aa45b73cf2de50b1ec4, type: 3}
   _grids:
   - {fileID: 2093580520979568712}
   - {fileID: 9024793001378097171}
@@ -357,7 +358,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 7559535081336885586}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.73636806, b: 0, a: 1}
+  _gizmoColor: {r: 0, g: 1, b: 0.4853096, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}

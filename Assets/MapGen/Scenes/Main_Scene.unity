@@ -1295,9 +1295,6 @@ MonoBehaviour:
   currentSeed: {fileID: 1867249242}
   sceneCamera: {fileID: 687690567}
   _maxDistance: 1000
-  _selectableGridMask:
-    serializedVersion: 2
-    m_Bits: 256
   _brushes:
     _items:
     - {fileID: 11400000, guid: 7e7072f756fd7094eac94b77945dd322, type: 2}
@@ -6710,7 +6707,6 @@ MonoBehaviour:
   _worldSettings: {fileID: 11400000, guid: a245b69541f93ee40af258a9d9d04476, type: 2}
   _gridPrefabsParent: {fileID: 293857008}
   _selectableGridCellParent: {fileID: 1984068250}
-  _selectableGridCell: {fileID: 2222524241330915079, guid: 837cdc2eeca2bd046912faa38f205e76, type: 3}
   _drawGizmosLayer: 0
   _drawGizmosState: 0
   _cellLayer: 0
@@ -7276,7 +7272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: GroundLayers.m_Bits
-      value: 257
+      value: 1793
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_Name

@@ -15,3 +15,6 @@ MonoBehaviour:
   _gizmoRadius: 0.25
   _visualCellsColor: {r: 0, g: 1, b: 0, a: 1}
   _brushIcon: {fileID: 21300000, guid: 35344f0aaaebcf7438cd845fcd2a26b8, type: 3}
+  _acceptedLayerMask:
+    serializedVersion: 2
+    m_Bits: 1792

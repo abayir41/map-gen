@@ -17,7 +17,6 @@ namespace MapGen.Map
         [SerializeField] private WorldSettings _worldSettings;
         [SerializeField] private Transform _gridPrefabsParent;
         [SerializeField] private Transform _selectableGridCellParent;
-        [SerializeField] private SelectableGridCell _selectableGridCell;
         
         [Header("Gizmos")]
         [SerializeField] private bool _drawGizmosLayer;
@@ -109,7 +108,7 @@ namespace MapGen.Map
                 foreach (var physicalGridCellPosition in transformedGrid)
                 {
                     var worldPos = Grid.CellPositionToRealWorld(physicalGridCellPosition);
-                    var selectableGridCell = Instantiate(_selectableGridCell, _selectableGridCellParent);
+                    var selectableGridCell = Instantiate(data.Prefab.SelectableGridCell, _selectableGridCellParent);
                     selectableGridCell.transform.position = worldPos;
 
                     if (!Grid.IsCellExist(physicalGridCellPosition, out var cell))
@@ -118,7 +117,6 @@ namespace MapGen.Map
                     }
 
                     selectableGridCell.BoundedCell = cell;
-                    selectableGridCell.BoundedPlacable = instantiatedPlacable;
                     
                     _placablePhysicals[instantiatedPlacable].Add(selectableGridCell);
                 }

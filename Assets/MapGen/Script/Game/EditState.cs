@@ -41,7 +41,6 @@ namespace MapGen
         [Header("Editing")]
         [SerializeField] private Camera sceneCamera;
         [SerializeField] private int _maxDistance;
-        [SerializeField] private LayerMask _selectableGridMask;
         [SerializeField] private EndlessList<Brush> _brushes;
         [SerializeField] private int _increaseAmount = 1;
 
@@ -205,9 +204,8 @@ namespace MapGen
             customBrush.SetSeed(currentSeed - 1);
         }
         
-        public bool RayToGridCell(out Vector3Int cellPos)
+        public bool RayToGridCell(out Vector3Int cellPos, LayerMask layerMask)
         {
-
             if (IsMouseOverUI())
             {
                 cellPos = Vector3Int.zero;
@@ -218,7 +216,7 @@ namespace MapGen
             var ray = sceneCamera.ScreenPointToRay(new Vector3(mousePos.x, mousePos.y, sceneCamera.nearClipPlane));
 
             
-            if (Physics.Raycast(ray, out var result, _maxDistance, _selectableGridMask))
+            if (Physics.Raycast(ray, out var result, _maxDistance, layerMask))
             {
                 cellPos = result.collider.GetComponent<SelectableGridCell>().BoundedCell.CellPosition;
                 return true;

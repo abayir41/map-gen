@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapGen.GridSystem;
 using MapGen.Map;
 using MapGen.Utilities;
 using UnityEngine;
@@ -15,7 +16,8 @@ namespace MapGen.Placables
         [Range(1,359)] [SerializeField] private int _rotationDegreeStep = 15;
         [SerializeField] private Vector3Int _origin;
         [SerializeField] private string _name;
-
+        [SerializeField] private SelectableGridCell _selectableGridCell;
+        
         [Header("Grid Properties")] 
         [SerializeField] protected List<PlacableGrid> _grids;
         [SerializeField] protected Transform _visualsParent;
@@ -32,6 +34,7 @@ namespace MapGen.Placables
         public List<PlacableGrid> Grids => _grids;
         public bool Rotatable => _rotatable;
         public Vector3Int Origin => _origin;
+        public SelectableGridCell SelectableGridCell => _selectableGridCell;
 
         public virtual void InitializePlacable(SpawnData spawnData)
         {

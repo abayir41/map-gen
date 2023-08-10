@@ -49,7 +49,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6972893473416609647}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 0.996421, g: 1, b: 0, a: 1}
+  _gizmoColor: {r: 0.6589339, g: 1, b: 0, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -160,7 +160,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4cefbd2da3da3934280b479a1584eb45, type: 2}
+  - {fileID: 2100000, guid: 176a2d300659dba4c9feb98daecc837f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -231,7 +231,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 4092131975241059815}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0, b: 0.7505522, a: 1}
+  _gizmoColor: {r: 0, g: 0.64086914, b: 1, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 0, z: 0}
@@ -294,9 +294,8 @@ GameObject:
   - component: {fileID: 2015129484314678255}
   - component: {fileID: 8967608169036613168}
   - component: {fileID: 273106336240742448}
-  - component: {fileID: 1748721840343755511}
   m_Layer: 0
-  m_Name: Ground 2
+  m_Name: Mountain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,7 +309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4459122231592827033}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.008045, y: 3.142104, z: 2.8886344}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -336,7 +335,7 @@ MonoBehaviour:
   _rotationDegreeStep: 15
   _origin: {x: 0, y: 0, z: 0}
   _name: Ground
-  _selectableGridCell: {fileID: 2222524241330915079, guid: 837cdc2eeca2bd046912faa38f205e76, type: 3}
+  _selectableGridCell: {fileID: 2222524241330915079, guid: b3989b520bbeb434da38545eaf440c81, type: 3}
   _grids:
   - {fileID: 6986085402506317540}
   - {fileID: 1341002912686874266}
@@ -361,19 +360,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1748721840343755511
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4459122231592827033}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5023119213762703789
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +440,7 @@ MonoBehaviour:
   _gridCreator: {fileID: 6445913481610533286}
   DrawGizmo: 0
   _gizmoRandomColor: 1
-  _gizmoColor: {r: 1, g: 0.22157338, b: 0, a: 1}
+  _gizmoColor: {r: 1, g: 0.21925882, b: 0, a: 1}
   _gizmoRadius: 0.25
   _cellPositions:
   - {x: 0, y: 1, z: 0}
