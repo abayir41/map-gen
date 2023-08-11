@@ -9,13 +9,13 @@ using Grid = MapGen.GridSystem.Grid;
 
 namespace MapGen.Map.Brushes.TunnelBrush
 {
-    public class TunnelBrushHelper : SelectedCellsHelper
+    public class AutoTunnelBrushHelper : SelectedCellsHelper
     {
         private readonly Grid _grid;
         private readonly AutoTunnelBrush _mapBrushSettings;
 
 
-        public TunnelBrushHelper(List<Vector3Int> cells, Grid grid, AutoTunnelBrush mapBrushSettings) : base(cells, grid)
+        public AutoTunnelBrushHelper(List<Vector3Int> cells, Grid grid, AutoTunnelBrush mapBrushSettings) : base(cells, grid)
         {
             _grid = grid;
             _mapBrushSettings = mapBrushSettings;

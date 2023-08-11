@@ -28,7 +28,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
         public override string BrushName => "Auto Tunnel";
         protected override int HitBrushHeight => 1;
 
-        private TunnelBrushHelper _helper;
+        private AutoTunnelBrushHelper _helper;
 
         public override ICommand GetPaintCommand(List<Vector3Int> selectedCells, Grid grid)
         {
@@ -38,7 +38,7 @@ namespace MapGen.Map.Brushes.TunnelBrush
         public TunnelPaintData Paint(List<Vector3Int> selectedCells, Grid grid)
         {
             var layer = selectedCells.First().y;
-            _helper = new TunnelBrushHelper(selectedCells, grid, this);
+            _helper = new AutoTunnelBrushHelper(selectedCells, grid, this);
             return MakeTunnels(layer, grid);
         }
         
