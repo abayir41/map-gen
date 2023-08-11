@@ -1307,6 +1307,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 639b2d591c9efc446ba046498e68ce11, type: 2}
     - {fileID: 11400000, guid: 6bcc289907cd32b4ebc931840a0bee25, type: 2}
     - {fileID: 11400000, guid: ac689b990abfd5c48b2ec15f15aef879, type: 2}
+    - {fileID: 11400000, guid: 083c0881d86e2104bb52e67bdafd46e8, type: 2}
   _increaseAmount: 1
 --- !u!1 &439750900
 GameObject:
